@@ -1,12 +1,17 @@
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
 
 export default function Login() {
     const navigation = useNavigation();
     const goToSignUpScreen = () => {
         navigation.navigate('SignUp');
     };
+    const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
+    const [ email, setEmail ] = useState('');
+    const [ password, setPassword ] = useState('');
 
     return (
         <View style={styles.container}>
@@ -14,8 +19,15 @@ export default function Login() {
                 <Text style={styles.title}>
                     Sign In
                 </Text>
-                <TextInput style={styles.input} placeholder="Email..." />
-                <TextInput style={styles.input} placeholder="Password..." secureTextEntry />
+                <View style={styles.inputContainer}>
+                    <TextInput style={styles.input} placeholder="Email..." value={email} onChangeText={text => setEmail(text)}/>
+                </View>
+                <View style={styles.inputContainer}>
+                    <TextInput style={styles.input} placeholder="Password..." secureTextEntry={passwordVisibility} value={password} onChangeText={text => setPassword(text)}/>
+                    <Pressable onPress={handlePasswordVisibility}>
+                        <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+                    </Pressable>
+                </View>                
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText}>Sign In</Text>
                 </TouchableOpacity>
@@ -49,12 +61,22 @@ const styles = StyleSheet.create({
         fontWeight: '900',
         textAlign: 'center',
     },
-    input: {
+    inputContainer:{
+        // backgroundColor: 'white',
+        width: '80%',
+        borderRadius: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
         borderBottomWidth: 1,
         borderColor: '#666',
-        padding: 7,
+        padding: 8,
+        // paddingLeft: 10,
         margin: 10,
-        width: '80%',
+    },
+    input: {
+        // padding: 14,
+        // fontSize: 22,
+        width: '90%'
     },
     button: {
         justifyContent: 'center',
