@@ -2,25 +2,27 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableHighlight } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Login() {
+export default function SignUp() {
     const navigation = useNavigation();
-    const goToSignUpScreen = () => {
-        navigation.navigate('SignUp');
+    const goToLogInScreen = () => {
+        navigation.navigate('LogIn');
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.box}>
                 <Text style={styles.title}>
-                    Login Screen
+                    Sign Up Screen
                 </Text>
+                <TextInput style={styles.input} placeholder="Username..." />
                 <TextInput style={styles.input} placeholder="Email..." />
                 <TextInput style={styles.input} placeholder="Password..." />
+                <TextInput style={styles.input} placeholder="Confirm Password..." />
                 <TouchableHighlight style={styles.button}>
-                    <Button title="Login" />
+                    <Button title="Get Started" />
                 </TouchableHighlight>
-                <Text style={styles.link} onPress={goToSignUpScreen}>
-                    Sign Up
+                <Text style={styles.link} onPress={goToLogInScreen}>
+                    Already have an account?
                 </Text>
             </View>
             <TextInput></TextInput>
@@ -38,7 +40,7 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: 'white',
-        height: 300,
+        height: 420,
         width: '80%',
         borderRadius: 15,
         justifyContent: 'center',
