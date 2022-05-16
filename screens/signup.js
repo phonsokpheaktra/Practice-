@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from '
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 export default function SignUp() {
     const navigation = useNavigation();
@@ -13,6 +14,7 @@ export default function SignUp() {
     const [ password, setPassword ] = useState('');
     const [ confirmPassword, setConfirmPassword ] = useState('');
     const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
+    const [ checkBox, setCheckBox] = useState('');
 
     return (
         <View style={styles.container}>
@@ -38,6 +40,18 @@ export default function SignUp() {
                         <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
                     </Pressable>
                 </View>
+                <BouncyCheckbox
+                    style={styles.checkBox}
+                    size={25}
+                    fillColor="#FF9C9C"
+                    unfillColor="#FFFFFF"
+                    text="I agree to the Terms of Services and Privacy Policy"
+                    // iconStyle={{ borderColor: "red" }}
+                    textStyle={{ textDecorationLine: "none", }}
+                    textContainerStyle = {{ flexDirection: 'row', flexShrink: 1}}
+                    onPress={ isChecked => setCheckBox(isChecked) }
+                    value={checkBox}
+                    />
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText}>Sign Up</Text>
                 </TouchableOpacity>
@@ -84,6 +98,9 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '90%'
+    },
+    checkBox: {
+        width: '80%',
     },
     button: {
         justifyContent: 'center',
