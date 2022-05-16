@@ -10,7 +10,7 @@ function appStack() {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="LogIn" component={Login} options={{headerLeft: (props) => null }}/>
+          <Stack.Screen name="LogIn" component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerBackVisible: false }}/>
         </Stack.Navigator>
       </NavigationContainer>

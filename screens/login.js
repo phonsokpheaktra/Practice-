@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     box: {
         backgroundColor: 'white',
         height: 300,
-        width: '80%',
+        width: 300,
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
     },
     link: {
         textDecorationLine: 'underline',
-        // color: '#FF9C9C',
         marginTop: 10,
     }
 });
