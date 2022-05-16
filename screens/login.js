@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable, Image, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
@@ -15,6 +15,7 @@ export default function Login() {
 
     return (
         <View style={styles.container}>
+            <ImageBackground source={require('../assets/images/screen.jpg')} resizeMode="cover" style={styles.background}>
             <View style={styles.box}>
                 <Text style={styles.title}>
                     Sign in
@@ -33,8 +34,8 @@ export default function Login() {
                 </TouchableOpacity>
                 <View style={styles.authContainer}>
                     <Text style={styles.authText}>or sign in with:</Text>
-                    <Image style={styles.logo} source={require('../assets/logo/icons8-google.svg')} />
-                    <Image style={styles.facebook} source={require('../assets/logo/icons8-facebook.svg')} />
+                    <Image style={styles.google} source={require('../assets/logo/google.png')} />
+                    <Image style={styles.facebook} source={require('../assets/logo/facebook.png')} />
                 </View>
                 <View style={styles.authContainer}>
                     <Text style={styles.link}>
@@ -45,6 +46,7 @@ export default function Login() {
                     </Text>
                 </View>                
             </View>
+            </ImageBackground>            
         </View>
     )
 }
@@ -55,7 +57,13 @@ const styles = StyleSheet.create({
         height: '100%',
         flex: 1,
         justifyContent: 'center',
+        alignItems: 'center',      
+    },
+    background: {
+        flex: 1,
+        justifyContent: "center",
         alignItems: 'center',
+        width: '100%',
     },
     box: {
         backgroundColor: 'white',
@@ -64,7 +72,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: '#999',
+        shadowColor: '#666',
         shadowOffset: { width: 2, height: 2 },
         shadowRadius: 3,
     },
@@ -109,7 +117,7 @@ const styles = StyleSheet.create({
     authText: {
         color: '#757575'
     },
-    logo: {
+    google: {
         marginLeft: 10,
         height: 30,
         width: 30,

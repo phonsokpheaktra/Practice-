@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
@@ -17,6 +17,7 @@ export default function SignUp() {
 
     return (
         <View style={styles.container}>
+            <ImageBackground source={require('../assets/images/screen.jpg')} resizeMode="cover" style={styles.background}>
             <View style={styles.box}>
                 <Text style={styles.title}>
                     Welcome!
@@ -40,7 +41,7 @@ export default function SignUp() {
                     unfillColor="#FFFFFF"
                     text="I agree to the Terms of Services and Privacy Policy"
                     // iconStyle={{ borderColor: "red" }}
-                    textStyle={{ textDecorationLine: "none", }}
+                    textStyle={{ textDecorationLine: "none", fontSize: 12 }}
                     textContainerStyle = {{ flexDirection: 'row', flexShrink: 1, margin: 10,}}
                     onPress={ isChecked => setCheckBox(isChecked) }
                     value={checkBox}
@@ -52,6 +53,7 @@ export default function SignUp() {
                     Already have an account?
                 </Text>
             </View>
+            </ImageBackground>            
         </View>
     )
 }
@@ -64,6 +66,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    background: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: 'center',
+        width: '100%',
+    },
     box: {
         backgroundColor: 'white',
         height: 400,
@@ -71,7 +79,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: '#999',
+        shadowColor: '#666',
         shadowOffset: { width: 2, height: 2 },
         shadowRadius: 3,
     },
