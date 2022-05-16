@@ -66,11 +66,14 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: 'white',
-        height: 420,
+        height: 400,
         width: 300,
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
+        shadowColor: '#999',
+        shadowOffset: { width: 2, height: 2 },
+        shadowRadius: 3,
     },
     title: {
         fontSize: 25,
@@ -110,5 +113,6 @@ const styles = StyleSheet.create({
     link: {
         textDecorationLine: 'underline',
         marginTop: 10,
+        color: '#757575',
     }
 });

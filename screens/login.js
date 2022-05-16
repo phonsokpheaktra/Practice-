@@ -32,7 +32,7 @@ export default function Login() {
                     <Text style={styles.buttonText}>Sign In</Text>
                 </TouchableOpacity>
                 <View style={styles.authContainer}>
-                    <Text>or sign in with:</Text>
+                    <Text style={styles.authText}>or sign in with:</Text>
                     <Image style={styles.logo} source={require('../assets/logo/icons8-google.svg')} />
                     <Image style={styles.facebook} source={require('../assets/logo/icons8-facebook.svg')} />
                 </View>
@@ -64,6 +64,9 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
+        shadowColor: '#999',
+        shadowOffset: { width: 2, height: 2 },
+        shadowRadius: 3,
     },
     title: {
         fontSize: 25,
@@ -103,6 +106,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 5,
     },
+    authText: {
+        color: '#757575'
+    },
     logo: {
         marginLeft: 10,
         height: 30,
@@ -121,5 +127,6 @@ const styles = StyleSheet.create({
     link: {
         textDecorationLine: 'underline',
         paddingEnd: 10,
+        color: '#757575',
     }
 });
