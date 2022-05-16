@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
 
 export default function Login() {
@@ -17,7 +17,7 @@ export default function Login() {
         <View style={styles.container}>
             <View style={styles.box}>
                 <Text style={styles.title}>
-                    Sign In
+                    Sign in
                 </Text>
                 <View style={styles.inputContainer}>
                     <TextInput style={styles.input} placeholder="Email..." value={email} onChangeText={text => setEmail(text)}/>
@@ -25,17 +25,26 @@ export default function Login() {
                 <View style={styles.inputContainer}>
                     <TextInput style={styles.input} placeholder="Password..." secureTextEntry={passwordVisibility} value={password} onChangeText={text => setPassword(text)}/>
                     <Pressable onPress={handlePasswordVisibility}>
-                        <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+                        <Ionicons name={rightIcon} size={22} color="#232323" />
                     </Pressable>
                 </View>                
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText}>Sign In</Text>
                 </TouchableOpacity>
-                <Text style={styles.link} onPress={goToSignUpScreen}>
-                    Sign Up
-                </Text>
+                <View style={styles.authContainer}>
+                    <Text>or sign in with:</Text>
+                    <Image style={styles.logo} source={require('../assets/logo/icons8-google.svg')} />
+                    <Image style={styles.facebook} source={require('../assets/logo/icons8-facebook.svg')} />
+                </View>
+                <View style={styles.authContainer}>
+                    <Text style={styles.link}>
+                        Forgot Password?
+                    </Text>
+                    <Text style={styles.link} onPress={goToSignUpScreen}>
+                        Sign Up
+                    </Text>
+                </View>                
             </View>
-            <TextInput></TextInput>
         </View>
     )
 }
@@ -50,7 +59,7 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: 'white',
-        height: 300,
+        height: 320,
         width: 300,
         borderRadius: 15,
         justifyContent: 'center',
@@ -58,11 +67,10 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 25,
-        fontWeight: '900',
+        fontWeight: 'bold',
         textAlign: 'center',
     },
     inputContainer:{
-        // backgroundColor: 'white',
         width: '80%',
         borderRadius: 5,
         flexDirection: 'row',
@@ -70,12 +78,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: '#666',
         padding: 8,
-        // paddingLeft: 10,
         margin: 10,
     },
     input: {
-        // padding: 14,
-        // fontSize: 22,
         width: '90%'
     },
     button: {
@@ -83,16 +88,38 @@ const styles = StyleSheet.create({
         width: 120,
         height: 40,
         backgroundColor: '#FF9C9C',
-        marginTop: 10,
+        margin: 5,
         borderRadius: 5,
     },
     buttonText: {
         textAlign: 'center',
         color: 'white',
-        fontWeight: '900',
+        fontWeight: 'bold',
+    },
+    authContainer: {
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 5,
+    },
+    logo: {
+        marginLeft: 10,
+        height: 30,
+        width: 30,
+    },
+    facebook: {
+        marginLeft: 10,
+        height: 35,
+        width: 35,
+    },
+    linkContainer: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
     },
     link: {
         textDecorationLine: 'underline',
-        marginTop: 10,
+        paddingEnd: 10,
     }
 });

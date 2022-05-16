@@ -12,7 +12,6 @@ export default function SignUp() {
     };
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
-    const [ confirmPassword, setConfirmPassword ] = useState('');
     const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
     const [ checkBox, setCheckBox] = useState('');
 
@@ -29,17 +28,11 @@ export default function SignUp() {
                     <TextInput style={styles.input} placeholder="Email..." value={email} onChangeText={text => setEmail(text)}/>
                 </View>
                 <View style={styles.inputContainer}>
-                    <TextInput style={styles.input} placeholder="Password..." secureTextEntry={passwordVisibility} value={password} onChangeText={text => setPassword(text)}/>
+                    <TextInput style={styles.input} placeholder="New Password..." secureTextEntry={passwordVisibility} value={password} onChangeText={text => setPassword(text)}/>
                     <Pressable onPress={handlePasswordVisibility}>
                         <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
                     </Pressable>
-                </View>
-                <View style={styles.inputContainer}>
-                    <TextInput style={styles.input} placeholder="Confirm Password..." secureTextEntry={passwordVisibility} value={confirmPassword} onChangeText={text => setConfirmPassword(text)}/>
-                    <Pressable onPress={handlePasswordVisibility}>
-                        <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
-                    </Pressable>
-                </View>
+                </View>                
                 <BouncyCheckbox
                     style={styles.checkBox}
                     size={25}
@@ -48,7 +41,7 @@ export default function SignUp() {
                     text="I agree to the Terms of Services and Privacy Policy"
                     // iconStyle={{ borderColor: "red" }}
                     textStyle={{ textDecorationLine: "none", }}
-                    textContainerStyle = {{ flexDirection: 'row', flexShrink: 1}}
+                    textContainerStyle = {{ flexDirection: 'row', flexShrink: 1, margin: 10,}}
                     onPress={ isChecked => setCheckBox(isChecked) }
                     value={checkBox}
                     />
@@ -59,7 +52,6 @@ export default function SignUp() {
                     Already have an account?
                 </Text>
             </View>
-            <TextInput></TextInput>
         </View>
     )
 }
@@ -113,7 +105,7 @@ const styles = StyleSheet.create({
     buttonText: {
         textAlign: 'center',
         color: 'white',
-        fontWeight: '900',
+        fontWeight: 'bold',
     },
     link: {
         textDecorationLine: 'underline',
