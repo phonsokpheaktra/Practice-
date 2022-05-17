@@ -9,9 +9,9 @@ const Stack = createNativeStackNavigator();
 function appStack() {
     return (
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="LogIn" component={Login} />
-          <Stack.Screen name="SignUp" component={SignUp} options={{ headerBackVisible: false }}/>
+          <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>
       </NavigationContainer>
     );
