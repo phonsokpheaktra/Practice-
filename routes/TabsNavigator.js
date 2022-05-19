@@ -3,11 +3,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Login from '../screens/login';
 import SignUp from '../screens/signup';
 import Sidebar from '../screens/sidebar';
-import { NavigationContainer } from '@react-navigation/native';
 
 const Tab = createMaterialBottomTabNavigator();
 
-function MyTabs() {
+function TabsNavigator() {
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -52,4 +51,4 @@ function MyTabs() {
   );
 }
 
-export default MyTabs;
+export default TabsNavigator;

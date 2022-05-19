@@ -1,14 +1,13 @@
 import { StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 
-import Navigator from './routes/appStack';
-import BottomTabs from './routes/bottomTabsNavigator';
-import Sidebar from './screens/sidebar';
+import BottomTabs from './routes/TabsNavigator';
 
 export default function App() {
   return (
-      // <Navigator/>
-      // <Sidebar/>
+    <NavigationContainer>
       <BottomTabs/>
+    </NavigationContainer>      
   );
 }
 
