@@ -16,6 +16,16 @@ function MyTabs() {
         inactiveColor="#FBEFEF"
         barStyle={{ backgroundColor: '#FF9C9C' }}
       >
+        <Tab.Screen
+          name="Sidebar" 
+          component={Sidebar} 
+          options={{
+            tabBarLabel: 'Sidebar',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="menu" color={color} size={26} />
+            ),
+          }}
+        />
         <Tab.Screen 
           name="LogIn" 
           component={Login} 
@@ -35,17 +45,7 @@ function MyTabs() {
               <MaterialCommunityIcons name="new-box" color={color} size={26} />
             ),
           }}
-        />
-        <Tab.Screen 
-          name="Sidebar" 
-          component={Sidebar} 
-          options={{
-            tabBarLabel: 'Sidebar',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="menu" color={color} size={26} />
-            ),
-          }}
-        />
+        />        
       </Tab.Navigator>
     </NavigationContainer>
     
