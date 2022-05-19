@@ -1,18 +1,22 @@
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Home from '../screens/Home';
 import Sidebar from '../screens/sidebar';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 function TabsNavigator() {
   return (    
-    <Tab.Navigator
-      shifting={true}
-      activeColor="#fff"
-      inactiveColor="#FBEFEF"
-      barStyle={{ backgroundColor: '#FF9C9C' }}
+    <Tab.Navigator      
+      tabBarPosition="bottom"
+      screenOptions={{
+        tabBarIndicatorStyle: {
+          backgroundColor: '#FF9C9C'
+        },
+        // tabBarActiveTintColor: 'yellow',
+        // tabBarInactiveTintColor: 'grey'
+      }}
     >
       <Tab.Screen 
         name="Home" 
