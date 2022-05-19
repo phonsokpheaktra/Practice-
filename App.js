@@ -1,10 +1,17 @@
 import { StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 
-import Navigator from './routes/appStack';
+import AuthStack from './routes/AuthStack';
+import BottomTabs from './routes/TabsNavigator';
+import Home from './screens/Home';
 
 export default function App() {
   return (
-      <Navigator/>
+    <NavigationContainer>
+      <AuthStack />
+      {/* <BottomTabs/> */}
+    </NavigationContainer>      
+    // <Home/>
   );
 }
 

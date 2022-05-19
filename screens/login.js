@@ -29,7 +29,7 @@ export default function Login() {
                         <Ionicons name={rightIcon} size={22} color="#232323" />
                     </Pressable>
                 </View>                
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tabs')}>
                     <Text style={styles.buttonText}>Sign In</Text>
                 </TouchableOpacity>
                 <View style={styles.authContainer}>
