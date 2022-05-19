@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Switch } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Sidebar() {
+    const navigation = useNavigation();
     const [notification, setNotification] = useState('');
     const [darkMode, setDarkMode] = useState('');
 
@@ -111,7 +113,7 @@ export default function Sidebar() {
                 <View style={styles.spacing}></View>
                 {optionList.map((item, index) => {
                     return (
-                        <View style={styles.menuRow} key={index}>
+                        <TouchableOpacity style={styles.menuRow} key={index} onPress={() => navigation.navigate('LogIn')}>
                             <View style={{ flex: 1 }}>
                                 <View style={styles.menuIcon}>
                                     <Ionicons name={item.icon} size={20} color="#FF9C9C" />
@@ -121,7 +123,7 @@ export default function Sidebar() {
                             <View style={styles.menuAction}>
                                 <Ionicons name="chevron-forward" size={24} color="#767577" />
                             </View>    
-                        </View>
+                        </TouchableOpacity>
                     )
                 })}
             </View>            

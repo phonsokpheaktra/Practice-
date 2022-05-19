@@ -1,7 +1,7 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Login from '../screens/login';
-import SignUp from '../screens/signup';
+
+import Home from '../screens/Home';
 import Sidebar from '../screens/sidebar';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -14,6 +14,16 @@ function TabsNavigator() {
       inactiveColor="#FBEFEF"
       barStyle={{ backgroundColor: '#FF9C9C' }}
     >
+      <Tab.Screen 
+        name="Home" 
+        component={Home} 
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Sidebar" 
         component={Sidebar} 
@@ -23,27 +33,7 @@ function TabsNavigator() {
             <MaterialCommunityIcons name="menu" color={color} size={26} />
           ),
         }}
-      />
-      <Tab.Screen 
-        name="LogIn" 
-        component={Login} 
-        options={{
-          tabBarLabel: 'Login',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="login" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen 
-        name="SignUp" 
-        component={SignUp} 
-        options={{
-          tabBarLabel: 'SignUp',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="new-box" color={color} size={26} />
-          ),
-        }}
-      />        
+      />      
     </Tab.Navigator>
   );
 }
