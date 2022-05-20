@@ -37,7 +37,7 @@ export default function Sidebar() {
         <View style={styles.container}>
             <View style={styles.row}>
                 <View style={{ flex: 2}}>
-                    <Image style={styles.profile} source={require('../assets/images/screen.jpg')}></Image>
+                    <Image style={styles.profile} source={require('../assets/images/midoriya.jpg')}></Image>
                 </View>                
                 <View style={{flex: 3}}>
                     <Text style={styles.name}>Masha Masha</Text>
