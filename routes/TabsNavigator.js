@@ -3,6 +3,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Home from '../screens/Home';
 import Sidebar from '../screens/sidebar';
+import ProfileStack from './ProfileStack';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -29,15 +30,15 @@ function TabsNavigator() {
         }}
       />
       <Tab.Screen
-        name="Sidebar" 
-        component={Sidebar} 
+        name="ProfileStack" 
+        component={ProfileStack} 
         options={{
           tabBarLabel: 'Sidebar',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="menu" color={color} size={26} />
           ),
         }}
-      />      
+      />
     </Tab.Navigator>
   );
 }

@@ -41,7 +41,7 @@ export default function Sidebar() {
                 </View>                
                 <View style={{flex: 3}}>
                     <Text style={styles.name}>Masha Masha</Text>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('EditProfile')}>
                         <Ionicons name="camera" size={20} color="white" />
                         <Text style={styles.buttonText}>Edit Profile</Text>
                     </TouchableOpacity>                    
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     },
     menuContainer: {
         width: '95%',
-        height: '70%',
+        height: 440,
         backgroundColor: 'white',
         padding: 10,
         marginTop: 30,

@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Login from "../screens/login";
-import SignUp from "../screens/signup";
+import Login from "../screens/AuthStack/login";
+import SignUp from "../screens/AuthStack/signup";
 import Home from "../screens/Home";
 
 import TabsNavigator from "./TabsNavigator";

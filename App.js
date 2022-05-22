@@ -7,10 +7,10 @@ import EditProfile from './screens/EditProfile';
 
 export default function App() {
   return (
-    // <NavigationContainer>
-    //   <AuthStack />      
-    // </NavigationContainer>      
-    <EditProfile/>
+    <NavigationContainer>
+      <AuthStack />      
+    </NavigationContainer>      
+    // <EditProfile/>
   );
 }
 

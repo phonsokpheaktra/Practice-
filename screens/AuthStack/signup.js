@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
+import { useTogglePasswordVisibility } from '../../hooks/useTogglePasswordVisibility';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 export default function SignUp() {
@@ -17,7 +17,7 @@ export default function SignUp() {
 
     return (
         <View style={styles.container}>
-            <ImageBackground source={require('../assets/images/screen.jpg')} resizeMode="cover" style={styles.background}>
+            <ImageBackground source={require('../../assets/images/screen.jpg')} resizeMode="cover" style={styles.background}>
             <View style={styles.box}>
                 <Text style={styles.title}>
                     Welcome!
