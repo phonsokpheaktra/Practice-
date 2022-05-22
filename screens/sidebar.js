@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: 20,
-        width: 110,
+        width: 120,
         // height: 25,
         backgroundColor: '#FF9C9C',
         marginTop: 10,

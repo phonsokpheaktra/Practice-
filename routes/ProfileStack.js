@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 function ProfileStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Sidebar" component={Sidebar} options={{ headerShown: false }}/>
+      <Stack.Screen name="Sidebar" component={Sidebar}/>
       <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   );

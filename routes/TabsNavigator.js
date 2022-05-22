@@ -33,9 +33,9 @@ function TabsNavigator() {
         name="ProfileStack" 
         component={ProfileStack} 
         options={{
-          tabBarLabel: 'Sidebar',
+          tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="menu" color={color} size={26} />
+            <MaterialCommunityIcons name="account" color={color} size={26} />
           ),
         }}
       />
