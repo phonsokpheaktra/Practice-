@@ -48,10 +48,17 @@ export default function Home() {
       price: '$120',
       imageLink: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
     },
+    {
+      title: 'Nike Air 100',
+      category: 'Shoes',
+      tag: ['Nike', 'Air Max', 'Fashion'],
+      price: '$150',
+      imageLink: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+    },
   ];
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {/* <Header title="Our E-commerce App" />       */}
       <View style={styles.categoryContainer}>
         <View style={styles.titleRow}>
@@ -102,7 +109,7 @@ export default function Home() {
           })}         
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -111,9 +118,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FBEFEF',
         height: '100%',        
         // justifyContent: 'center',
-        paddingTop: 40,
-        alignItems: 'center',
-        overflow: 'scroll',
+        paddingTop: 10,
+        // alignItems: 'center',        
     },
     categoryContainer: {
       width: '100%',
