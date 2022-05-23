@@ -1,20 +1,26 @@
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Home from '../screens/Home';
 import Sidebar from '../screens/sidebar';
+import HomeStack from './HomeStack';
+import ProfileStack from './ProfileStack';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 function TabsNavigator() {
   return (    
-    <Tab.Navigator
-      shifting={true}
-      activeColor="#fff"
-      inactiveColor="#FBEFEF"
-      barStyle={{ backgroundColor: '#FF9C9C' }}
+    <Tab.Navigator      
+      tabBarPosition="bottom"
+      screenOptions={{
+        tabBarIndicatorStyle: {
+          backgroundColor: '#FF9C9C'
+        },
+        // tabBarActiveTintColor: 'yellow',
+        // tabBarInactiveTintColor: 'grey'
+      }}
     >
-      <Tab.Screen 
+      {/* <Tab.Screen 
         name="Home" 
         component={Home} 
         options={{
@@ -23,17 +29,27 @@ function TabsNavigator() {
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
         }}
-      />
-      <Tab.Screen
-        name="Sidebar" 
-        component={Sidebar} 
+      /> */}
+      <Tab.Screen 
+        name="HomeStack" 
+        component={HomeStack} 
         options={{
-          tabBarLabel: 'Sidebar',
+          tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="menu" color={color} size={26} />
+            <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
         }}
-      />      
+      />
+      <Tab.Screen
+        name="ProfileStack" 
+        component={ProfileStack} 
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account" color={color} size={26} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }

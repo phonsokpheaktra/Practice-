@@ -8,8 +8,7 @@ import Home from './screens/Home';
 export default function App() {
   return (
     <NavigationContainer>
-      <AuthStack />
-      {/* <BottomTabs/> */}
+      <AuthStack />      
     </NavigationContainer>      
     // <Home/>
   );

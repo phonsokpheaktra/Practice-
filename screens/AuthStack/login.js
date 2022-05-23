@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Pressable, Image, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
+import { useTogglePasswordVisibility } from '../../hooks/useTogglePasswordVisibility';
 
 export default function Login() {
     const navigation = useNavigation();
@@ -15,7 +15,7 @@ export default function Login() {
 
     return (
         <View style={styles.container}>
-            <ImageBackground source={require('../assets/images/screen.jpg')} resizeMode="cover" style={styles.background}>
+            <ImageBackground source={require('../../assets/images/screen.jpg')} resizeMode="cover" style={styles.background}>
             <View style={styles.box}>
                 <Text style={styles.title}>
                     Sign in
@@ -34,8 +34,8 @@ export default function Login() {
                 </TouchableOpacity>
                 <View style={styles.authContainer}>
                     <Text style={styles.authText}>or sign in with:</Text>
-                    <Image style={styles.google} source={require('../assets/logo/google.png')} />
-                    <Image style={styles.facebook} source={require('../assets/logo/facebook.png')} />
+                    <Image style={styles.google} source={require('../../assets/logo/google.png')} />
+                    <Image style={styles.facebook} source={require('../../assets/logo/facebook.png')} />
                 </View>
                 <View style={styles.authContainer}>
                     <Text style={styles.link}>
