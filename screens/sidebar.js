@@ -133,7 +133,7 @@ export default function Sidebar() {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 50,
+        paddingTop: 20,
         backgroundColor: '#FBEFEF',
         height: '100%',
         flex: 1,

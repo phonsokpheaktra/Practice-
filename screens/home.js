@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView} from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 
 import Header from "../components/Header";
 
@@ -6,11 +7,19 @@ export default function Home() {
   const category = [
     	{
         title: 'Footwear',
-        iconLink: 'https://img.icons8.com/stickers/48/000000/pair-of-sneakers.png'
+        iconLink: 'https://img.icons8.com/stickers/100/000000/pair-of-sneakers.png'
       },
       {
         title: 'Beauty',
         iconLink: 'https://img.icons8.com/stickers/100/000000/lip-gloss.png'
+      },
+      {
+        title: 'Apparel',
+        iconLink: 'https://img.icons8.com/stickers/100/000000/formal-outfit.png'
+      },
+      {
+        title: 'Apparel',
+        iconLink: 'https://img.icons8.com/stickers/100/000000/formal-outfit.png'
       },
       {
         title: 'Apparel',
@@ -43,16 +52,17 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Header title="Our E-commerce App" />      
+      {/* <Header title="Our E-commerce App" />       */}
       <View style={styles.categoryContainer}>
         <View style={styles.titleRow}>
           <Text style={styles.categoryTitle}>Category</Text>
           <Text style={styles.seeMore}>See All</Text>
         </View>
         <View style={styles.categoryRow}>
+          <ScrollView horizontal={true}>
           {category.map((item, index) => {
             return (
-              <TouchableOpacity>
+              <TouchableOpacity key={index}>
                 <View style={styles.iconContainer}>
                   <Image style={styles.categoryIcon} source={{uri: item.iconLink}}>
                   </Image>            
@@ -60,25 +70,33 @@ export default function Home() {
                 <Text style={styles.eachCategoryTitle}>{item.title}</Text>
               </TouchableOpacity>    
             )
-          })}
-          
+          })} 
+          </ScrollView>                   
         </View>
       </View>
       <View style={styles.productContainer}>
+        <View style={styles.titleRow}>
+          <Text style={styles.categoryTitle}>Featured Products</Text>
+          <Text style={styles.seeMore}>See All</Text>
+        </View>
         <View style={styles.productRow}>
           {products.map((item, index) => {
             return (
-              <View style={styles.eachProduct}>
+              <View style={styles.eachProduct} key={index}>
                 <Image style={styles.productImage} source={{uri: item.imageLink}}></Image>
                 <Text style={styles.productTitle}>{item.title}</Text>
                 <View style={styles.tagContainer}>
                   {item.tag.map((tag, index) => {
                     return (                      
-                      <Text style={styles.productTag}>{tag}</Text>                                        
+                      <Text key={index} style={styles.productTag}>{tag}</Text>                                        
                     )
                   })}
                 </View>
-                <Text style={styles.price}>{item.price}</Text>
+                  <View style={styles.priceRow}>
+                    <Text style={styles.price}>{item.price}</Text>
+                    <Ionicons style={styles.add} name="add" size={24} color="black" />
+                  </View>                
+
               </View>
             )
           })}         
@@ -93,7 +111,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#FBEFEF',
         height: '100%',        
         // justifyContent: 'center',
+        paddingTop: 40,
         alignItems: 'center',
+        overflow: 'scroll',
     },
     categoryContainer: {
       width: '100%',
@@ -109,12 +129,15 @@ const styles = StyleSheet.create({
     categoryTitle: {
       fontSize: 22,
       fontWeight: 'bold',
+      color: '#222',
     },
     seeMore: {
       color: 'grey',      
     },
     categoryRow: {
         flexDirection: 'row',
+        overflow: 'scroll',
+        // flexWrap: 'nowrap',
     },
     iconContainer: {
       padding: 5,
@@ -123,56 +146,75 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
     },
     categoryIcon: {
-      height: 50,
-      width: 50,
+      height: 80,
+      width: 80,
     },
     eachCategoryTitle: {
       textAlign: 'center',
     },
     productContainer: {
-      height: '80%',
+      padding: 10,
+      // height: '80%',
       width: '100%',
       overflow: 'scroll',
     },
     productRow: {
-      justifyContent: 'center',
+      justifyContent: 'space-evenly',
       flexDirection: 'row',
       flexWrap: 'wrap',
     },
     eachProduct: {
-      padding: 5,
+      padding: 8,
       margin: 5,
-      width: 180,
+      width: 160,      
       // height: 200,
       borderRadius: 10,
       backgroundColor: '#fff',
     },
     productImage: {
-      height: 120,
+      height: 180,
       width: '100%',
       borderRadius: 10,
     },
     productTitle: {
-      marginTop: 3,
+      marginTop: 5,
       fontSize: 16,
+      fontWeight: '500',
+      color: '#222',
+      // fontFamily: 'ubuntu-bold',
     },
     tagContainer: {
-      marginTop: 3,
+      marginTop: 5,
       flexDirection: 'row',
       flexWrap: 'nowrap',
-      overflow: 'scroll',    
+      overflow: 'scroll',
+      // boxSizing: 'content-box',
     },
     productTag: {
-      whiteSpace: 'nowrap',
+      // whiteSpace: 'nowrap',
       paddingLeft: 5,
       paddingRight: 5,
       color: '#555',
-      backgroundColor: '#ddd',
+      backgroundColor: '#eee',
       marginEnd: 5,
       borderRadius: 4,      
     },
+    priceRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: 10,
+    },
     price: {
-      fontSize: 22,
+      // marginTop: 5,
+      fontSize: 25,
       fontWeight: 'bold',
+      color: '#333',      
+    },
+    add: {
+      padding: 5,
+      borderWidth: 1,
+      borderRadius: 8,
+      borderColor: '#ddd',
     },
 });
