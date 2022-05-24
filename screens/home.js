@@ -18,12 +18,12 @@ export default function Home() {
         iconLink: 'https://img.icons8.com/stickers/100/000000/formal-outfit.png'
       },
       {
-        title: 'Apparel',
-        iconLink: 'https://img.icons8.com/stickers/100/000000/formal-outfit.png'
+        title: 'Tableware',
+        iconLink: 'https://img.icons8.com/stickers/100/000000/tableware.png'
       },
       {
-        title: 'Apparel',
-        iconLink: 'https://img.icons8.com/stickers/100/000000/formal-outfit.png'
+        title: 'Tools',
+        iconLink: 'https://img.icons8.com/stickers/100/000000/full-tool-storage-box-.png'
       },
   ];
   const products = [
@@ -32,28 +32,28 @@ export default function Home() {
       category: 'Footwear',
       tag: ['Nike', 'Air Max', 'Fashion', 'Shoes'],
       price: '$120',
-      imageLink: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+      imageLink: 'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/skwgyqrbfzhu6uyeh0gg/air-max-270-mens-shoes-KkLcGR.png',
     },
     {
-      title: 'Nike Air 100',
-      category: 'Shoes',
-      tag: ['Nike', 'Air Max', 'Fashion'],
-      price: '$150',
-      imageLink: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+      title: 'iPhone 13 Mini',
+      category: 'Electronics',
+      tag: ['Apple', 'iPhone', '13', 'Mini'],
+      price: '$1360',
+      imageLink: 'https://rewardmobile.co.uk/wp-content/uploads/2021/09/iPhone13_ProductImage_1000x1000_1.jpg',
     },
     {
-      title: 'Nike Air Max',
-      category: 'Footwear',
-      tag: ['Nike', 'Air Max', 'Fashion'],
-      price: '$120',
-      imageLink: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+      title: 'KOOMPI E13',
+      category: 'Electronics',
+      tag: ['KOOMPI', 'E13', 'Electronics'],
+      price: '$270',
+      imageLink: 'https://konfulononline.com/image/cache/catalog/KOOMPI/KOOMPI%20E13/E13-RoseGold3-800px-800x800.png',
     },
     {
-      title: 'Nike Air 100',
-      category: 'Shoes',
-      tag: ['Nike', 'Air Max', 'Fashion'],
-      price: '$150',
-      imageLink: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+      title: 'PlayStation 5',
+      category: 'Electronics',
+      tag: ['PlayStation', '5', 'Red Dragon'],
+      price: '$505',
+      imageLink: 'https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2021%2F09%2Fsony-playstation-5-pro-release-rumors-info-000.jpg?w=960&cbr=1&q=90&fit=max',
     },
   ];
 
