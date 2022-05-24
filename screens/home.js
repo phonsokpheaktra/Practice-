@@ -63,7 +63,9 @@ export default function Home() {
       <View style={styles.categoryContainer}>
         <View style={styles.titleRow}>
           <Text style={styles.categoryTitle}>Category</Text>
-          <Text style={styles.seeMore}>See All</Text>
+          <TouchableOpacity>
+            <Text style={styles.seeMore}>See All</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.categoryRow}>
           <ScrollView horizontal={true}>
@@ -84,7 +86,9 @@ export default function Home() {
       <View style={styles.productContainer}>
         <View style={styles.titleRow}>
           <Text style={styles.categoryTitle}>Featured Products</Text>
-          <Text style={styles.seeMore}>See All</Text>
+          <TouchableOpacity>
+            <Text style={styles.seeMore}>See All</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.productRow}>
           {products.map((item, index) => {
@@ -93,15 +97,19 @@ export default function Home() {
                 <Image style={styles.productImage} source={{uri: item.imageLink}}></Image>
                 <Text style={styles.productTitle}>{item.title}</Text>
                 <View style={styles.tagContainer}>
-                  {item.tag.map((tag, index) => {
-                    return (                      
-                      <Text key={index} style={styles.productTag}>{tag}</Text>                                        
-                    )
-                  })}
+                  <ScrollView horizontal={true} >
+                    {item.tag.map((tag, index) => {
+                      return (                      
+                        <Text key={index} style={styles.productTag}>{tag}</Text>                                        
+                      )
+                    })}
+                  </ScrollView>                  
                 </View>
                   <View style={styles.priceRow}>
                     <Text style={styles.price}>{item.price}</Text>
-                    <Ionicons style={styles.add} name="add" size={24} color="black" />
+                    <TouchableOpacity style={styles.add}>
+                      <Ionicons name="add" size={24} color="black" />
+                    </TouchableOpacity>                    
                   </View>                
 
               </View>
@@ -130,6 +138,7 @@ const styles = StyleSheet.create({
       justifyContent: 'space-between',
       paddingLeft: 10,
       paddingRight: 10,
+      paddingBottom: 5,
       alignItems: 'flex-end',
     },
     categoryTitle: {
@@ -138,7 +147,11 @@ const styles = StyleSheet.create({
       color: '#222',
     },
     seeMore: {
-      color: 'grey',      
+      color: '#fff',
+      fontWeight: 'bold',
+      backgroundColor: '#FF9C9C',
+      borderRadius: 5,
+      padding: 5,
     },
     categoryRow: {
         flexDirection: 'row',
@@ -193,7 +206,7 @@ const styles = StyleSheet.create({
       marginTop: 5,
       flexDirection: 'row',
       flexWrap: 'nowrap',
-      overflow: 'scroll',
+      // overflow: 'scroll',
       // boxSizing: 'content-box',
     },
     productTag: {
