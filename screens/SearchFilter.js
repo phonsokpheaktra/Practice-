@@ -7,17 +7,17 @@ export default function SearchFilter() {
     const [masterDataSource, setMasterDataSource] = useState([]);
     const [suggestResultVisible, setSuggestResultVisible] = useState(false);
 
-    useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/photos')
-            .then((response) => response.json())
-            .then((responseJson) => {
-            setFilteredDataSource(responseJson);
-            setMasterDataSource(responseJson);
-            })
-            .catch((error) => {
-            console.error(error);
-            });
-    }, []);
+    // useEffect(() => {
+    //     fetch('https://jsonplaceholder.typicode.com/photos')
+    //         .then((response) => response.json())
+    //         .then((responseJson) => {
+    //         setFilteredDataSource(responseJson);
+    //         setMasterDataSource(responseJson);
+    //         })
+    //         .catch((error) => {
+    //         console.error(error);
+    //         });
+    // }, []);
 
     const products = [
       {
@@ -25,6 +25,7 @@ export default function SearchFilter() {
         category: 'Footwear',
         tag: ['Nike', 'Air Max', 'Fashion', 'Shoes'],
         price: '$120',
+        user: 'Nike Store',
         imageLink: 'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/skwgyqrbfzhu6uyeh0gg/air-max-270-mens-shoes-KkLcGR.png',
       },
       {
@@ -32,6 +33,7 @@ export default function SearchFilter() {
         category: 'Electronics',
         tag: ['Apple', 'iPhone', '13', 'Mini'],
         price: '$1360',
+        user: 'Nike Store',
         imageLink: 'https://rewardmobile.co.uk/wp-content/uploads/2021/09/iPhone13_ProductImage_1000x1000_1.jpg',
       },
       {
@@ -39,6 +41,7 @@ export default function SearchFilter() {
         category: 'Electronics',
         tag: ['KOOMPI', 'E13', 'Electronics'],
         price: '$270',
+        user: 'Nike Store',
         imageLink: 'https://konfulononline.com/image/cache/catalog/KOOMPI/KOOMPI%20E13/E13-RoseGold3-800px-800x800.png',
       },
       {
@@ -46,6 +49,7 @@ export default function SearchFilter() {
         category: 'Electronics',
         tag: ['PlayStation', '5', 'Red Dragon'],
         price: '$505',
+        user: 'Nike Store',
         imageLink: 'https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2021%2F09%2Fsony-playstation-5-pro-release-rumors-info-000.jpg?w=960&cbr=1&q=90&fit=max',
       },
     ];
@@ -53,7 +57,7 @@ export default function SearchFilter() {
     useEffect(() => {
       setFilteredDataSource(products);
       setMasterDataSource(products);
-    });
+    }, []);
 
     const searchFilterFunction = (text) => {
         // Check if searched text is not blank
@@ -77,22 +81,20 @@ export default function SearchFilter() {
           // Update FilteredDataSource with masterDataSource
           setFilteredDataSource(masterDataSource);
           setSearch(text);
+          // setSuggestResultVisible(false);
         }
     };
     
     const ItemView = ({item}) => {
         return (
           // Flat List Item
-          <TouchableOpacity style={styles.itemRow}>
-            <Image style={styles.thumbnail} source={{uri: item.imageLink}}/>
-            <Text
-              style={styles.itemStyle}
-              onPress={() => getItem(item)}>
-              {item.id}
-              {'. '}
-              {item.title.toUpperCase()}
-            </Text>
-          </TouchableOpacity>          
+          <Text
+            // style={styles.itemStyle}
+            onPress={() => getItem(item)}>
+            {item.id}
+            {'.'}
+            {item.title.toUpperCase()}
+        </Text>
         );
       };
      
@@ -112,7 +114,7 @@ export default function SearchFilter() {
 
     const getItem = (item) => {
         // Function for click on an item
-        alert('Id : ' + item.id + ' Title : ' + item.title);
+        alert('Owner : ' + item.user + '\nTitle : ' + item.title);
     };
 
     return (
@@ -122,35 +124,54 @@ export default function SearchFilter() {
               style={styles.searchBar}
               onChangeText={(text) => searchFilterFunction(text)}
               value={search}
-              underlineColorAndroid="transparent"
+              // underlineColorAndroid="transparent"
               placeholder="Search for item..."
               onFocus={() => setSuggestResultVisible(true)}
-              onSubmitEditing={() => {Keyboard.dismiss; setSuggestResultVisible(false)}}
+              onSubmitEditing={() => {Keyboard.dismiss(); setSuggestResultVisible(false)}}
             />
             { suggestResultVisible &&                
-                <FlatList                    
+                <FlatList
+                    // style={{flex: 1}}
                     data={filteredDataSource}
                     keyExtractor={(item, index) => index.toString()}
                     ItemSeparatorComponent={ItemSeparatorView}
                     renderItem={ItemView}
                 />                
             }
+            {products.map((item, index) => {
+              return (
+              <TouchableOpacity style={styles.itemRow} onPress={() => getItem(item)}>
+                <Image style={styles.thumbnail} source={{uri: item.imageLink}}/>
+                <View style={styles.itemInfo}>
+                  <Text style={styles.itemOwner}>
+                    {item.user}
+                  </Text>
+                  <Text style={styles.itemTitle}>
+                    {item.title.toUpperCase()}
+                  </Text>
+                  <Text style={styles.itemPrice}>
+                    {item.price}
+                  </Text>
+                </View>            
+              </TouchableOpacity> 
+              );
+            })}            
           </View>
         </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    container: {      
         backgroundColor: '#FBEFEF',
         height: '100%',        
-        justifyContent: 'center',
+        // justifyContent: 'center',
         paddingTop: 40,
         alignItems: 'center',
     },
     itemRow: {
       flexDirection: 'row',
-      width: '90%',
+      width: '100%',
       alignItems: 'flex-start',
     },
     thumbnail: {
@@ -159,8 +180,18 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       backgroundColor: '#FFF',
     },
-    itemStyle: {
-        padding: 10,
+    itemInfo: {
+      paddingLeft: 10,
+    },
+    itemOwner: {
+      fontSize: 10,
+      color: '#999',
+    },
+    itemTitle: {
+      fontWeight: 'bold',
+    },
+    itemPrice: {
+
     },
     searchBar: {
         height: 40,
