@@ -3,14 +3,14 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import AuthStack from './routes/AuthStack';
 import BottomTabs from './routes/TabsNavigator';
-import Home from './screens/Home';
+import SearchFilter from './screens/SearchFilter';
 
 export default function App() {
   return (
     <NavigationContainer>
       <AuthStack />      
     </NavigationContainer>      
-    // <Home/>
+    // <SearchFilter/>
   );
 }
 
