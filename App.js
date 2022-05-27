@@ -7,10 +7,10 @@ import SearchFilter from './screens/SearchFilter';
 
 export default function App() {
   return (
-    // <NavigationContainer>
-    //   <AuthStack />      
-    // </NavigationContainer>      
-    <SearchFilter/>
+    <NavigationContainer>
+      <AuthStack />      
+    </NavigationContainer>      
+    // <SearchFilter/>
   );
 }
 

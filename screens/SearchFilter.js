@@ -90,10 +90,10 @@ export default function SearchFilter() {
         return (
           // Flat List Item
           <Text
-            // style={styles.itemStyle}
+            style={styles.suggestItem}
             onPress={() => getItem(item)}>
-            {item.id}
-            {'.'}
+            {/* {item.id}
+            {'.'} */}
             {item.title.toUpperCase()}
         </Text>
         );
@@ -145,7 +145,7 @@ export default function SearchFilter() {
             <View style={styles.popularContainer}>
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 {products.map((item, index) => {return (
-                  <View>
+                  <View key={index}>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                       {item.tag.map((tag, index) => {
                         return (                      
@@ -160,7 +160,7 @@ export default function SearchFilter() {
             <Text style={styles.title}>Suggestion for you</Text>
             {products.map((item, index) => {
               return (
-                <View style={{paddingTop: 5}}>
+                <View style={{paddingTop: 5}} key={index}>
                   <TouchableOpacity style={styles.itemRow} onPress={() => getItem(item)}>
                     <Image style={styles.thumbnail} source={{uri: item.imageLink}}/>
                     <View style={styles.itemInfo}>
@@ -199,14 +199,14 @@ const styles = StyleSheet.create({
       backgroundColor: '#FBEFEF',
       // height: '100%',        
       // justifyContent: 'center',\        
-      paddingTop: 40,
+      paddingTop: 10,
       padding: 20,
       width: '100%',
       // alignItems: 'center',
     },
     searchBar: {
       height: 40,
-      width: '90%',
+      width: '100%',
       borderWidth: 1,
       borderRadius: 5,
       paddingLeft: 15,
@@ -214,9 +214,13 @@ const styles = StyleSheet.create({
       borderColor: '#ddd',
       backgroundColor: '#FFFFFF',
     },
+    suggestItem: {
+      margin: 5,
+      // textDecorationStyle: 'solid',
+    },
     title:{
       fontSize: 16,
-      fontWeight: '500',
+      fontWeight: '600',
       color: '#555',
       paddingTop: 10,
     },

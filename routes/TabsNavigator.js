@@ -3,8 +3,9 @@ import { Ionicons } from '@expo/vector-icons';
 
 import Home from '../screens/Home';
 import Sidebar from '../screens/sidebar';
-import HomeStack from './HomeStack';
 import SearchFilter from '../screens/SearchFilter';
+import HomeStack from './HomeStack';
+import SearchStack from './SearchStack';
 import ProfileStack from './ProfileStack';
 
 const Tab = createMaterialTopTabNavigator();
@@ -32,8 +33,8 @@ function TabsNavigator() {
         }}
       />
       <Tab.Screen 
-        name="SearchFilter" 
-        component={SearchFilter} 
+        name="SearchStack" 
+        component={SearchStack} 
         options={{
           tabBarLabel: 'Search',
           tabBarIcon: ({ color }) => (
