@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, SafeAreaView, FlatList, TextInput, Keyboard, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, Text, SafeAreaView, FlatList, TextInput, Keyboard, TouchableOpacity, Image, ScrollView } from "react-native";
 
 export default function SearchFilter() {
     const [search, setSearch] = useState('');
@@ -120,15 +120,17 @@ export default function SearchFilter() {
     return (
         <SafeAreaView style={{flex: 1}}>
           <View style={styles.container}>
-            <TextInput
-              style={styles.searchBar}
-              onChangeText={(text) => searchFilterFunction(text)}
-              value={search}
-              // underlineColorAndroid="transparent"
-              placeholder="Search for item..."
-              onFocus={() => setSuggestResultVisible(true)}
-              onSubmitEditing={() => {Keyboard.dismiss(); setSuggestResultVisible(false)}}
-            />
+            <View style={{width: '100%', alignItems: 'center'}}>
+              <TextInput
+                style={styles.searchBar}
+                onChangeText={(text) => searchFilterFunction(text)}
+                value={search}
+                // underlineColorAndroid="transparent"
+                placeholder="Search for item..."
+                onFocus={() => setSuggestResultVisible(true)}
+                onSubmitEditing={() => {Keyboard.dismiss(); setSuggestResultVisible(false)}}
+              />
+            </View>            
             { suggestResultVisible &&                
                 <FlatList
                     // style={{flex: 1}}
@@ -138,22 +140,42 @@ export default function SearchFilter() {
                     renderItem={ItemView}
                 />                
             }
+            <Text style={styles.title}>Popular search</Text>
+            <View style={styles.popularContainer}>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                {products.map((item, index) => {return (
+                  <View>
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                      {item.tag.map((tag, index) => {
+                        return (                      
+                          <Text key={index} style={styles.popularItem}>{tag}</Text>                                        
+                        )
+                      })}
+                    </ScrollView>
+                  </View>                  
+                )})}   
+              </ScrollView>
+            </View>        
+            <Text style={styles.title}>Suggestion for you</Text>
             {products.map((item, index) => {
               return (
-              <TouchableOpacity style={styles.itemRow} onPress={() => getItem(item)}>
-                <Image style={styles.thumbnail} source={{uri: item.imageLink}}/>
-                <View style={styles.itemInfo}>
-                  <Text style={styles.itemOwner}>
-                    {item.user}
-                  </Text>
-                  <Text style={styles.itemTitle}>
-                    {item.title.toUpperCase()}
-                  </Text>
-                  <Text style={styles.itemPrice}>
-                    {item.price}
-                  </Text>
-                </View>            
-              </TouchableOpacity> 
+                <View style={{paddingTop: 5}}>
+                  <TouchableOpacity style={styles.itemRow} onPress={() => getItem(item)}>
+                    <Image style={styles.thumbnail} source={{uri: item.imageLink}}/>
+                    <View style={styles.itemInfo}>
+                      <Text style={styles.itemOwner}>
+                        {item.user}
+                      </Text>
+                      <Text style={styles.itemTitle}>
+                        {item.title.toUpperCase()}
+                      </Text>
+                      <Text style={styles.itemPrice}>
+                        {item.price}
+                      </Text>
+                    </View>                       
+                  </TouchableOpacity> 
+                  <ItemSeparatorView/>
+                </View>                            
               );
             })}            
           </View>
@@ -163,11 +185,36 @@ export default function SearchFilter() {
 
 const styles = StyleSheet.create({
     container: {      
-        backgroundColor: '#FBEFEF',
-        height: '100%',        
-        // justifyContent: 'center',
-        paddingTop: 40,
-        alignItems: 'center',
+      backgroundColor: '#FBEFEF',
+      // height: '100%',        
+      // justifyContent: 'center',\        
+      paddingTop: 40,
+      padding: 20,
+      width: '100%',
+      // alignItems: 'center',
+    },
+    title:{
+      fontSize: 16,
+      fontWeight: '500',
+      color: '#555',
+      paddingTop: 10,
+    },
+    popularContainer: {
+      marginTop: 5,
+      flexDirection: 'row',
+      flexWrap: 'nowrap',
+      width: '100%',      
+    },
+    popularItem: {      
+      paddingLeft: 10,
+      paddingRight: 10,
+      padding: 5,
+      color: '#555',
+      backgroundColor: '#fff',
+      marginEnd: 5,
+      borderRadius: 15,
+      borderWidth: 0.5,
+      borderColor: '#999',
     },
     itemRow: {
       flexDirection: 'row',
