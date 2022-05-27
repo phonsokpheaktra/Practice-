@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View, Text, SafeAreaView, FlatList, TextInput, Keyboard, TouchableOpacity, Image, ScrollView } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 
 export default function SearchFilter() {
     const [search, setSearch] = useState('');
@@ -172,6 +173,16 @@ export default function SearchFilter() {
                       <Text style={styles.itemPrice}>
                         {item.price}
                       </Text>
+                      <View style={styles.itemRow}>
+                        <View style={styles.infoNumber}>
+                          <Ionicons name="cart" size={20} color="#FF9C9C" style={{marginEnd: 3}}/>
+                          <Text style={{fontSize:12}}>3.4K</Text>
+                        </View>
+                        <View style={styles.infoNumber}>
+                          <Ionicons name="eye" size={20} color="#FF9C9C" style={{marginEnd: 3}}/>
+                          <Text style={{fontSize:12}}>3.4K</Text>
+                        </View>
+                      </View>
                     </View>                       
                   </TouchableOpacity> 
                   <ItemSeparatorView/>
@@ -192,6 +203,16 @@ const styles = StyleSheet.create({
       padding: 20,
       width: '100%',
       // alignItems: 'center',
+    },
+    searchBar: {
+      height: 40,
+      width: '90%',
+      borderWidth: 1,
+      borderRadius: 5,
+      paddingLeft: 15,
+      margin: 5,
+      borderColor: '#ddd',
+      backgroundColor: '#FFFFFF',
     },
     title:{
       fontSize: 16,
@@ -228,7 +249,9 @@ const styles = StyleSheet.create({
       backgroundColor: '#FFF',
     },
     itemInfo: {
+      height: '100%',
       paddingLeft: 10,
+      justifyContent: 'space-between',
     },
     itemOwner: {
       fontSize: 10,
@@ -238,18 +261,24 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
     },
     itemPrice: {
-
+      fontSize: 18,
+      fontWeight: '700',
     },
-    searchBar: {
-        height: 40,
-        width: '90%',
-        borderWidth: 1,
-        borderRadius: 5,
-        paddingLeft: 15,
-        margin: 5,
-        borderColor: '#ddd',
-        backgroundColor: '#FFFFFF',
-    },
+    infoNumber: {
+      flexDirection: 'row',      
+      paddingLeft: 5,
+      paddingRight: 5,
+      // padding: 5,
+      color: '#555',
+      backgroundColor: '#fff',
+      marginEnd: 5,
+      borderRadius: 15,
+      borderWidth: 0.5,
+      borderColor: '#999',
+      alignItems: 'center',
+      marginTop: 8,
+      marginBottom: 5,   
+    },    
 });
 
 // https://aboutreact.com/react-native-search-bar-filter-on-listview/#Search-Bar-Filter-for-List-View
