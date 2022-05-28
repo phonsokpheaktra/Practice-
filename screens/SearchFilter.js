@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, SafeAreaView, FlatList, TextInput, Keyboard, TouchableOpacity, Image, ScrollView } from "react-native";
+import { StyleSheet, View, Text, SafeAreaView, FlatList, TextInput, Keyboard, ScrollView, LogBox } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
+import ProductList from "../components/ProductList";
 
 export default function SearchFilter() {
     const [search, setSearch] = useState('');
@@ -19,7 +20,8 @@ export default function SearchFilter() {
     //         .catch((error) => {
     //         console.error(error);
     //         });
-    // }, []);
+    // }, []);    
+
     const history = ['Suncreen', 'Shampoo', 'Shoes', 'iPhone 13 Mini'];
 
     const products = [
@@ -61,6 +63,7 @@ export default function SearchFilter() {
       setFilteredDataSource(products);
       setMasterDataSource(products);
       setSearchHistory(history);
+      // LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.']);
     }, []);
 
     const searchFilterFunction = (text) => {
@@ -144,18 +147,17 @@ export default function SearchFilter() {
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#FBEFEF'}}>
-          <View style={styles.container}>
+          <ScrollView>
+          <View style={styles.container}>            
             <View style={{width: '100%', alignItems: 'center'}}>
               <TextInput
+                selectTextOnFocus
                 style={styles.searchBar}
                 onChangeText={(text) => searchFilterFunction(text)}
                 value={search}
-                // underlineColorAndroid="transparent"
+                underlineColorAndroid="transparent"
                 placeholder="Search for item..."
-                onFocus={(event) => {
-                  event.target.select();
-                  setSuggestResultVisible(true);
-                }}
+                onFocus={() => setSuggestResultVisible(true)}
                 onSubmitEditing={() => {
                   Keyboard.dismiss(); 
                   setSuggestResultVisible(false);
@@ -195,67 +197,27 @@ export default function SearchFilter() {
                 <Text style={styles.title}>Popular search</Text>
                 <View style={styles.popularContainer}>
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {products.map((item, index) => {return (
-                      <View key={index}>
-                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                          {item.tag.map((tag, index) => {
-                            return (                      
-                              <Text key={index} style={styles.popularItem}>{tag}</Text>                                        
-                            )
-                          })}
-                        </ScrollView>
-                      </View>                  
+                    {searchHistory.map((item, index) => {return (
+                      <Text key={index} style={styles.popularItem}>{item}</Text>
                     )})}   
                   </ScrollView>
                 </View>        
-                <Text style={styles.title}>Suggestion for you</Text>
-                {products.map((item, index) => {
-                  return (
-                    <View style={{paddingTop: 5}} key={index}>
-                      <TouchableOpacity style={styles.itemRow} onPress={() => getItem(item)}>
-                        <Image style={styles.thumbnail} source={{uri: item.imageLink}}/>
-                        <View style={styles.itemInfo}>
-                          <Text style={styles.itemOwner}>
-                            {item.user}
-                          </Text>
-                          <Text style={styles.itemTitle}>
-                            {item.title.toUpperCase()}
-                          </Text>
-                          <Text style={styles.itemPrice}>
-                            {item.price}
-                          </Text>
-                          <View style={styles.itemRow}>
-                            <View style={styles.infoNumber}>
-                              <Ionicons name="cart" size={20} color="#FF9C9C" style={{marginEnd: 3}}/>
-                              <Text style={{fontSize:12}}>3.4K</Text>
-                            </View>
-                            <View style={styles.infoNumber}>
-                              <Ionicons name="eye" size={20} color="#FF9C9C" style={{marginEnd: 3}}/>
-                              <Text style={{fontSize:12}}>3.4K</Text>
-                            </View>
-                          </View>
-                        </View>                       
-                      </TouchableOpacity> 
-                      <ItemSeparatorView/>
-                    </View>                            
-                  );
-                })}
+                <Text style={styles.title}>Suggestion for you</Text>                
+                <ProductList/>
               </View>  
-            }                                  
+            }                                              
           </View>
+          </ScrollView>
         </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {      
-      backgroundColor: '#FBEFEF',
-      // height: '100%',        
-      // justifyContent: 'center',\        
-      paddingTop: 10,
+      backgroundColor: '#FBEFEF',      
+      paddingTop: 5,
       padding: 20,
-      width: '100%',
-      // alignItems: 'center',
+      width: '100%',      
     },
     searchBar: {
       height: 40,
@@ -264,12 +226,12 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       paddingLeft: 15,
       margin: 5,
+      marginBottom: 10,
       borderColor: '#ddd',
       backgroundColor: '#FFFFFF',
     },
     suggestItem: {
-      margin: 5,
-      // textDecorationStyle: 'solid',
+      margin: 5,      
     },
     title:{
       fontSize: 16,
@@ -300,49 +262,7 @@ const styles = StyleSheet.create({
       borderRadius: 15,
       borderWidth: 0.5,
       borderColor: '#999',
-    },
-    itemRow: {
-      flexDirection: 'row',
-      width: '100%',
-      alignItems: 'flex-start',
-    },
-    thumbnail: {
-      width: 80,
-      height: 100,
-      borderRadius: 10,
-      backgroundColor: '#FFF',
-    },
-    itemInfo: {
-      height: '100%',
-      paddingLeft: 10,
-      justifyContent: 'space-between',
-    },
-    itemOwner: {
-      fontSize: 10,
-      color: '#999',
-    },
-    itemTitle: {
-      fontWeight: 'bold',
-    },
-    itemPrice: {
-      fontSize: 18,
-      fontWeight: '700',
-    },
-    infoNumber: {
-      flexDirection: 'row',      
-      paddingLeft: 5,
-      paddingRight: 5,
-      // padding: 5,
-      color: '#555',
-      backgroundColor: '#fff',
-      marginEnd: 5,
-      borderRadius: 15,
-      borderWidth: 0.5,
-      borderColor: '#999',
-      alignItems: 'center',
-      marginTop: 8,
-      marginBottom: 5,   
-    },    
+    },                  
 });
 
 // https://aboutreact.com/react-native-search-bar-filter-on-listview/#Search-Bar-Filter-for-List-View
