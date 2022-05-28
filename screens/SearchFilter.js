@@ -7,6 +7,7 @@ export default function SearchFilter() {
     const [filteredDataSource, setFilteredDataSource] = useState([]);
     const [masterDataSource, setMasterDataSource] = useState([]);
     const [suggestResultVisible, setSuggestResultVisible] = useState(false);
+    const [searchHistory, setSearchHistory] = useState([]);
 
     // useEffect(() => {
     //     fetch('https://jsonplaceholder.typicode.com/photos')
@@ -19,6 +20,7 @@ export default function SearchFilter() {
     //         console.error(error);
     //         });
     // }, []);
+    const history = ['Suncreen', 'Shampoo', 'Shoes', 'iPhone 13 Mini'];
 
     const products = [
       {
@@ -58,6 +60,7 @@ export default function SearchFilter() {
     useEffect(() => {
       setFilteredDataSource(products);
       setMasterDataSource(products);
+      setSearchHistory(history);
     }, []);
 
     const searchFilterFunction = (text) => {
@@ -88,7 +91,7 @@ export default function SearchFilter() {
     
     const ItemView = ({item}) => {
         return (
-          // Flat List Item
+          // Flat List Item          
           <Text
             style={styles.suggestItem}
             onPress={() => getItem(item)}>
@@ -98,6 +101,27 @@ export default function SearchFilter() {
         </Text>
         );
       };
+
+    const HistoryView = ({item}) => {
+      return (
+        // Flat List Item
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+          <Text
+            style={styles.suggestItem}
+            onPress={() => getItem(item)}>            
+            {item}
+          </Text>
+          <Ionicons 
+            name="close-outline" 
+            size={24} 
+            color="black" 
+            onPress={() => {
+              setSearchHistory(searchHistory.filter(function(f) { return f !== item }));
+            }}
+          />
+        </View>          
+      );
+    };
      
     const ItemSeparatorView = () => {
         return (
@@ -119,7 +143,7 @@ export default function SearchFilter() {
     };
 
     return (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{flex: 1, backgroundColor: '#FBEFEF'}}>
           <View style={styles.container}>
             <View style={{width: '100%', alignItems: 'center'}}>
               <TextInput
@@ -128,8 +152,17 @@ export default function SearchFilter() {
                 value={search}
                 // underlineColorAndroid="transparent"
                 placeholder="Search for item..."
-                onFocus={() => setSuggestResultVisible(true)}
-                onSubmitEditing={() => {Keyboard.dismiss(); setSuggestResultVisible(false)}}
+                onFocus={(event) => {
+                  event.target.select();
+                  setSuggestResultVisible(true);
+                }}
+                onSubmitEditing={() => {
+                  Keyboard.dismiss(); 
+                  setSuggestResultVisible(false);
+                  if (!searchHistory.includes(search) && search !== '') {
+                    setSearchHistory([search, ...searchHistory.slice(0, searchHistory.length - 1)]);
+                  }
+                }}
               />
             </View>            
             { suggestResultVisible &&                
@@ -141,54 +174,74 @@ export default function SearchFilter() {
                     renderItem={ItemView}
                 />                
             }
-            <Text style={styles.title}>Popular search</Text>
-            <View style={styles.popularContainer}>
-              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                {products.map((item, index) => {return (
-                  <View key={index}>
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                      {item.tag.map((tag, index) => {
-                        return (                      
-                          <Text key={index} style={styles.popularItem}>{tag}</Text>                                        
-                        )
-                      })}
-                    </ScrollView>
+            { !suggestResultVisible &&
+              <View>
+                { searchHistory.length > 0 &&
+                  <View>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                      <Text style={styles.title}>Recent Search</Text>
+                      <Text style={styles.clearAll} onPress={() => setSearchHistory([])}>Clear All</Text>
+                    </View>
+                    <FlatList
+                        style={{marginBottom: 10}}
+                        data={searchHistory}
+                        keyExtractor={(item, index) => index.toString()}
+                        ItemSeparatorComponent={ItemSeparatorView}
+                        renderItem={HistoryView}
+                    />
                   </View>                  
-                )})}   
-              </ScrollView>
-            </View>        
-            <Text style={styles.title}>Suggestion for you</Text>
-            {products.map((item, index) => {
-              return (
-                <View style={{paddingTop: 5}} key={index}>
-                  <TouchableOpacity style={styles.itemRow} onPress={() => getItem(item)}>
-                    <Image style={styles.thumbnail} source={{uri: item.imageLink}}/>
-                    <View style={styles.itemInfo}>
-                      <Text style={styles.itemOwner}>
-                        {item.user}
-                      </Text>
-                      <Text style={styles.itemTitle}>
-                        {item.title.toUpperCase()}
-                      </Text>
-                      <Text style={styles.itemPrice}>
-                        {item.price}
-                      </Text>
-                      <View style={styles.itemRow}>
-                        <View style={styles.infoNumber}>
-                          <Ionicons name="cart" size={20} color="#FF9C9C" style={{marginEnd: 3}}/>
-                          <Text style={{fontSize:12}}>3.4K</Text>
-                        </View>
-                        <View style={styles.infoNumber}>
-                          <Ionicons name="eye" size={20} color="#FF9C9C" style={{marginEnd: 3}}/>
-                          <Text style={{fontSize:12}}>3.4K</Text>
-                        </View>
-                      </View>
-                    </View>                       
-                  </TouchableOpacity> 
-                  <ItemSeparatorView/>
-                </View>                            
-              );
-            })}            
+                }
+                
+                <Text style={styles.title}>Popular search</Text>
+                <View style={styles.popularContainer}>
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                    {products.map((item, index) => {return (
+                      <View key={index}>
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                          {item.tag.map((tag, index) => {
+                            return (                      
+                              <Text key={index} style={styles.popularItem}>{tag}</Text>                                        
+                            )
+                          })}
+                        </ScrollView>
+                      </View>                  
+                    )})}   
+                  </ScrollView>
+                </View>        
+                <Text style={styles.title}>Suggestion for you</Text>
+                {products.map((item, index) => {
+                  return (
+                    <View style={{paddingTop: 5}} key={index}>
+                      <TouchableOpacity style={styles.itemRow} onPress={() => getItem(item)}>
+                        <Image style={styles.thumbnail} source={{uri: item.imageLink}}/>
+                        <View style={styles.itemInfo}>
+                          <Text style={styles.itemOwner}>
+                            {item.user}
+                          </Text>
+                          <Text style={styles.itemTitle}>
+                            {item.title.toUpperCase()}
+                          </Text>
+                          <Text style={styles.itemPrice}>
+                            {item.price}
+                          </Text>
+                          <View style={styles.itemRow}>
+                            <View style={styles.infoNumber}>
+                              <Ionicons name="cart" size={20} color="#FF9C9C" style={{marginEnd: 3}}/>
+                              <Text style={{fontSize:12}}>3.4K</Text>
+                            </View>
+                            <View style={styles.infoNumber}>
+                              <Ionicons name="eye" size={20} color="#FF9C9C" style={{marginEnd: 3}}/>
+                              <Text style={{fontSize:12}}>3.4K</Text>
+                            </View>
+                          </View>
+                        </View>                       
+                      </TouchableOpacity> 
+                      <ItemSeparatorView/>
+                    </View>                            
+                  );
+                })}
+              </View>  
+            }                                  
           </View>
         </SafeAreaView>
     );
@@ -221,11 +274,18 @@ const styles = StyleSheet.create({
     title:{
       fontSize: 16,
       fontWeight: '600',
-      color: '#555',
-      paddingTop: 10,
+      color: '#555',      
+    },
+    clearAll: {
+      color: '#fff',
+      fontWeight: '500',
+      backgroundColor: '#FF9C9C',
+      borderRadius: 5,
+      padding: 5,
     },
     popularContainer: {
       marginTop: 5,
+      marginBottom: 10,
       flexDirection: 'row',
       flexWrap: 'nowrap',
       width: '100%',      
