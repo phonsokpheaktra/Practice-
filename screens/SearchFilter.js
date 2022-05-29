@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, SafeAreaView, FlatList, TextInput, Keyboard, ScrollView, LogBox } from "react-native";
+import { StyleSheet, View, Text, SafeAreaView, FlatList, TextInput, Keyboard, ScrollView } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import ProductList from "../components/ProductList";
 
@@ -62,8 +62,7 @@ export default function SearchFilter() {
     useEffect(() => {
       setFilteredDataSource(products);
       setMasterDataSource(products);
-      setSearchHistory(history);
-      // LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.']);
+      setSearchHistory(history);      
     }, []);
 
     const searchFilterFunction = (text) => {
@@ -147,7 +146,7 @@ export default function SearchFilter() {
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#FBEFEF'}}>
-          <ScrollView>
+          <ScrollView nestedScrollEnabled>
           <View style={styles.container}>            
             <View style={{width: '100%', alignItems: 'center'}}>
               <TextInput
