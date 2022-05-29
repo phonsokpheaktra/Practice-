@@ -1,9 +1,11 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView} from "react-native";
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import Header from "../components/Header";
 
 export default function Home() {
+  const navigation = useNavigation();
   const category = [
     	{
         title: 'Footwear',
@@ -68,7 +70,7 @@ export default function Home() {
           </TouchableOpacity>
         </View>
         <View style={styles.categoryRow}>
-          <ScrollView horizontal={true}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {category.map((item, index) => {
             return (
               <TouchableOpacity key={index}>
@@ -93,11 +95,11 @@ export default function Home() {
         <View style={styles.productRow}>
           {products.map((item, index) => {
             return (
-              <View style={styles.eachProduct} key={index}>
+              <TouchableOpacity style={styles.eachProduct} key={index} onPress={() => navigation.navigate('ProductDetail')}>
                 <Image style={styles.productImage} source={{uri: item.imageLink}}></Image>
                 <Text style={styles.productTitle}>{item.title}</Text>
                 <View style={styles.tagContainer}>
-                  <ScrollView horizontal={true} >
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     {item.tag.map((tag, index) => {
                       return (                      
                         <Text key={index} style={styles.productTag}>{tag}</Text>                                        
@@ -112,7 +114,7 @@ export default function Home() {
                     </TouchableOpacity>                    
                   </View>                
 
-              </View>
+              </TouchableOpacity>
             )
           })}         
         </View>

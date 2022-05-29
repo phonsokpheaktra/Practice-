@@ -1,8 +1,9 @@
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function ProductList(props) {
-
+    const navigation = useNavigation();
     const products = [
         {
           title: 'Nike Air Max',
@@ -62,7 +63,7 @@ export default function ProductList(props) {
             {props.products.map((item, index) => {
                 return (
                 <View style={{paddingTop: 5}} key={index}>
-                    <TouchableOpacity style={styles.itemRow} onPress={() => getItem(item)}>
+                    <TouchableOpacity style={styles.itemRow} onPress={() => navigation.navigate('ProductDetail')}>
                     <Image style={styles.thumbnail} source={{uri: item.imageLink}}/>
                     <View style={styles.itemInfo}>
                         <Text style={styles.itemOwner}>
