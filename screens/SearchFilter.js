@@ -196,7 +196,7 @@ export default function SearchFilter() {
                 <Text style={styles.title}>Popular search</Text>
                 <View style={styles.popularContainer}>
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {searchHistory.map((item, index) => {return (
+                    {history.map((item, index) => {return (
                       <Text key={index} style={styles.popularItem}>{item}</Text>
                     )})}   
                   </ScrollView>
