@@ -166,7 +166,7 @@ export default function SearchFilter() {
                 }}
               />
             </View>            
-            { suggestResultVisible &&                
+            {/* { suggestResultVisible &&                
                 <FlatList
                     // style={{flex: 1}}
                     data={filteredDataSource}
@@ -174,8 +174,8 @@ export default function SearchFilter() {
                     ItemSeparatorComponent={ItemSeparatorView}
                     renderItem={ItemView}
                 />                
-            }
-            { !suggestResultVisible &&
+            } */}
+            {/* { !suggestResultVisible && */}
               <View>
                 { searchHistory.length > 0 &&
                   <View>
@@ -202,9 +202,9 @@ export default function SearchFilter() {
                   </ScrollView>
                 </View>        
                 <Text style={styles.title}>Suggestion for you</Text>                
-                <ProductList/>
+                <ProductList products={products}/>
               </View>  
-            }                                              
+            {/* }                                               */}
           </View>
           </ScrollView>
         </SafeAreaView>

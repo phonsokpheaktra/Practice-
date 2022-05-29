@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 
-export default function ProductList() {
+export default function ProductList(props) {
 
     const products = [
         {
@@ -59,7 +59,7 @@ export default function ProductList() {
 
     return (
         <View>
-            {products.map((item, index) => {
+            {props.products.map((item, index) => {
                 return (
                 <View style={{paddingTop: 5}} key={index}>
                     <TouchableOpacity style={styles.itemRow} onPress={() => getItem(item)}>
