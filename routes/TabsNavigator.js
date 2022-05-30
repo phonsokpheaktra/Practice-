@@ -1,10 +1,9 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-import Home from '../screens/Home';
-import Sidebar from '../screens/sidebar';
 import HomeStack from './HomeStack';
-import SearchFilter from '../screens/SearchFilter';
+import SearchStack from './SearchStack';
+import CartStack from './CartStack';
 import ProfileStack from './ProfileStack';
 
 const Tab = createMaterialTopTabNavigator();
@@ -32,12 +31,22 @@ function TabsNavigator() {
         }}
       />
       <Tab.Screen 
-        name="SearchFilter" 
-        component={SearchFilter} 
+        name="SearchStack" 
+        component={SearchStack} 
         options={{
           tabBarLabel: 'Search',
           tabBarIcon: ({ color }) => (
             <Ionicons name="search" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen 
+        name="CartStack" 
+        component={CartStack} 
+        options={{
+          tabBarLabel: 'My Cart',
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="cart" color={color} size={26} />
           ),
         }}
       />

@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView} from "react-native";
 import { Ionicons } from '@expo/vector-icons';
-
-import Header from "../components/Header";
+import { useNavigation } from '@react-navigation/native';
 
 export default function Home() {
+  const navigation = useNavigation();
   const category = [
     	{
         title: 'Footwear',
@@ -58,8 +58,7 @@ export default function Home() {
   ];
 
   return (
-    <ScrollView style={styles.container}>
-      {/* <Header title="Our E-commerce App" />       */}
+    <ScrollView style={styles.container}>      
       <View style={styles.categoryContainer}>
         <View style={styles.titleRow}>
           <Text style={styles.categoryTitle}>Category</Text>
@@ -68,7 +67,7 @@ export default function Home() {
           </TouchableOpacity>
         </View>
         <View style={styles.categoryRow}>
-          <ScrollView horizontal={true}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {category.map((item, index) => {
             return (
               <TouchableOpacity key={index}>
@@ -93,11 +92,11 @@ export default function Home() {
         <View style={styles.productRow}>
           {products.map((item, index) => {
             return (
-              <View style={styles.eachProduct} key={index}>
+              <TouchableOpacity style={styles.eachProduct} key={index} onPress={() => navigation.navigate('ProductDetail')}>
                 <Image style={styles.productImage} source={{uri: item.imageLink}}></Image>
                 <Text style={styles.productTitle}>{item.title}</Text>
                 <View style={styles.tagContainer}>
-                  <ScrollView horizontal={true} >
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     {item.tag.map((tag, index) => {
                       return (                      
                         <Text key={index} style={styles.productTag}>{tag}</Text>                                        
@@ -112,7 +111,7 @@ export default function Home() {
                     </TouchableOpacity>                    
                   </View>                
 
-              </View>
+              </TouchableOpacity>
             )
           })}         
         </View>
@@ -155,8 +154,7 @@ const styles = StyleSheet.create({
     },
     categoryRow: {
         flexDirection: 'row',
-        overflow: 'scroll',
-        // flexWrap: 'nowrap',
+        overflow: 'scroll',        
     },
     iconContainer: {
       padding: 5,
@@ -172,8 +170,7 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     productContainer: {
-      padding: 10,
-      // height: '80%',
+      padding: 10,      
       width: '100%',
       overflow: 'scroll',
     },
@@ -199,18 +196,14 @@ const styles = StyleSheet.create({
       marginTop: 5,
       fontSize: 16,
       fontWeight: '500',
-      color: '#222',
-      // fontFamily: 'ubuntu-bold',
+      color: '#222',      
     },
     tagContainer: {
       marginTop: 5,
       flexDirection: 'row',
-      flexWrap: 'nowrap',
-      // overflow: 'scroll',
-      // boxSizing: 'content-box',
+      flexWrap: 'nowrap',      
     },
-    productTag: {
-      // whiteSpace: 'nowrap',
+    productTag: {      
       paddingLeft: 5,
       paddingRight: 5,
       color: '#555',
