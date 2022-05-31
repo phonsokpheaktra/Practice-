@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, SafeAreaView, FlatList, TextInput, Keyboard, ScrollView } from "react-native";
+import { StyleSheet, View, Text, SafeAreaView, FlatList, TextInput, Keyboard, ScrollView, LogBox } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import ProductList from "../components/ProductList";
 
@@ -20,7 +20,7 @@ export default function SearchFilter() {
     //         .catch((error) => {
     //         console.error(error);
     //         });
-    // }, []);    
+    // }, []);
 
     const history = ['Suncreen', 'Shampoo', 'Shoes', 'iPhone 13 Mini'];
 
@@ -62,7 +62,8 @@ export default function SearchFilter() {
     useEffect(() => {
       setFilteredDataSource(products);
       setMasterDataSource(products);
-      setSearchHistory(history);      
+      setSearchHistory(history);
+      LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.']); 
     }, []);
 
     const searchFilterFunction = (text) => {
@@ -161,21 +162,19 @@ export default function SearchFilter() {
                   Keyboard.dismiss(); 
                   setSuggestResultVisible(false);
                   if (!searchHistory.includes(search) && search !== '') {
-                    setSearchHistory([search, ...searchHistory.slice(0, searchHistory.length - 1)]);
+                    if (searchHistory.length === 4) {
+                      setSearchHistory([search, ...searchHistory.slice(0, searchHistory.length - 1)]);
+                    } else {
+                      setSearchHistory([search, ...searchHistory]);
+                    }                    
                   }
                 }}
               />
             </View>            
-            {/* { suggestResultVisible &&                
-                <FlatList
-                    // style={{flex: 1}}
-                    data={filteredDataSource}
-                    keyExtractor={(item, index) => index.toString()}
-                    ItemSeparatorComponent={ItemSeparatorView}
-                    renderItem={ItemView}
-                />                
-            } */}
-            {/* { !suggestResultVisible && */}
+            { suggestResultVisible &&                                
+              <ProductList products={filteredDataSource}/>
+            }
+            { !suggestResultVisible &&
               <View>
                 { searchHistory.length > 0 &&
                   <View>
@@ -204,7 +203,7 @@ export default function SearchFilter() {
                 <Text style={styles.title}>Suggestion for you</Text>                
                 <ProductList products={products}/>
               </View>  
-            {/* }                                               */}
+            }                                              
           </View>
           </ScrollView>
         </SafeAreaView>
