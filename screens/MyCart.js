@@ -4,8 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 import SeparatorLine from '../components/SeparatorLine';
 import Spacing from '../components/Spacing';
 
-import { SwipeListView } from 'react-native-swipe-list-view';
-
 export default function MyCart() {    
     const [subTotal, setSubTotal] = useState(5);
     const [tax, setTax] = useState(0);
@@ -64,15 +62,13 @@ export default function MyCart() {
 
     return (
         <View style={styles.container}>
-            <SwipeListView
-                style={styles.cartProductList}
-                data={products}
-                renderItem={ (data, rowMap) => (
-                    <View style={styles.cartProduct}>
-                        <Image style={styles.thumbnail} source={{uri: data.item.imageLink}}/>
+            {products.map((product, index) => {
+                return (
+                    <View style={styles.cartProduct} key={index}>                
+                        <Image style={styles.thumbnail} source={{uri: product.imageLink}}/>
                         <View style={styles.productInfo}>
-                            <Text style={styles.priceRow}>{data.item.title}</Text>
-                            <Text style={styles.priceRow}>{data.item.price}</Text>
+                            <Text style={styles.priceRow}>{product.title}</Text>
+                            <Text style={styles.priceRow}>{product.price}</Text>
                             <View style={[styles.priceRow, {alignItems:'center', justifyContent: 'space-evenly'}]}>
                                 <Ionicons name="remove-circle" size={24} color="#FF9C9C" />
                                 <Text>1</Text>
@@ -80,16 +76,8 @@ export default function MyCart() {
                             </View>
                         </View>                        
                     </View>
-                )}
-                renderHiddenItem={ (data, rowMap) => (
-                    <View style={styles.rowBack}>
-                        <TouchableOpacity style={styles.iconContainer}>
-                            <Ionicons name="trash" size={50} color="white" />
-                        </TouchableOpacity>                        
-                    </View>
-                )}
-                rightOpenValue={-80}
-            />
+                );
+            })}            
             <Spacing height={10}/>
             <View style={styles.priceContainer}>
                 {price.map((item, index) => {
