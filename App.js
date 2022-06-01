@@ -6,10 +6,10 @@ import MyCart from './screens/MyCart';
 
 export default function App() {
   return (
-    // <NavigationContainer>
-    //   <AuthStack />      
-    // </NavigationContainer>
-    <MyCart/>
+    <NavigationContainer>
+      <AuthStack />      
+    </NavigationContainer>
+    // <MyCart/>
   );
 }
 
