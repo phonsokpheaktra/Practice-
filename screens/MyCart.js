@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 import SeparatorLine from '../components/SeparatorLine';
 import Spacing from '../components/Spacing';
 
 import { SwipeListView } from 'react-native-swipe-list-view';
 
-export default function MyCart() {
+export default function MyCart() {    
     const [subTotal, setSubTotal] = useState(5);
     const [tax, setTax] = useState(0);
     const [shippingFee, setShippingFee] = useState(5);
@@ -64,23 +65,30 @@ export default function MyCart() {
     return (
         <View style={styles.container}>
             <SwipeListView
+                style={styles.cartProductList}
                 data={products}
                 renderItem={ (data, rowMap) => (
                     <View style={styles.cartProduct}>
                         <Image style={styles.thumbnail} source={{uri: data.item.imageLink}}/>
                         <View style={styles.productInfo}>
-                            <Text>{data.item.title}</Text>
-                            <Text>{data.item.price}</Text>
+                            <Text style={styles.priceRow}>{data.item.title}</Text>
+                            <Text style={styles.priceRow}>{data.item.price}</Text>
+                            <View style={[styles.priceRow, {alignItems:'center', justifyContent: 'space-evenly'}]}>
+                                <Ionicons name="remove-circle" size={24} color="#FF9C9C" />
+                                <Text>1</Text>
+                                <Ionicons name="add-circle" size={24} color="#FF9C9C" />
+                            </View>
                         </View>                        
                     </View>
                 )}
                 renderHiddenItem={ (data, rowMap) => (
-                    <View style={styles.rowBack}>                        
-                        <Text>Right</Text>
-                        <Text>Left</Text>
+                    <View style={styles.rowBack}>
+                        <TouchableOpacity style={styles.iconContainer}>
+                            <Ionicons name="trash" size={50} color="white" />
+                        </TouchableOpacity>                        
                     </View>
                 )}
-                rightOpenValue={-75}
+                rightOpenValue={-80}
             />
             <Spacing height={10}/>
             <View style={styles.priceContainer}>
@@ -113,23 +121,44 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#FBEFEF",
     },
+    cartProductList: {
+        // marginBottom: 5,
+        // justifyContent: "center",
+    },
     cartProduct: {
         flexDirection: "row",              
         backgroundColor: "#fff",
         padding: 5,
         marginBottom: 5,
         borderRadius: 10,
+        width: 320,
     },
     thumbnail: {
         width: 80,
         height: 100,
         borderRadius: 10,
     },
+    productInfo: {        
+        marginLeft: 10,
+    },
+    rowBack: {
+        height: '100%',
+        // marginBottom: 5,
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+    },
+    iconContainer: {
+        height: 90,
+        width: 90,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FF4F4F',
+    },
     priceContainer: {
         backgroundColor: "#fff",
         padding: 10,
         borderRadius: 10,
-        width: 350,
+        width: 320,
     },
     priceRow: {
         flexDirection: "row",
