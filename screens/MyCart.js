@@ -62,23 +62,29 @@ export default function MyCart() {
 
     return (
         <View style={styles.container}>
+            <Spacing height={10}/>
             {products.map((product, index) => {
                 return (
                     <View style={styles.cartProduct} key={index}>                
-                        <Image style={styles.thumbnail} source={{uri: product.imageLink}}/>
+                        <Image style={styles.productImage} source={{uri: product.imageLink}}/>
                         <View style={styles.productInfo}>
                             <Text style={styles.priceRow}>{product.title}</Text>
                             <Text style={styles.priceRow}>{product.price}</Text>
-                            <View style={[styles.priceRow, {alignItems:'center', justifyContent: 'space-evenly'}]}>
-                                <Ionicons name="remove-circle" size={24} color="#FF9C9C" />
+                            <View style={[styles.priceRow, {alignItems: 'center'}]}>
+                                <Ionicons name="remove-circle" size={24} color="#FF9C9C" style={{marginRight: 10}} />
                                 <Text>1</Text>
-                                <Ionicons name="add-circle" size={24} color="#FF9C9C" />
+                                <Ionicons name="add-circle" size={24} color="#FF9C9C" style={{marginLeft: 10}}/>
                             </View>
+                        </View>
+                        <View style={styles.deleteContainer}>
+                            <TouchableOpacity style={styles.deleteIcon}>
+                                <Ionicons name="trash" size={30} color="white" />
+                            </TouchableOpacity>
                         </View>                        
                     </View>
                 );
             })}            
-            <Spacing height={10}/>
+            <Spacing height={5}/>
             <View style={styles.priceContainer}>
                 {price.map((item, index) => {
                     return (
@@ -114,20 +120,35 @@ const styles = StyleSheet.create({
         // justifyContent: "center",
     },
     cartProduct: {
-        flexDirection: "row",              
+        flexDirection: "row",
+        justifyContent: "space-between",
         backgroundColor: "#fff",
         padding: 5,
         marginBottom: 5,
         borderRadius: 10,
         width: 320,
     },
-    thumbnail: {
+    productImage: {  
+        // flex: 1,      
         width: 80,
         height: 100,
         borderRadius: 10,
     },
     productInfo: {        
+        // flex: 4,
         marginLeft: 10,
+        width: 120,
+    },
+    deleteContainer: {
+        // flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    deleteIcon: {
+        padding: 10,
+        marginRight: 10,
+        borderRadius: 10,
+        backgroundColor: "#FF3f3f",
     },
     rowBack: {
         height: '100%',
