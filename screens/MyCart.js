@@ -1,50 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image, Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import SeparatorLine from '../components/SeparatorLine';
 import Spacing from '../components/Spacing';
+import axios from 'axios';
 
-export default function MyCart() {    
-    const [subTotal, setSubTotal] = useState(5);
+export default function MyCart() {
+    const [products, setProducts] = useState([]);
+    const [subTotal, setSubTotal] = useState(0);
     const [tax, setTax] = useState(0);
-    const [shippingFee, setShippingFee] = useState(5);
-    const [total, setTotal] = useState(subTotal + tax + shippingFee);
-
-    const products = [
-        {
-          title: 'Nike Air Max',
-          category: 'Footwear',
-          tag: ['Nike', 'Air Max', 'Fashion', 'Shoes'],
-          price: '$120',
-          user: 'Nike Store',
-          imageLink: 'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/skwgyqrbfzhu6uyeh0gg/air-max-270-mens-shoes-KkLcGR.png',
-        },
-        {
-          title: 'iPhone 13 Mini',
-          category: 'Electronics',
-          tag: ['Apple', 'iPhone', '13', 'Mini'],
-          price: '$1360',
-          user: 'Nike Store',
-          imageLink: 'https://rewardmobile.co.uk/wp-content/uploads/2021/09/iPhone13_ProductImage_1000x1000_1.jpg',
-        },
-        {
-          title: 'KOOMPI E13',
-          category: 'Electronics',
-          tag: ['KOOMPI', 'E13', 'Electronics'],
-          price: '$270',
-          user: 'Nike Store',
-          imageLink: 'https://konfulononline.com/image/cache/catalog/KOOMPI/KOOMPI%20E13/E13-RoseGold3-800px-800x800.png',
-        },
-        {
-          title: 'PlayStation 5',
-          category: 'Electronics',
-          tag: ['PlayStation', '5', 'Red Dragon'],
-          price: '$505',
-          user: 'Nike Store',
-          imageLink: 'https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2021%2F09%2Fsony-playstation-5-pro-release-rumors-info-000.jpg?w=960&cbr=1&q=90&fit=max',
-        },
-    ];
-
+    const [shippingFee, setShippingFee] = useState(0);
+    const [total, setTotal] = useState(null);
+    let allProductPrice = 0;
     const price = [
         {
             title: 'Sub Total',
@@ -60,24 +27,91 @@ export default function MyCart() {
         },
     ];
 
+    useEffect(() => {    
+        getProducts();                
+        products.map(product => {
+            allProductPrice += product.price * product.quantity;
+        })
+        setSubTotal(allProductPrice);
+        setTotal(subTotal + tax + shippingFee);
+        console.log(allProductPrice);
+    }, [allProductPrice]);
+
+    const getProducts = () => {    
+    axios.get('http://localhost:3000/api/product/query_product')
+        .then(res => {
+            const allProducts = res.data;
+            setProducts(allProducts);            
+        })
+        .catch(err => console.log(err));
+    };
+
+    const showConfirmDialog = (product) => {
+        return Alert.alert(
+          "Are your sure?",
+          "Are you sure you want to remove this order?",
+          [
+            // The "Yes" button
+            {
+              text: "Yes",
+              onPress: () => {
+                setProducts(products.filter(function(f) { return f !== product }))
+                // setShowBox(false);
+              },
+            },
+            // The "No" button
+            // Does nothing but dismiss the dialog when tapped
+            {
+              text: "No",
+            },
+          ]
+        );
+      };
+
     return (
         <View style={styles.container}>
             <Spacing height={10}/>
             {products.map((product, index) => {
                 return (
                     <View style={styles.cartProduct} key={index}>                
-                        <Image style={styles.productImage} source={{uri: product.imageLink}}/>
+                        <Image style={styles.productImage} source={{uri: product.image}}/>
                         <View style={styles.productInfo}>
-                            <Text style={styles.priceRow}>{product.title}</Text>
-                            <Text style={styles.priceRow}>{product.price}</Text>
+                            <Text style={styles.priceRow}>{product.name}</Text>
+                            <Text style={styles.priceRow}>$ {product.price}</Text>
                             <View style={[styles.priceRow, {alignItems: 'center'}]}>
-                                <Ionicons name="remove-circle" size={24} color="#FF9C9C" style={{marginRight: 10}} />
-                                <Text>1</Text>
-                                <Ionicons name="add-circle" size={24} color="#FF9C9C" style={{marginLeft: 10}}/>
+                                <Ionicons 
+                                    name="remove-circle" 
+                                    size={24} 
+                                    color="#FF9C9C" 
+                                    style={{marginRight: 10}} 
+                                    onPress={() => {
+                                        if (product.quantity > 1) {
+                                            product.quantity -= 1;
+                                            setSubTotal(subTotal - product.price);
+                                            // setTax(tax - product.price * 0.05);
+                                            // setShippingFee(shippingFee - 5);
+                                            setTotal((subTotal - product.price) + tax + shippingFee);
+                                        }                                                                            
+                                    }}
+                                />
+                                <Text>{product.quantity}</Text>
+                                <Ionicons 
+                                    name="add-circle" 
+                                    size={24} 
+                                    color="#FF9C9C" 
+                                    style={{marginLeft: 10}}
+                                    onPress={() => {                                        
+                                        product.quantity += 1;
+                                        setSubTotal(subTotal + product.price);
+                                        // setTax(tax + product.price * 0.05);
+                                        // setShippingFee(shippingFee + 5);
+                                        setTotal((subTotal + product.price) + tax + shippingFee);
+                                    }}
+                                />
                             </View>
                         </View>
                         <View style={styles.deleteContainer}>
-                            <TouchableOpacity style={styles.deleteIcon}>
+                            <TouchableOpacity style={styles.deleteIcon} onPress={() => showConfirmDialog(product)}>
                                 <Ionicons name="trash" size={30} color="white" />
                             </TouchableOpacity>
                         </View>                        
@@ -85,21 +119,23 @@ export default function MyCart() {
                 );
             })}            
             <Spacing height={5}/>
-            <View style={styles.priceContainer}>
-                {price.map((item, index) => {
-                    return (
-                        <View style={styles.priceRow} key={index}>
-                            <Text style={styles.priceTitle}>{item.title}</Text>
-                            <Text style={styles.priceValue}>$ {item.value}</Text>
-                        </View>
-                    );                    
-                })}
-                <SeparatorLine margin={5}/>
-                <View style={styles.priceRow}>
-                    <Text style={[styles.priceTitle, {fontSize: 16}]}>Total</Text>
-                    <Text style={[styles.priceValue, {fontSize: 16}]}>$ {total}</Text>
+            {total &&
+                <View style={styles.priceContainer}>
+                    {price.map((item, index) => {
+                        return (
+                            <View style={styles.priceRow} key={index}>
+                                <Text style={styles.priceTitle}>{item.title}</Text>
+                                <Text style={styles.priceValue}>$ {item.value}</Text>
+                            </View>
+                        );                    
+                    })}
+                    <SeparatorLine margin={5}/>
+                    <View style={styles.priceRow}>
+                        <Text style={[styles.priceTitle, {fontSize: 16}]}>Total</Text>
+                        <Text style={[styles.priceValue, {fontSize: 16}]}>$ {total}</Text>
+                    </View>
                 </View>
-            </View>
+            }                
             <Spacing height={20}/>
             <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Check Out</Text>
