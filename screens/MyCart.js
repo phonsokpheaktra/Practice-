@@ -7,11 +7,16 @@ import axios from 'axios';
 
 export default function MyCart() {
     const [products, setProducts] = useState([]);
-    const [subTotal, setSubTotal] = useState(0);
+    const [subTotal, setSubTotal] = useState(() => {
+        let allProductPrice = 0;
+        products.map(product => {
+            allProductPrice += product.price * product.quantity;
+        });
+        return allProductPrice;
+    });
     const [tax, setTax] = useState(0);
     const [shippingFee, setShippingFee] = useState(0);
-    const [total, setTotal] = useState(null);
-    let allProductPrice = 0;
+    const [total, setTotal] = useState(0);    
     const price = [
         {
             title: 'Sub Total',
@@ -28,14 +33,9 @@ export default function MyCart() {
     ];
 
     useEffect(() => {    
-        getProducts();                
-        products.map(product => {
-            allProductPrice += product.price * product.quantity;
-        })
-        setSubTotal(allProductPrice);
-        setTotal(subTotal + tax + shippingFee);
-        console.log(allProductPrice);
-    }, [allProductPrice]);
+        getProducts();                                
+        setTotal(subTotal + tax + shippingFee);        
+    }, []);
 
     const getProducts = () => {    
     axios.get('http://localhost:3000/api/product/query_product')
@@ -119,7 +119,7 @@ export default function MyCart() {
                 );
             })}            
             <Spacing height={5}/>
-            {total &&
+            {total>=0 &&
                 <View style={styles.priceContainer}>
                     {price.map((item, index) => {
                         return (

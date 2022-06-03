@@ -6,43 +6,31 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function Home() {
   const navigation = useNavigation();
-  const [products, setProducts] = useState(null);
-  const category = [
-    	{
-        title: 'Footwear',
-        iconLink: 'https://img.icons8.com/stickers/100/000000/pair-of-sneakers.png'
-      },
-      {
-        title: 'Beauty',
-        iconLink: 'https://img.icons8.com/stickers/100/000000/lip-gloss.png'
-      },
-      {
-        title: 'Apparel',
-        iconLink: 'https://img.icons8.com/stickers/100/000000/formal-outfit.png'
-      },
-      {
-        title: 'Tableware',
-        iconLink: 'https://img.icons8.com/stickers/100/000000/tableware.png'
-      },
-      {
-        title: 'Tools',
-        iconLink: 'https://img.icons8.com/stickers/100/000000/full-tool-storage-box-.png'
-      },
-  ];
-
-  useEffect(() => {    
-    getProducts();    
-  }, []);
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const getProducts = () => {    
     axios.get('http://localhost:3000/api/product/query_product')
         .then(res => {
           const allProducts = res.data;
-          setProducts(allProducts);
-          console.log(products);
+          setProducts(allProducts);          
         })
         .catch(err => console.log(err));
-  };    
+  };
+
+  const getCategories = () => {    
+    axios.get('http://localhost:3000/api/category/query_category')
+        .then(res => {
+          const allCategories = res.data;
+          setCategories(allCategories);          
+        })
+        .catch(err => console.log(err));
+  };
+
+  useEffect(() => {    
+    getProducts();
+    getCategories();
+  }, []);
 
   return (
     <ScrollView style={styles.container}>      
@@ -55,14 +43,14 @@ export default function Home() {
         </View>
         <View style={styles.categoryRow}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {category.map((item, index) => {
+          {categories.map((item, index) => {
             return (
               <TouchableOpacity key={index}>
                 <View style={styles.iconContainer}>
-                  <Image style={styles.categoryIcon} source={{uri: item.iconLink}}>
+                  <Image style={styles.categoryIcon} source={{uri: item.image}}>
                   </Image>            
                 </View>
-                <Text style={styles.eachCategoryTitle}>{item.title}</Text>
+                <Text style={styles.eachCategoryTitle}>{item.name}</Text>
               </TouchableOpacity>    
             )
           })} 
