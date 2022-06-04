@@ -7,13 +7,7 @@ import axios from 'axios';
 
 export default function MyCart() {
     const [products, setProducts] = useState([]);
-    const [subTotal, setSubTotal] = useState(() => {
-        let allProductPrice = 0;
-        products.map(product => {
-            allProductPrice += product.price * product.quantity;
-        });
-        return allProductPrice;
-    });
+    const [subTotal, setSubTotal] = useState(0);
     const [tax, setTax] = useState(0);
     const [shippingFee, setShippingFee] = useState(0);
     const [total, setTotal] = useState(0);    
@@ -33,17 +27,23 @@ export default function MyCart() {
     ];
 
     useEffect(() => {    
-        getProducts();                                
-        setTotal(subTotal + tax + shippingFee);        
+        getProducts();                        
     }, []);
 
-    const getProducts = () => {    
-    axios.get('http://localhost:3000/api/product/query_product')
+    const getProducts = async () => {    
+    await axios.get('http://localhost:3000/api/product/query_product')
         .then(res => {
             const allProducts = res.data;
-            setProducts(allProducts);            
+            setProducts(allProducts);
+            // allProducts.forEach(element => {
+            //     setSubTotal(subTotal + (element.price * element.quantity));
+            // });
+            allProducts.map(element => {
+                setSubTotal(subTotal + (element.price * element.quantity));
+            })
+            setTotal(subTotal + tax + shippingFee);
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err));        
     };
 
     const showConfirmDialog = (product) => {
