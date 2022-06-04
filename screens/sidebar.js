@@ -12,24 +12,29 @@ export default function Sidebar() {
         {
             icon: 'bookmark',
             title: 'Saved Products',
+            route: 'MyProducts',
         },
         {
             icon: 'basket',
             title: 'Sale Products',
+            route: 'MyProducts',
         }
     ];
     const optionList = [
         {
             icon: 'alert-circle',
             title: 'Report a Problem',
+            route: 'LogIn',
         },
         {
             icon: 'help-circle',
             title: 'Help',
+            route: 'LogIn',
         },
         {
             icon: 'power',
             title: 'Log Out',
+            route: 'LogIn',
         },
     ]
 
@@ -46,7 +51,7 @@ export default function Sidebar() {
                         <Text style={styles.buttonText}>Edit Profile</Text>
                     </TouchableOpacity>                    
                 </View>
-                <Ionicons style={{flex: 1}} name="chevron-forward" size={24} color="#767577" />
+                <Ionicons style={{flex: 1}} name="chevron-forward" size={24} color="#767577" onPress={() => navigation.navigate('EditProfile')}/>
             </View>
             <View style={styles.menuContainer}>
                 <View style={styles.menuRow}>
@@ -97,7 +102,7 @@ export default function Sidebar() {
                 <View style={styles.spacing}></View>                
                 {productList.map((item, index) => {
                     return (
-                        <View style={styles.menuRow} key={index}>
+                        <TouchableOpacity style={styles.menuRow} key={index} onPress={() => navigation.navigate(item.route)}>
                             <View style={{ flex: 1 }}>
                                 <View style={styles.menuIcon}>
                                     <Ionicons name={item.icon} size={20} color="#FF9C9C" />
@@ -107,13 +112,13 @@ export default function Sidebar() {
                             <View style={styles.menuAction}>
                                 <Ionicons name="chevron-forward" size={24} color="#767577" />
                             </View>    
-                        </View>
+                        </TouchableOpacity>
                     )
                 })}
                 <View style={styles.spacing}></View>
                 {optionList.map((item, index) => {
                     return (
-                        <TouchableOpacity style={styles.menuRow} key={index} onPress={() => navigation.navigate('LogIn')}>
+                        <TouchableOpacity style={styles.menuRow} key={index} onPress={() => navigation.navigate(item.route)}>
                             <View style={{ flex: 1 }}>
                                 <View style={styles.menuIcon}>
                                     <Ionicons name={item.icon} size={20} color="#FF9C9C" />
