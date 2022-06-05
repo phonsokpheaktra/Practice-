@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
       // height: 200,
       borderRadius: 10,
       backgroundColor: '#fff',
+      justifyContent: 'space-between',
     },
     productImage: {
       height: 180,

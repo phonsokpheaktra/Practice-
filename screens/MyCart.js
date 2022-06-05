@@ -27,24 +27,20 @@ export default function MyCart() {
     ];
 
     useEffect(() => {    
-        getProducts();                        
-    }, []);
+        const getProducts = async () => {    
+            await axios.get('http://localhost:3000/api/product/query_product')
+                .then(res => {
+                    const allProducts = res.data;
+                    setProducts(allProducts);
+                    const sum = allProducts.reduce((a, b) => a + (b.price*b.quantity), 0);
+                    setSubTotal(sum);
+                    setTotal(sum + tax + shippingFee);            
+                })
+                .catch(err => console.log(err));        
+            };
 
-    const getProducts = async () => {    
-    await axios.get('http://localhost:3000/api/product/query_product')
-        .then(res => {
-            const allProducts = res.data;
-            setProducts(allProducts);
-            // allProducts.forEach(element => {
-            //     setSubTotal(subTotal + (element.price * element.quantity));
-            // });
-            allProducts.map(element => {
-                setSubTotal(subTotal + (element.price * element.quantity));
-            })
-            setTotal(subTotal + tax + shippingFee);
-        })
-        .catch(err => console.log(err));        
-    };
+        getProducts();                        
+    }, []);    
 
     const showConfirmDialog = (product) => {
         return Alert.alert(
@@ -55,8 +51,7 @@ export default function MyCart() {
             {
               text: "Yes",
               onPress: () => {
-                setProducts(products.filter(function(f) { return f !== product }))
-                // setShowBox(false);
+                setProducts(products.filter(function(f) { return f !== product }));
               },
             },
             // The "No" button
