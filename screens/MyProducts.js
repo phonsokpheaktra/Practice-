@@ -30,11 +30,16 @@ export default function MyProducts() {
                     <View style={styles.productInfo}>
                         <Text style={styles.priceRow}>{product.name}</Text>
                         <Text style={styles.priceRow}>Price: $ {product.price}</Text>
-                        <Text>Quantity: {product.quantity}</Text>
+                        <Text>Quantity: {product.quantity}</Text>                        
                     </View>
-                    <View style={styles.deleteContainer}>
-                        <TouchableOpacity style={styles.deleteIcon} onPress={() => showConfirmDialog(product)}>
-                            <Ionicons name="trash" size={30} color="white" />
+                    <View style={styles.actionContainer}>
+                        <TouchableOpacity style={[styles.actionRow, {backgroundColor: "orange"}]} onPress={() => showConfirmDialog(product)}>
+                            {/* <Ionicons name="pencil-sharp" size={20} color="white" /> */}
+                            <Text style={styles.actionText}>Update</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.actionRow, {backgroundColor: "#FF3f3f"}]} onPress={() => showConfirmDialog(product)}>
+                            {/* <Ionicons name="trash" size={20} color="white" /> */}
+                            <Text style={styles.actionText}>Delete</Text>
                         </TouchableOpacity>
                     </View>                        
                 </View>
@@ -70,22 +75,29 @@ const styles = StyleSheet.create({
         // flex: 4,
         marginLeft: 10,
         width: 120,
+        justifyContent: "space-evenly",
     },
-    deleteContainer: {
+    actionContainer: {
         // flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: "stretch",
+        justifyContent: "space-around",
     },
-    deleteIcon: {
+    actionRow: {
         padding: 10,
         marginRight: 10,
         borderRadius: 10,
-        backgroundColor: "#FF3f3f",
+        flexDirection: "row",
+        justifyContent: "center",
+    },
+    actionText: {
+        color: "white",
+        fontSize: 15,
+        fontWeight: "500",
+        textAlign: "center",
     },
     priceRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        // marginTop: 10,
+        alignItems: 'center',        
     },
 });
