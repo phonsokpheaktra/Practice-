@@ -2,14 +2,14 @@ import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import AuthStack from './routes/AuthStack';
-import MyCart from './screens/MyCart';
+import AddProduct from './screens/AddProduct';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <AuthStack />      
-    </NavigationContainer>
-    // <MyCart/>
+    // <NavigationContainer>
+    //   <AuthStack />      
+    // </NavigationContainer>
+    <AddProduct/>
   );
 }
 
