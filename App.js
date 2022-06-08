@@ -6,10 +6,10 @@ import AddProduct from './screens/AddProduct';
 
 export default function App() {
   return (
-    // <NavigationContainer>
-    //   <AuthStack />      
-    // </NavigationContainer>
-    <AddProduct/>
+    <NavigationContainer>
+      <AuthStack />      
+    </NavigationContainer>
+    // <AddProduct/>
   );
 }
 
