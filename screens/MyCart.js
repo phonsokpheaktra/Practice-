@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, Alert } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, ScrollView } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import SeparatorLine from '../components/SeparatorLine';
 import Spacing from '../components/Spacing';
@@ -33,8 +33,8 @@ export default function MyCart() {
                     const allProducts = res.data;
                     setProducts(allProducts);
                     const sum = allProducts.reduce((a, b) => a + (b.price*b.quantity), 0);
-                    setSubTotal(sum);
-                    setTotal(sum + tax + shippingFee);            
+                    setSubTotal(limit2Decimal(sum));
+                    setTotal(limit2Decimal(sum + tax + shippingFee));
                 })
                 .catch(err => console.log(err));        
             };
@@ -63,7 +63,14 @@ export default function MyCart() {
         );
       };
 
+    function limit2Decimal(value) {
+        // return Math.round((value + Number.EPSILON) * 100) / 100;
+        return Number(value.toFixed(2));
+        // return Number(Math.round(value+'e2')+'e-2');
+    }
+
     return (
+        <ScrollView >
         <View style={styles.container}>
             <Spacing height={10}/>
             {products.map((product, index) => {
@@ -82,10 +89,10 @@ export default function MyCart() {
                                     onPress={() => {
                                         if (product.quantity > 1) {
                                             product.quantity -= 1;
-                                            setSubTotal(subTotal - product.price);
+                                            setSubTotal(limit2Decimal(subTotal - product.price));
                                             // setTax(tax - product.price * 0.05);
                                             // setShippingFee(shippingFee - 5);
-                                            setTotal((subTotal - product.price) + tax + shippingFee);
+                                            setTotal(limit2Decimal((subTotal - product.price) + tax + shippingFee));
                                         }                                                                            
                                     }}
                                 />
@@ -97,10 +104,10 @@ export default function MyCart() {
                                     style={{marginLeft: 10}}
                                     onPress={() => {                                        
                                         product.quantity += 1;
-                                        setSubTotal(subTotal + product.price);
+                                        setSubTotal(limit2Decimal(subTotal + product.price));
                                         // setTax(tax + product.price * 0.05);
                                         // setShippingFee(shippingFee + 5);
-                                        setTotal((subTotal + product.price) + tax + shippingFee);
+                                        setTotal(limit2Decimal((subTotal + product.price) + tax + shippingFee));
                                     }}
                                 />
                             </View>
@@ -136,6 +143,8 @@ export default function MyCart() {
                 <Text style={styles.buttonText}>Check Out</Text>
             </TouchableOpacity>
         </View>
+        <Spacing height={20}/>
+        </ScrollView>
     );
 }
 
