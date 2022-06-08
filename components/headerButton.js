@@ -75,7 +75,7 @@ export default function HeaderButton() {
                             <TouchableOpacity style={[styles.button, {backgroundColor: 'white', borderWidth: 2, borderColor: 'red'}]} onPress={() => setModalVisible(!modalVisible)}>
                                 <Text style={[styles.buttonText, {color: 'red'}]}>Cancel</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.button, {backgroundColor: 'green',}]} >
+                            <TouchableOpacity style={[styles.button, {backgroundColor: 'green',}]} onPress={() => setModalVisible(!modalVisible)}>
                                 <Text style={[styles.buttonText, {color: 'white'}]}>Add Product</Text>
                             </TouchableOpacity>
                         </View>                
