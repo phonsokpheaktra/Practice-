@@ -1,61 +1,36 @@
+import { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView} from "react-native";
+import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Home() {
   const navigation = useNavigation();
-  const category = [
-    	{
-        title: 'Footwear',
-        iconLink: 'https://img.icons8.com/stickers/100/000000/pair-of-sneakers.png'
-      },
-      {
-        title: 'Beauty',
-        iconLink: 'https://img.icons8.com/stickers/100/000000/lip-gloss.png'
-      },
-      {
-        title: 'Apparel',
-        iconLink: 'https://img.icons8.com/stickers/100/000000/formal-outfit.png'
-      },
-      {
-        title: 'Tableware',
-        iconLink: 'https://img.icons8.com/stickers/100/000000/tableware.png'
-      },
-      {
-        title: 'Tools',
-        iconLink: 'https://img.icons8.com/stickers/100/000000/full-tool-storage-box-.png'
-      },
-  ];
-  const products = [
-    {
-      title: 'Nike Air Max',
-      category: 'Footwear',
-      tag: ['Nike', 'Air Max', 'Fashion', 'Shoes'],
-      price: '$120',
-      imageLink: 'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/skwgyqrbfzhu6uyeh0gg/air-max-270-mens-shoes-KkLcGR.png',
-    },
-    {
-      title: 'iPhone 13 Mini',
-      category: 'Electronics',
-      tag: ['Apple', 'iPhone', '13', 'Mini'],
-      price: '$1360',
-      imageLink: 'https://rewardmobile.co.uk/wp-content/uploads/2021/09/iPhone13_ProductImage_1000x1000_1.jpg',
-    },
-    {
-      title: 'KOOMPI E13',
-      category: 'Electronics',
-      tag: ['KOOMPI', 'E13', 'Electronics'],
-      price: '$270',
-      imageLink: 'https://konfulononline.com/image/cache/catalog/KOOMPI/KOOMPI%20E13/E13-RoseGold3-800px-800x800.png',
-    },
-    {
-      title: 'PlayStation 5',
-      category: 'Electronics',
-      tag: ['PlayStation', '5', 'Red Dragon'],
-      price: '$505',
-      imageLink: 'https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2021%2F09%2Fsony-playstation-5-pro-release-rumors-info-000.jpg?w=960&cbr=1&q=90&fit=max',
-    },
-  ];
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  const getProducts = () => {    
+    axios.get('http://localhost:3000/api/product/query_product')
+        .then(res => {
+          const allProducts = res.data;
+          setProducts(allProducts);          
+        })
+        .catch(err => console.log(err));
+  };
+
+  const getCategories = () => {    
+    axios.get('http://localhost:3000/api/category/query_category')
+        .then(res => {
+          const allCategories = res.data;
+          setCategories(allCategories);          
+        })
+        .catch(err => console.log(err));
+  };
+
+  useEffect(() => {    
+    getProducts();
+    getCategories();
+  }, []);
 
   return (
     <ScrollView style={styles.container}>      
@@ -68,14 +43,14 @@ export default function Home() {
         </View>
         <View style={styles.categoryRow}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {category.map((item, index) => {
+          {categories.map((item, index) => {
             return (
               <TouchableOpacity key={index}>
                 <View style={styles.iconContainer}>
-                  <Image style={styles.categoryIcon} source={{uri: item.iconLink}}>
+                  <Image style={styles.categoryIcon} source={{uri: item.image}}>
                   </Image>            
                 </View>
-                <Text style={styles.eachCategoryTitle}>{item.title}</Text>
+                <Text style={styles.eachCategoryTitle}>{item.name}</Text>
               </TouchableOpacity>    
             )
           })} 
@@ -90,22 +65,24 @@ export default function Home() {
           </TouchableOpacity>
         </View>
         <View style={styles.productRow}>
-          {products.map((item, index) => {
+          { products ?
+            products.map((item, index) => {
             return (
               <TouchableOpacity style={styles.eachProduct} key={index} onPress={() => navigation.navigate('ProductDetail')}>
-                <Image style={styles.productImage} source={{uri: item.imageLink}}></Image>
-                <Text style={styles.productTitle}>{item.title}</Text>
-                <View style={styles.tagContainer}>
+                <Image style={styles.productImage} source={{uri: item.image}}></Image>
+                <Text style={styles.productTitle}>{item.name}</Text>
+                <Text style={{flexWrap: "wrap"}}>{item.description}</Text>
+                {/* <View style={styles.tagContainer}>
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     {item.tag.map((tag, index) => {
                       return (                      
-                        <Text key={index} style={styles.productTag}>{tag}</Text>                                        
+                        <Text key={index} style={styles.productTag}>{tag}</Text>
                       )
-                    })}
+                    })}                    
                   </ScrollView>                  
-                </View>
+                </View> */}
                   <View style={styles.priceRow}>
-                    <Text style={styles.price}>{item.price}</Text>
+                    <Text style={styles.price}>${item.price}</Text>
                     <TouchableOpacity style={styles.add}>
                       <Ionicons name="add" size={24} color="black" />
                     </TouchableOpacity>                    
@@ -113,7 +90,7 @@ export default function Home() {
 
               </TouchableOpacity>
             )
-          })}         
+          }) : <Text>No data yet</Text>}         
         </View>
       </View>
     </ScrollView>
@@ -186,6 +163,7 @@ const styles = StyleSheet.create({
       // height: 200,
       borderRadius: 10,
       backgroundColor: '#fff',
+      justifyContent: 'space-between',
     },
     productImage: {
       height: 180,
@@ -215,7 +193,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginTop: 10,
+      // marginTop: 10,
     },
     price: {
       // marginTop: 5,

@@ -64,16 +64,16 @@ export default function ProductList(props) {
                 return (
                 <View style={{paddingTop: 5}} key={index}>
                     <TouchableOpacity style={styles.itemRow} onPress={() => navigation.navigate('ProductDetail')}>
-                    <Image style={styles.thumbnail} source={{uri: item.imageLink}}/>
+                    <Image style={styles.thumbnail} source={{uri: item.image}}/>
                     <View style={styles.itemInfo}>
                         <Text style={styles.itemOwner}>
                         {item.user}
                         </Text>
                         <Text style={styles.itemTitle}>
-                        {item.title.toUpperCase()}
+                        {item.name.toUpperCase()}
                         </Text>
                         <Text style={styles.itemPrice}>
-                        {item.price}
+                        ${item.price}
                         </Text>
                         <View style={styles.itemRow}>
                         <View style={styles.infoNumber}>

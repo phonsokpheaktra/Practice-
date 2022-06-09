@@ -56,20 +56,20 @@ export default function EditProfile() {
                     >                        
                     </TextInput>                    
                 </View>
-                <View style={styles.row}>
+                <View style={[styles.row, {zIndex: 1}]}>
                     <Text style={styles.editText}>Gender</Text>
                     <DropDownPicker
+                        placeholder='Select Your Gender'
                         open={open}
                         value={gender}
                         items={items}
                         setOpen={setOpen}
                         setValue={setGender}
-                        setItems={setItems}
-                        // style={{borderWidth: 0,}}
+                        setItems={setItems}                        
                         containerStyle={{
-                            width: '50%',
-                            marginBottom: -6,
-                        }}
+                            width: 160,
+                            marginBottom: -6,                            
+                        }}                        
                     />
                 </View>
                 <View style={styles.row}>

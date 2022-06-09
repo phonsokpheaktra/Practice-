@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, SafeAreaView, FlatList, TextInput, Keyboard, ScrollView } from "react-native";
+import { StyleSheet, View, Text, SafeAreaView, FlatList, TextInput, Keyboard, ScrollView, LogBox } from "react-native";
+import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
 import ProductList from "../components/ProductList";
 
@@ -9,60 +10,25 @@ export default function SearchFilter() {
     const [masterDataSource, setMasterDataSource] = useState([]);
     const [suggestResultVisible, setSuggestResultVisible] = useState(false);
     const [searchHistory, setSearchHistory] = useState([]);
+    const [products, setProducts] = useState([]);
 
-    // useEffect(() => {
-    //     fetch('https://jsonplaceholder.typicode.com/photos')
-    //         .then((response) => response.json())
-    //         .then((responseJson) => {
-    //         setFilteredDataSource(responseJson);
-    //         setMasterDataSource(responseJson);
-    //         })
-    //         .catch((error) => {
-    //         console.error(error);
-    //         });
-    // }, []);    
+    const getProducts = () => {    
+      axios.get('http://localhost:3000/api/product/query_product')
+          .then(res => {
+            const allProducts = res.data;
+            setProducts(allProducts);
+            setFilteredDataSource(allProducts);
+            setMasterDataSource(allProducts);
+          })
+          .catch(err => console.log(err));
+    };
 
     const history = ['Suncreen', 'Shampoo', 'Shoes', 'iPhone 13 Mini'];
 
-    const products = [
-      {
-        title: 'Nike Air Max',
-        category: 'Footwear',
-        tag: ['Nike', 'Air Max', 'Fashion', 'Shoes'],
-        price: '$120',
-        user: 'Nike Store',
-        imageLink: 'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/skwgyqrbfzhu6uyeh0gg/air-max-270-mens-shoes-KkLcGR.png',
-      },
-      {
-        title: 'iPhone 13 Mini',
-        category: 'Electronics',
-        tag: ['Apple', 'iPhone', '13', 'Mini'],
-        price: '$1360',
-        user: 'Nike Store',
-        imageLink: 'https://rewardmobile.co.uk/wp-content/uploads/2021/09/iPhone13_ProductImage_1000x1000_1.jpg',
-      },
-      {
-        title: 'KOOMPI E13',
-        category: 'Electronics',
-        tag: ['KOOMPI', 'E13', 'Electronics'],
-        price: '$270',
-        user: 'Nike Store',
-        imageLink: 'https://konfulononline.com/image/cache/catalog/KOOMPI/KOOMPI%20E13/E13-RoseGold3-800px-800x800.png',
-      },
-      {
-        title: 'PlayStation 5',
-        category: 'Electronics',
-        tag: ['PlayStation', '5', 'Red Dragon'],
-        price: '$505',
-        user: 'Nike Store',
-        imageLink: 'https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2021%2F09%2Fsony-playstation-5-pro-release-rumors-info-000.jpg?w=960&cbr=1&q=90&fit=max',
-      },
-    ];
-
     useEffect(() => {
-      setFilteredDataSource(products);
-      setMasterDataSource(products);
-      setSearchHistory(history);      
+      getProducts();
+      setSearchHistory(history);
+      LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.']); 
     }, []);
 
     const searchFilterFunction = (text) => {
@@ -73,8 +39,8 @@ export default function SearchFilter() {
           const newData = masterDataSource.filter(
             function (item) {
               // Applying filter for the inserted text in search bar
-              const itemData = item.title
-                  ? item.title.toUpperCase()
+              const itemData = item.name
+                  ? item.name.toUpperCase()
                   : ''.toUpperCase();
               const textData = text.toUpperCase();
               return itemData.indexOf(textData) > -1;
@@ -96,11 +62,10 @@ export default function SearchFilter() {
           // Flat List Item          
           <Text
             style={styles.suggestItem}
-            onPress={() => getItem(item)}>
-            {/* {item.id}
-            {'.'} */}
-            {item.title.toUpperCase()}
-        </Text>
+            onPress={() => getItem(item)}
+          >            
+            {item.name.toUpperCase()}
+          </Text>
         );
       };
 
@@ -141,7 +106,7 @@ export default function SearchFilter() {
 
     const getItem = (item) => {
         // Function for click on an item
-        alert('Owner : ' + item.user + '\nTitle : ' + item.title);
+        alert('Title : ' + item.name);
     };
 
     return (
@@ -161,21 +126,19 @@ export default function SearchFilter() {
                   Keyboard.dismiss(); 
                   setSuggestResultVisible(false);
                   if (!searchHistory.includes(search) && search !== '') {
-                    setSearchHistory([search, ...searchHistory.slice(0, searchHistory.length - 1)]);
+                    if (searchHistory.length === 4) {
+                      setSearchHistory([search, ...searchHistory.slice(0, searchHistory.length - 1)]);
+                    } else {
+                      setSearchHistory([search, ...searchHistory]);
+                    }                    
                   }
                 }}
               />
             </View>            
-            {/* { suggestResultVisible &&                
-                <FlatList
-                    // style={{flex: 1}}
-                    data={filteredDataSource}
-                    keyExtractor={(item, index) => index.toString()}
-                    ItemSeparatorComponent={ItemSeparatorView}
-                    renderItem={ItemView}
-                />                
-            } */}
-            {/* { !suggestResultVisible && */}
+            { suggestResultVisible &&                                
+              <ProductList products={filteredDataSource}/>
+            }
+            { !suggestResultVisible &&
               <View>
                 { searchHistory.length > 0 &&
                   <View>
@@ -204,7 +167,7 @@ export default function SearchFilter() {
                 <Text style={styles.title}>Suggestion for you</Text>                
                 <ProductList products={products}/>
               </View>  
-            {/* }                                               */}
+            }                                              
           </View>
           </ScrollView>
         </SafeAreaView>
