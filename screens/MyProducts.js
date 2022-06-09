@@ -79,8 +79,9 @@ export default function MyProducts() {
                         <View style={styles.inputContainer}>
                             <TextInput style={styles.input} placeholder="Product Name..." value={props.product.name} onChangeText={text => setName(text)}/>
                         </View>
-                        <View style={styles.inputContainer}>                    
+                        <View style={[styles.inputContainer, {zIndex: 1}]}>                    
                             <DropDownPicker
+                                placeholder='Select Your Gender'
                                 open={open}
                                 value={props.product.category}
                                 items={items}
@@ -88,7 +89,7 @@ export default function MyProducts() {
                                 setValue={setCategory}
                                 setItems={setItems}                        
                                 containerStyle={{
-                                    width: '50%',
+                                    width: 160,
                                     marginBottom: -6,
                                 }}
                             />  

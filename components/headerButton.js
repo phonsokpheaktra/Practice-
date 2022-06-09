@@ -48,7 +48,7 @@ export default function HeaderButton() {
                         <View style={styles.inputContainer}>
                             <TextInput style={styles.input} placeholder="Product Name..." value={name} onChangeText={text => setName(text)}/>
                         </View>
-                        <View style={styles.inputContainer}>                    
+                        <View style={[styles.inputContainer, {zIndex: 1}]}>                    
                             <DropDownPicker
                                 open={open}
                                 value={category}
@@ -57,7 +57,7 @@ export default function HeaderButton() {
                                 setValue={setCategory}
                                 setItems={setItems}                        
                                 containerStyle={{
-                                    width: '50%',
+                                    width: 160,
                                     marginBottom: -6,
                                 }}
                             />  
