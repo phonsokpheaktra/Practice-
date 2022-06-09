@@ -50,6 +50,7 @@ export default function HeaderButton() {
                         </View>
                         <View style={[styles.inputContainer, {zIndex: 1}]}>                    
                             <DropDownPicker
+                                placeholder='Select Your Gender'
                                 open={open}
                                 value={category}
                                 items={items}

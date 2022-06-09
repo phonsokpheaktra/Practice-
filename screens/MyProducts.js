@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, Modal, TextInput } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import Spacing from "../components/Spacing";
 
 export default function MyProducts() {
+    const [modalData, setModalData] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
 
     const [name, setName] = useState('');
@@ -60,7 +60,7 @@ export default function MyProducts() {
         );
       };
 
-    const UpdateProuct = (props) => {
+    const UpdateProuct = () => {
         return (
             <Modal
                 animationType="fade"
@@ -77,13 +77,13 @@ export default function MyProducts() {
                             Edit Product
                         </Text>
                         <View style={styles.inputContainer}>
-                            <TextInput style={styles.input} placeholder="Product Name..." value={props.product.name} onChangeText={text => setName(text)}/>
+                            <TextInput style={styles.input} placeholder="Product Name..." value={modalData.name} onChangeText={text => setName(text)}/>
                         </View>
                         <View style={[styles.inputContainer, {zIndex: 1}]}>                    
                             <DropDownPicker
                                 placeholder='Select Your Gender'
                                 open={open}
-                                value={props.product.category}
+                                value={modalData.category}
                                 items={items}
                                 setOpen={setOpen}
                                 setValue={setCategory}
@@ -95,16 +95,16 @@ export default function MyProducts() {
                             />  
                         </View>
                         <View style={styles.inputContainer}>
-                            <TextInput style={styles.input} placeholder="Quantity..." value={props.product.quantity} onChangeText={text => setQuantity(text)}/>
+                            <TextInput style={styles.input} placeholder="Quantity..." value={modalData.quantity} onChangeText={text => setQuantity(text)}/>
                         </View>
                         <View style={styles.inputContainer}>
-                            <TextInput style={styles.input} placeholder="Price..." value={props.product.price} onChangeText={text => setPrice(text)}/>
+                            <TextInput style={styles.input} placeholder="Price..." value={modalData.price} onChangeText={text => setPrice(text)}/>
                         </View>                
                         <View style={styles.inputContainer}>
-                            <TextInput style={styles.input} placeholder="Description..." value={props.product.description} onChangeText={text => setDescription(text)}/>
+                            <TextInput style={styles.input} placeholder="Description..." value={modalData.description} onChangeText={text => setDescription(text)}/>
                         </View>
                         <View style={{flexDirection: 'row', marginTop: 10}}>
-                            <TouchableOpacity style={[styles.button, {backgroundColor: 'white', borderWidth: 2, borderColor: 'red'}]} onPress={() => setModalVisible(!modalVisible)}>
+                            <TouchableOpacity style={[styles.button, {backgroundColor: 'white', borderWidth: 2, borderColor: 'red'}]} onPress={() => {setModalVisible(!modalVisible);}}>
                                 <Text style={[styles.buttonText, {color: 'red'}]}>Cancel</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.button, {backgroundColor: 'green',}]} onPress={() => setModalVisible(!modalVisible)}>
@@ -120,9 +120,9 @@ export default function MyProducts() {
     return (        
         <View style={styles.container}>
             <Spacing height={10}/>
-        {products.map((product, index) => {
+        {products.map((product) => {
             return (
-                <View style={styles.cartProduct} key={index}>                
+                <View style={styles.cartProduct} key={product.id}>                
                     <Image style={styles.productImage} source={{uri: product.image}}/>
                     <View style={styles.productInfo}>
                         <Text style={styles.priceRow}>{product.name}</Text>
@@ -130,13 +130,17 @@ export default function MyProducts() {
                         <Text>Quantity: {product.quantity}</Text>                        
                     </View>
                     <View style={styles.actionContainer}>
-                        <TouchableOpacity style={[styles.actionRow, {backgroundColor: "orange"}]} onPress={() => setModalVisible(!modalVisible)}>
-                            {/* <Ionicons name="pencil-sharp" size={20} color="white" /> */}
+                        <TouchableOpacity 
+                            style={[styles.actionRow, {backgroundColor: "orange"}]} 
+                            onPress={() => {
+                                setModalData(product);
+                                setModalVisible(!modalVisible)
+                            }}
+                        >                            
                             <Text style={styles.actionText}>Update</Text>
                         </TouchableOpacity>
-                        <UpdateProuct product={product} key={index}/>
-                        <TouchableOpacity style={[styles.actionRow, {backgroundColor: "#FF3f3f"}]} onPress={() => showConfirmDialog(product)}>
-                            {/* <Ionicons name="trash" size={20} color="white" /> */}
+                        <UpdateProuct/>
+                        <TouchableOpacity style={[styles.actionRow, {backgroundColor: "#FF3f3f"}]} onPress={() => showConfirmDialog(product)}>                            
                             <Text style={styles.actionText}>Delete</Text>
                         </TouchableOpacity>
                     </View>                        
