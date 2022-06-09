@@ -1,9 +1,23 @@
-import { StyleSheet, Text, View, Image} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image, Button, Alert} from 'react-native';
+import {FAB} from 'react-native-paper';
 
 export default function ProductDetail() {
+
+    const [counter, setCounter] = useState(0);
+    const increment = () => {
+        setCounter(counter + 1);
+    }
+    const decrement = () => {
+        if(counter > 0) {
+            setCounter(counter - 1);
+        }else{
+
+        }
+    }
+
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Back</Text>
             <Image style={styles.pic} source={require('../assets/images/iphone.jpg')}></Image>
             <Text style={styles.baseText}>
                 iPhone 12 and Mini
@@ -19,7 +33,27 @@ export default function ProductDetail() {
                 <Image style={styles.white} source={require('../assets/images/iphonewhite.jpg')} />
                 <Image style={styles.green} source={require('../assets/images/iphonegreen.jpg')} />
             </View>
-            <Text></Text>
+            <Text style={styles.internaltext}>Internal: </Text>
+            <View style={styles.buttontype}>
+                <Button title="32GB"/>
+                <Button title="64GB"/>
+                <Button title="128GB"/>
+                <Button title="256GB"/>
+            </View>
+            <Text style={styles.quantity}>Quantity: </Text>
+            <Text style={styles.count}>{counter}</Text>
+            <FAB
+                style={styles.fabi}
+                small
+                icon="plus"
+                onPress={increment}
+            />
+            <FAB
+                style={styles.fabm}
+                small
+                icon="minus"
+                onPress={decrement}
+            />
         </View>
     )
 }
@@ -90,4 +124,48 @@ const styles = StyleSheet.create({
         height: 40,
         width: 40,
     },
+    internaltext: {
+        fontSize: 15,
+        position: 'absolute',
+        top: '73%',
+        left: '5%',
+    },
+    buttontype: {
+        top: '80%',
+        position: 'absolute',
+        left: '10%',
+        borderColor: "#FF9C9C",
+        borderWidth: "2px",
+        flexDirection: 'row',
+        justifyContent: 'space-around'
+    },
+    quantity: {
+        fontSize: 15,
+        position: 'absolute',
+        top: '85%',
+        left: '5%',
+    },
+    fabi: {
+        position: 'absolute',
+        margin: 16,
+        right: 290,
+        bottom: 40,
+        backgroundColor: "#FF9C9C",
+    },
+    count: {
+        position: 'absolute',
+        margin: 16,
+        fontSize: 20,
+        right: 260,
+        bottom: 50,
+        color: "#00000", 
+    },
+    fabm: {
+        position: 'absolute',
+        margin: 16,
+        right: 200,
+        bottom: 40,
+        backgroundColor: "#FF9C9C",
+    }
+
 });

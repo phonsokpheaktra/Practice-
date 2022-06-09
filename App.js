@@ -8,11 +8,11 @@ import ProductDetail from './screens/ProductDetail';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <AuthStack />      
-    </NavigationContainer>      
+    // <NavigationContainer>
+    //   <AuthStack />      
+    // </NavigationContainer>      
     // <SearchFilter/>
-    // <ProductDetail/>
+    <ProductDetail/>
   );
 }
 
