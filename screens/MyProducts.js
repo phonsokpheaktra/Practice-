@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, Modal, TextInput } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
-import axios from 'axios';
+import axios from '../axios';
 import Spacing from "../components/Spacing";
 
 export default function MyProducts() {
     const [modalData, setModalData] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [name, setName] = useState('');
+    const [name, setName] = useState(null);
     const [quantity, setQuantity] = useState(null);
     const [price, setPrice] = useState(null);
     const [category, setCategory] = useState(null);
-    const [description, setDescription] = useState('');
+    const [description, setDescription] = useState(null);
 
     const [ open, setOpen ] = useState(false);
     const [items, setItems] = useState([
@@ -27,7 +27,7 @@ export default function MyProducts() {
     const [products, setProducts] = useState([]);
 
     const getProducts = () => {    
-        axios.get('http://localhost:3000/api/product/query_product')
+        axios.get('/api/product/query_product/')
             .then(res => {
               const allProducts = res.data;
               setProducts(allProducts);          
@@ -81,7 +81,7 @@ export default function MyProducts() {
                         </View>
                         <View style={[styles.inputContainer, {zIndex: 1}]}>                    
                             <DropDownPicker
-                                placeholder='Select Your Gender'
+                                placeholder='Select Category'
                                 open={open}
                                 value={modalData.category}
                                 items={items}

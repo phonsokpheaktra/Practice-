@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, ScrollView } fr
 import { Ionicons } from '@expo/vector-icons';
 import SeparatorLine from '../components/SeparatorLine';
 import Spacing from '../components/Spacing';
-import axios from 'axios';
+import axios from '../axios';
 
 export default function MyCart() {
     const [products, setProducts] = useState([]);
@@ -26,19 +26,19 @@ export default function MyCart() {
         },
     ];
 
-    useEffect(() => {    
-        const getProducts = async () => {    
-            await axios.get('http://localhost:3000/api/product/query_product')
-                .then(res => {
-                    const allProducts = res.data;
-                    setProducts(allProducts);
-                    const sum = allProducts.reduce((a, b) => a + (b.price*b.quantity), 0);
-                    setSubTotal(limit2Decimal(sum));
-                    setTotal(limit2Decimal(sum + tax + shippingFee));
-                })
-                .catch(err => console.log(err));        
-            };
+    const getProducts = async () => {    
+        await axios.get('/api/product/query_product')
+            .then(res => {
+                const allProducts = res.data;
+                setProducts(allProducts);
+                const sum = allProducts.reduce((a, b) => a + (b.price*b.quantity), 0);
+                setSubTotal(limit2Decimal(sum));
+                setTotal(limit2Decimal(sum + tax + shippingFee));
+            })
+            .catch(err => console.log(err));        
+    };
 
+    useEffect(() => {    
         getProducts();                        
     }, []);    
 

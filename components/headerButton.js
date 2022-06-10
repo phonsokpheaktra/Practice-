@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Modal, TextInput } from 'react-native';
+import axios from '../axios';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function HeaderButton() {
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [name, setName] = useState('');
+    const [name, setName] = useState(null);
     const [quantity, setQuantity] = useState(null);
     const [price, setPrice] = useState(null);
     const [category, setCategory] = useState(null);
-    const [description, setDescription] = useState('');
+    const [description, setDescription] = useState(null);
 
     const [ open, setOpen ] = useState(false);
     const [items, setItems] = useState([
@@ -20,6 +21,17 @@ export default function HeaderButton() {
         { label: 'Tableware', value: 5 },
         { label: 'Tools', value: 6 },
     ]);
+
+    const postProduct = async () => {
+        axios.post('/api/product/create_product', {
+            product_name: name,
+            quantity: quantity,
+            price: price,
+            categoryId: category,
+            description: description
+        })
+        .then(res => {console.log(res.data)})
+    };
 
     return (
         <View>
@@ -50,7 +62,7 @@ export default function HeaderButton() {
                         </View>
                         <View style={[styles.inputContainer, {zIndex: 1}]}>                    
                             <DropDownPicker
-                                placeholder='Select Your Gender'
+                                placeholder='Select Category'
                                 open={open}
                                 value={category}
                                 items={items}
@@ -76,7 +88,7 @@ export default function HeaderButton() {
                             <TouchableOpacity style={[styles.button, {backgroundColor: 'white', borderWidth: 2, borderColor: 'red'}]} onPress={() => setModalVisible(!modalVisible)}>
                                 <Text style={[styles.buttonText, {color: 'red'}]}>Cancel</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.button, {backgroundColor: 'green',}]} onPress={() => setModalVisible(!modalVisible)}>
+                            <TouchableOpacity style={[styles.button, {backgroundColor: 'green',}]} onPress={() => {postProduct(this); setModalVisible(!modalVisible)}}>
                                 <Text style={[styles.buttonText, {color: 'white'}]}>Add Product</Text>
                             </TouchableOpacity>
                         </View>                
