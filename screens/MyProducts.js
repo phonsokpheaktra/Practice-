@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, Modal, TextInput } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, Modal, TextInput, ScrollView } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from '../axios';
 import Spacing from "../components/Spacing";
@@ -117,7 +117,8 @@ export default function MyProducts() {
         )
     }
 
-    return (        
+    return (
+        <ScrollView>
         <View style={styles.container}>
             <Spacing height={10}/>
         {products.map((product) => {
@@ -148,6 +149,7 @@ export default function MyProducts() {
             );
         })}
         </View>
+        </ScrollView>
     )
 }
 

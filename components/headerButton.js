@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Modal, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Modal, TextInput, Alert } from 'react-native';
 import axios from '../axios';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function HeaderButton() {
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [name, setName] = useState(null);
+    const [name, setName] = useState('');
     const [quantity, setQuantity] = useState(null);
     const [price, setPrice] = useState(null);
     const [category, setCategory] = useState(null);
-    const [description, setDescription] = useState(null);
+    const [description, setDescription] = useState('');
 
     const [ open, setOpen ] = useState(false);
     const [items, setItems] = useState([
@@ -23,6 +23,9 @@ export default function HeaderButton() {
     ]);
 
     const postProduct = async () => {
+        if (!name && !quantity && !price && !category && !description) {
+            return;
+        }
         axios.post('/api/product/create_product', {
             product_name: name,
             quantity: quantity,
@@ -30,7 +33,10 @@ export default function HeaderButton() {
             categoryId: category,
             description: description
         })
-        .then(res => {console.log(res.data)})
+        .then(res => {
+            Alert.alert('Success!', res.data.message);            
+            console.log(res.data)
+        })
     };
 
     return (
@@ -63,6 +69,7 @@ export default function HeaderButton() {
                         <View style={[styles.inputContainer, {zIndex: 1}]}>                    
                             <DropDownPicker
                                 placeholder='Select Category'
+                                listMode='SCROLLVIEW'
                                 open={open}
                                 value={category}
                                 items={items}
@@ -70,8 +77,12 @@ export default function HeaderButton() {
                                 setValue={setCategory}
                                 setItems={setItems}                        
                                 containerStyle={{
-                                    width: 160,
-                                    marginBottom: -6,
+                                    width: '100%',
+                                    marginBottom: -9,
+                                    // borderWidth: 1,
+                                }}
+                                dropDownContainerStyle={{
+                                    // height: 50,                                    
                                 }}
                             />  
                         </View>
@@ -119,7 +130,7 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: 'white',
-        height: 420,
+        height: 480,
         width: 300,
         borderRadius: 15,
         justifyContent: 'center',
