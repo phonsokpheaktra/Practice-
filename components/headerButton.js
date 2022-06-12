@@ -54,7 +54,7 @@ export default function HeaderButton() {
       
     const onSubmit = (data) => {
         console.log(data);
-        console.log('onSubmit Working')
+        console.log(category);        
     }
 
     const AddProductForm = () => {
@@ -95,33 +95,21 @@ export default function HeaderButton() {
                         /> 
                         {errors.name && <Text>This is required.</Text>}                        
 
-                        <Controller
-                            control={control}                            
-                            render={({field: {onChange, onBlur, value }}) => (
-                                <View style={styles.inputContainer}>
-                                    <DropDownPicker
-                                        placeholder='Select Category'
-                                        open={open}
-                                        value={value}
-                                        items={items}
-                                        setOpen={setOpen}
-                                        setValue={onChange}
-                                        setItems={setItems}                        
-                                        containerStyle={{
-                                            width: 160,
-                                            marginBottom: -6,
-                                        }}
-                                    />
-                                </View>
-                            )}                            
-                            rules={{ 
-                                required: {
-                                    value: true,
-                                    message: 'Field is required!'
-                                } 
-                            }}
-                            name="category"
-                        />
+                        <View style={styles.inputContainer}>
+                            <DropDownPicker
+                                placeholder='Select Category'
+                                open={open}
+                                value={category}
+                                items={items}
+                                setOpen={setOpen}
+                                setValue={setCategory}
+                                setItems={setItems}                        
+                                containerStyle={{
+                                    width: 160,
+                                    marginBottom: -6,
+                                }}
+                            />
+                        </View>
 
                         <Controller
                             control={control}                            
@@ -195,7 +183,19 @@ export default function HeaderButton() {
                                 <Text style={[styles.buttonText, {color: 'white'}]}>Add Product</Text>
                             </TouchableOpacity>
                         </View>  */}
-                        <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+                        <View style={{flexDirection: 'row', marginTop: 10}}>
+                            <Button
+                                title="Cancel"
+                                onPress={() => setModalVisible(!modalVisible)}
+                                color="red"
+                            />
+                            <View style={{width: 10}}/>
+                            <Button 
+                                title="Add Product" 
+                                onPress={handleSubmit(onSubmit)} 
+                                color="#FF9C9C"
+                            />
+                        </View>
                     </View>
                 </View>
             </Modal>
