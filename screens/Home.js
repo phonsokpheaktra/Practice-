@@ -72,7 +72,7 @@ export default function Home() {
                 style={styles.eachProduct} 
                 key={index} 
                 onPress={() => {                  
-                  navigation.navigate('ProductDetail', item);
+                  navigation.navigate('ProductView', item);
                 }}>
                 <Image style={styles.productImage} source={{uri: item.image}}></Image>
                 <Text style={styles.productTitle}>{item.name}</Text>

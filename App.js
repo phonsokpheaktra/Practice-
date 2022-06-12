@@ -2,14 +2,14 @@ import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import AuthStack from './routes/AuthStack';
-import AddProduct from './screens/AddProduct';
+import ProductView from './screens/ProductView';
 
 export default function App() {
   return (
     <NavigationContainer>
       <AuthStack />      
     </NavigationContainer>
-    // <AddProduct/>
+    // <ProductView/>
   );
 }
 
