@@ -24,14 +24,29 @@ export default function HeaderButton() {
     ]);
 
     const validation = () => {
+        // Empty fields validation
         if (name === '') {
             Alert.alert('Product Name Missing!', 'Please Your Product Name...');
-            return;
-        }
-        if (quantity === null) {
+            return false;
+        } else if (category === '') {
+            Alert.alert('Category Missing!', 'Please Your Category...');
+            return false;
+        } else if (quantity === '') {	
             Alert.alert('Quantity Missing!', 'Please enter quantity');
-            return;
-        }        
+            return false;
+        } else if (price === '') {
+            Alert.alert('Price Missing!', 'Please enter price');
+            return false;
+        }
+
+        // Price validation
+        if (isNaN(quantity)) {
+            Alert.alert('Quantity is not a number!', 'Please enter a number');
+            return false;
+        } else if (isNaN(price)) {
+            Alert.alert('Price is not a number!', 'Please enter a number');
+            return false;
+        }
     }
 
     const postProduct = async () => {
@@ -51,14 +66,22 @@ export default function HeaderButton() {
         })
     };
 
-    const AddProductForm = () => {
-        return (
+    return (
+        <View>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => setModalVisible(true)}
+            >
+                <Text style={styles.buttonText}>
+                    Add Product
+                </Text>            
+            </TouchableOpacity>
+            
             <Modal
                 animationType="fade"
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
                     setModalVisible(!modalVisible);
                 }}
             >
@@ -107,20 +130,6 @@ export default function HeaderButton() {
                     </View>
                 </View>
             </Modal>
-        )
-    }
-
-    return (
-        <View>
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => setModalVisible(true)}
-            >
-                <Text style={styles.buttonText}>
-                    Add Product
-                </Text>            
-            </TouchableOpacity>
-            <AddProductForm />
         </View>
     )
 }
