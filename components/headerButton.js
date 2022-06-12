@@ -49,6 +49,14 @@ export default function HeaderButton() {
         }
     }
 
+    const resetValues = () => {
+        setName('');
+        setCategory('');
+        setQuantity('');
+        setPrice('');
+        setDescription('');
+    }
+
     const postProduct = async () => {
         validation();
         axios.post('/api/product/create_product', {
@@ -62,7 +70,7 @@ export default function HeaderButton() {
             Alert.alert('Success!', res.data.message);
             console.log(res.data);
             setModalVisible(!modalVisible);
-            reload();
+            resetValues();
         })
     };
 
@@ -93,7 +101,7 @@ export default function HeaderButton() {
                         </Text>
                         <Spacing height={10}/>
                         <View style={styles.inputContainer}>
-                            <TextInput style={styles.input} placeholder="Product Name..." value={name} onChangeText={text => setName(text)}/>
+                            <TextInput style={styles.input} placeholder="Product Name..." value={name} onChangeText={text => setName(text)} selectTextOnFocus={true}/>
                         </View>
                         <View style={[styles.inputContainer, {zIndex: 1, padding: 0, borderWidth: 0}]}>                    
                             <DropDownPicker
@@ -110,13 +118,13 @@ export default function HeaderButton() {
                             />  
                         </View>
                         <View style={styles.inputContainer}>
-                            <TextInput style={styles.input} placeholder="Quantity..." value={quantity} onChangeText={text => setQuantity(text)}/>
+                            <TextInput style={styles.input} placeholder="Quantity..." value={quantity} onChangeText={text => setQuantity(text)} selectTextOnFocus={true}/>
                         </View>
                         <View style={styles.inputContainer}>
-                            <TextInput style={styles.input} placeholder="Price..." value={price} onChangeText={text => setPrice(text)}/>
+                            <TextInput style={styles.input} placeholder="Price..." value={price} onChangeText={text => setPrice(text)} selectTextOnFocus={true}/>
                         </View>                
                         <View style={styles.inputContainer}>
-                            <TextInput style={styles.input} placeholder="Description..." value={description} onChangeText={text => setDescription(text)}/>
+                            <TextInput style={styles.input} placeholder="Description..." value={description} onChangeText={text => setDescription(text)} multiline={true} selectTextOnFocus={true}/>
                         </View>
                         <View style={{flexDirection: 'row', marginTop: 10}}>
                             <TouchableOpacity style={[styles.button, {backgroundColor: 'white', borderWidth: 1, borderColor: 'red'}]} onPress={() => {setModalVisible(!modalVisible);}}>
@@ -137,7 +145,7 @@ export default function HeaderButton() {
 const styles = StyleSheet.create({
     mainButton: {
         backgroundColor: 'transparent',        
-        paddingRight: 10,
+        // paddingRight: 10,
     },
     buttonText: {
         color: '#1c1c1e',

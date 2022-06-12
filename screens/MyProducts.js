@@ -118,7 +118,7 @@ export default function MyProducts() {
     }
 
     return (
-        <ScrollView>
+        <ScrollView style={{backgroundColor: "#FBEFEF"}}>
         <View style={styles.container}>
             <Spacing height={10}/>
         {products.map((product) => {

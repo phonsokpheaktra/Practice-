@@ -70,7 +70,7 @@ export default function MyCart() {
     }
 
     return (
-        <ScrollView >
+        <ScrollView style={{flex: 1, backgroundColor: "#FBEFEF"}}>
         <View style={styles.container}>
             <Spacing height={10}/>
             {products.map((product, index) => {
