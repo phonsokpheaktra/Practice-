@@ -68,7 +68,12 @@ export default function Home() {
           { products ?
             products.map((item, index) => {
             return (
-              <TouchableOpacity style={styles.eachProduct} key={index} onPress={() => navigation.navigate('ProductDetail')}>
+              <TouchableOpacity 
+                style={styles.eachProduct} 
+                key={index} 
+                onPress={() => {                  
+                  navigation.navigate('ProductDetail', item);
+                }}>
                 <Image style={styles.productImage} source={{uri: item.image}}></Image>
                 <Text style={styles.productTitle}>{item.name}</Text>
                 <Text style={{flexWrap: "wrap"}}>{item.description}</Text>
