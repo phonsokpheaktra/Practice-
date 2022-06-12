@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Modal, TextInput, Alert, Button } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Modal, TextInput, Alert } from 'react-native';
 import axios from '../axios';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {useForm, Controller} from 'react-hook-form'
+import Spacing from '../components/Spacing';
 
 export default function HeaderButton() {
     const [modalVisible, setModalVisible] = useState(false);
 
     const [name, setName] = useState('');
-    const [quantity, setQuantity] = useState(null);
-    const [price, setPrice] = useState(null);
-    const [category, setCategory] = useState(null);
+    const [quantity, setQuantity] = useState('');
+    const [price, setPrice] = useState('');
+    const [category, setCategory] = useState('');
     const [description, setDescription] = useState('');
 
     const [ open, setOpen ] = useState(false);
@@ -23,39 +23,33 @@ export default function HeaderButton() {
         { label: 'Tools', value: 6 },
     ]);
 
-    // const postProduct = async () => {
-    //     if (!name && !quantity && !price && !category && !description) {
-    //         return;
-    //     }
-    //     axios.post('/api/product/create_product', {
-    //         product_name: name,
-    //         quantity: quantity,
-    //         price: price,
-    //         categoryId: category,
-    //         description: description
-    //     })
-    //     .then(res => {
-    //         Alert.alert('Success!', res.data.message);            
-    //         console.log(res.data)
-    //     })
-    // };
-
-    const {        
-        control, 
-        handleSubmit, 
-        formState: { errors }
-      } = useForm({
-        mode: 'onBlur',
-        defaultValues: {
-            name: '',
-            category: 0,
+    const validation = () => {
+        if (name === '') {
+            Alert.alert('Product Name Missing!', 'Please Your Product Name...');
+            return;
         }
-      })
-      
-    const onSubmit = (data) => {
-        console.log(data);
-        console.log(category);        
+        if (quantity === null) {
+            Alert.alert('Quantity Missing!', 'Please enter quantity');
+            return;
+        }        
     }
+
+    const postProduct = async () => {
+        validation();
+        axios.post('/api/product/create_product', {
+            product_name: name,
+            quantity: Number(quantity),
+            price: Number(price),
+            categoryId: category,
+            description: description
+        })
+        .then(res => {
+            Alert.alert('Success!', res.data.message);
+            console.log(res.data);
+            setModalVisible(!modalVisible);
+            reload();
+        })
+    };
 
     const AddProductForm = () => {
         return (
@@ -70,32 +64,15 @@ export default function HeaderButton() {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.box}>
+                        <Spacing height={20}/>
                         <Text style={styles.title}>
-                            Add Product
+                            Add New Product
                         </Text>
-                        <Controller
-                            control={control}                            
-                            render={({field: {onChange, onBlur, value }}) => (
-                                <View style={styles.inputContainer}>
-                                    <TextInput
-                                        style={styles.input} 
-                                        placeholder="Product Name..." 
-                                        onBlur={onBlur}
-                                        value={value} 
-                                        onChangeText={onChange}/>
-                                </View>
-                            )}                            
-                            rules={{ 
-                                required: {
-                                    value: true,
-                                    message: 'Field is required!'
-                                } 
-                            }}
-                            name="name"
-                        /> 
-                        {errors.name && <Text>This is required.</Text>}                        
-
+                        <Spacing height={10}/>
                         <View style={styles.inputContainer}>
+                            <TextInput style={styles.input} placeholder="Product Name..." value={name} onChangeText={text => setName(text)}/>
+                        </View>
+                        <View style={[styles.inputContainer, {zIndex: 1, padding: 0, borderWidth: 0}]}>                    
                             <DropDownPicker
                                 placeholder='Select Category'
                                 open={open}
@@ -105,97 +82,28 @@ export default function HeaderButton() {
                                 setValue={setCategory}
                                 setItems={setItems}                        
                                 containerStyle={{
-                                    width: 160,
-                                    marginBottom: -6,
+                                    width: "100%",
                                 }}
-                            />
+                            />  
                         </View>
-
-                        <Controller
-                            control={control}                            
-                            render={({field: {onChange, onBlur, value }}) => (
-                                <View style={styles.inputContainer}>
-                                    <TextInput
-                                        style={styles.input} 
-                                        placeholder="Product Price..." 
-                                        onBlur={onBlur}
-                                        value={value} 
-                                        onChangeText={onChange}/>
-                                </View>
-                            )}                            
-                            rules={{ 
-                                required: {
-                                    value: true,
-                                    message: 'Field is required!'
-                                } 
-                            }}
-                            name="price"
-                        />
-
-                        <Controller
-                            control={control}                            
-                            render={({field: {onChange, onBlur, value }}) => (
-                                <View style={styles.inputContainer}>
-                                    <TextInput
-                                        style={styles.input} 
-                                        placeholder="Product Quantity..." 
-                                        onBlur={onBlur}
-                                        value={value} 
-                                        onChangeText={onChange}/>
-                                </View>
-                            )}                            
-                            rules={{ 
-                                required: {
-                                    value: true,
-                                    message: 'Field is required!'
-                                } 
-                            }}
-                            name="quantity"
-                        />
-
-                        <Controller
-                            control={control}                            
-                            render={({field: {onChange, onBlur, value }}) => (
-                                <View style={styles.inputContainer}>
-                                    <TextInput
-                                        style={styles.input} 
-                                        placeholder="Product Description..." 
-                                        onBlur={onBlur}
-                                        value={value} 
-                                        onChangeText={onChange}/>
-                                </View>
-                            )}                            
-                            rules={{ 
-                                required: {
-                                    value: true,
-                                    message: 'Field is required!'
-                                } 
-                            }}
-                            name="description"
-                        />
-
-                        {/* Buttons */}
-                        {/* <View style={{flexDirection: 'row', marginTop: 10}}>
-                            <TouchableOpacity style={[styles.button, {backgroundColor: 'white', borderWidth: 2, borderColor: 'red'}]} onPress={() => setModalVisible(!modalVisible)}>
+                        <View style={styles.inputContainer}>
+                            <TextInput style={styles.input} placeholder="Quantity..." value={quantity} onChangeText={text => setQuantity(text)}/>
+                        </View>
+                        <View style={styles.inputContainer}>
+                            <TextInput style={styles.input} placeholder="Price..." value={price} onChangeText={text => setPrice(text)}/>
+                        </View>                
+                        <View style={styles.inputContainer}>
+                            <TextInput style={styles.input} placeholder="Description..." value={description} onChangeText={text => setDescription(text)}/>
+                        </View>
+                        <View style={{flexDirection: 'row', marginTop: 10}}>
+                            <TouchableOpacity style={[styles.button, {backgroundColor: 'white', borderWidth: 1, borderColor: 'red'}]} onPress={() => {setModalVisible(!modalVisible);}}>
                                 <Text style={[styles.buttonText, {color: 'red'}]}>Cancel</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.button, {backgroundColor: 'green',}]} onPress={() => handleSubmit(onSubmit())}>
-                                <Text style={[styles.buttonText, {color: 'white'}]}>Add Product</Text>
+                            <TouchableOpacity style={[styles.button, {backgroundColor: 'green',}]} onPress={() => {postProduct(); }}>
+                                <Text style={[styles.buttonText, {color: 'white'}]}>Update</Text>
                             </TouchableOpacity>
-                        </View>  */}
-                        <View style={{flexDirection: 'row', marginTop: 10}}>
-                            <Button
-                                title="Cancel"
-                                onPress={() => setModalVisible(!modalVisible)}
-                                color="red"
-                            />
-                            <View style={{width: 10}}/>
-                            <Button 
-                                title="Add Product" 
-                                onPress={handleSubmit(onSubmit)} 
-                                color="#FF9C9C"
-                            />
                         </View>
+                        <Spacing height={20}/>
                     </View>
                 </View>
             </Modal>
@@ -237,7 +145,7 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: 'white',
-        height: 480,
+        // height: 480,
         width: 300,
         borderRadius: 15,
         justifyContent: 'center',
@@ -253,12 +161,12 @@ const styles = StyleSheet.create({
     },
     inputContainer:{
         width: '80%',
-        borderRadius: 5,
+        borderRadius: 8,
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 1,
+        borderWidth: 1,
         borderColor: '#666',
-        padding: 8,
+        padding: 9,
         margin: 10,
     },
     input: {

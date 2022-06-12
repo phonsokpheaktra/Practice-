@@ -70,9 +70,9 @@ export default function MyProducts() {
                     Alert.alert("Modal has been closed.");
                     setModalVisible(!modalVisible);
                 }}
-            >
+            >                
                 <View style={styles.centeredView}>
-                    <View style={styles.box}>
+                    <View style={styles.box}>                        
                         <Text style={styles.title}>
                             Edit Product
                         </Text>
@@ -110,9 +110,9 @@ export default function MyProducts() {
                             <TouchableOpacity style={[styles.button, {backgroundColor: 'green',}]} onPress={() => setModalVisible(!modalVisible)}>
                                 <Text style={[styles.buttonText, {color: 'white'}]}>Update</Text>
                             </TouchableOpacity>
-                        </View>                
+                        </View>
                     </View>
-                </View>
+                </View>                
             </Modal>
         )
     }
