@@ -131,7 +131,7 @@ export default function HeaderButton() {
                                 <Text style={[styles.buttonText, {color: 'red'}]}>Cancel</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.button, {backgroundColor: 'green',}]} onPress={() => {postProduct(); }}>
-                                <Text style={[styles.buttonText, {color: 'white'}]}>Update</Text>
+                                <Text style={[styles.buttonText, {color: 'white'}]}>Confirm</Text>
                             </TouchableOpacity>
                         </View>
                         <Spacing height={20}/>
