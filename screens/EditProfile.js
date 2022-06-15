@@ -87,7 +87,6 @@ export default function EditProfile() {
                         transparent={true}
                         visible={modalVisible}
                         onRequestClose={() => {
-                            Alert.alert("Modal has been closed.");
                             setModalVisible(!modalVisible);
                         }}
                     >
@@ -123,7 +122,6 @@ const styles = StyleSheet.create({
     },
     subContainer: {
         width: '95%',
-        height: '70%',
         backgroundColor: 'white',
         padding: 15,
         paddingTop: 100,

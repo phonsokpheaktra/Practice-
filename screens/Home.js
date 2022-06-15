@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView} from "react-native";
-import axios from 'axios';
+import axios from '../axios';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -10,7 +10,7 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
 
   const getProducts = () => {    
-    axios.get('http://localhost:3000/api/product/query_product')
+    axios.get('/api/product/query_product')
         .then(res => {
           const allProducts = res.data;
           setProducts(allProducts);          
@@ -19,7 +19,7 @@ export default function Home() {
   };
 
   const getCategories = () => {    
-    axios.get('http://localhost:3000/api/category/query_category')
+    axios.get('/api/category/query_category')
         .then(res => {
           const allCategories = res.data;
           setCategories(allCategories);          
@@ -68,7 +68,12 @@ export default function Home() {
           { products ?
             products.map((item, index) => {
             return (
-              <TouchableOpacity style={styles.eachProduct} key={index} onPress={() => navigation.navigate('ProductDetail')}>
+              <TouchableOpacity 
+                style={styles.eachProduct} 
+                key={index} 
+                onPress={() => {                  
+                  navigation.navigate('ProductView', item);
+                }}>
                 <Image style={styles.productImage} source={{uri: item.image}}></Image>
                 <Text style={styles.productTitle}>{item.name}</Text>
                 <Text style={{flexWrap: "wrap"}}>{item.description}</Text>

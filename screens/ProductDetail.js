@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, Button, Alert} from 'react-native';
 import {FAB} from 'react-native-paper';
 
-export default function ProductDetail() {
+export default function ProductDetail({ route, navigation }) {
 
     const [counter, setCounter] = useState(0);
     const increment = () => {
@@ -11,20 +11,20 @@ export default function ProductDetail() {
     const decrement = () => {
         if(counter > 0) {
             setCounter(counter - 1);
-        }else{
-
         }
     }
 
     return (
         <View style={styles.container}>
-            <Image style={styles.pic} source={require('../assets/images/iphone.jpg')}></Image>
+            <Image style={styles.pic} source={{ uri: route.params.image }}></Image>
             <Text style={styles.baseText}>
-                iPhone 12 and Mini
+                {/* iPhone 12 and Mini */}
+                {route.params.name}
             </Text>
             <Text style={styles.newtext}>
-                The iPhone 12 features a 6.1-inch (15 cm) display with Super Retina XDR OLED technology at a resolution of 2532×1170 pixels and a pixel density of about 460 ppi. 
-                The iPhone 12 Mini features a 5.4-inch (14 cm) display with the same technology at a resolution of 2340×1080 pixels and a pixel density of about 476 ppi.
+                {route.params.description}
+                {/* The iPhone 12 features a 6.1-inch (15 cm) display with Super Retina XDR OLED technology at a resolution of 2532×1170 pixels and a pixel density of about 460 ppi. 
+                The iPhone 12 Mini features a 5.4-inch (14 cm) display with the same technology at a resolution of 2340×1080 pixels and a pixel density of about 476 ppi. */}
             </Text>
             <Text style={styles.colortext}>Color:</Text>
             <View style={styles.groupcolor}>
@@ -41,7 +41,7 @@ export default function ProductDetail() {
                 <Button title="256GB"/>
             </View>
             <Text style={styles.quantity}>Quantity: </Text>
-            <Text style={styles.count}>{counter}</Text>
+            <Text style={styles.count}>{route.params.quantity}</Text>
             <FAB
                 style={styles.fabi}
                 small

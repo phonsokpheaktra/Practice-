@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View, Text, SafeAreaView, FlatList, TextInput, Keyboard, ScrollView, LogBox } from "react-native";
-import axios from 'axios';
+import axios from '../axios';
 import { Ionicons } from '@expo/vector-icons';
 import ProductList from "../components/ProductList";
 
@@ -13,7 +13,7 @@ export default function SearchFilter() {
     const [products, setProducts] = useState([]);
 
     const getProducts = () => {    
-      axios.get('http://localhost:3000/api/product/query_product')
+      axios.get('/api/product/query_product')
           .then(res => {
             const allProducts = res.data;
             setProducts(allProducts);

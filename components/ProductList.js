@@ -63,7 +63,7 @@ export default function ProductList(props) {
             {props.products.map((item, index) => {
                 return (
                 <View style={{paddingTop: 5}} key={index}>
-                    <TouchableOpacity style={styles.itemRow} onPress={() => navigation.navigate('ProductDetail')}>
+                    <TouchableOpacity style={styles.itemRow} onPress={() => navigation.navigate('ProductView', item)}>
                     <Image style={styles.thumbnail} source={{uri: item.image}}/>
                     <View style={styles.itemInfo}>
                         <Text style={styles.itemOwner}>

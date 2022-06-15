@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Modal, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Modal, TextInput, Alert } from 'react-native';
+import axios from '../axios';
 import DropDownPicker from 'react-native-dropdown-picker';
+import Spacing from '../components/Spacing';
 
 export default function HeaderButton() {
     const [modalVisible, setModalVisible] = useState(false);
 
     const [name, setName] = useState('');
-    const [quantity, setQuantity] = useState(null);
-    const [price, setPrice] = useState(null);
-    const [category, setCategory] = useState(null);
+    const [quantity, setQuantity] = useState('');
+    const [price, setPrice] = useState('');
+    const [category, setCategory] = useState('');
     const [description, setDescription] = useState('');
 
     const [ open, setOpen ] = useState(false);
@@ -21,6 +23,57 @@ export default function HeaderButton() {
         { label: 'Tools', value: 6 },
     ]);
 
+    const validation = () => {
+        // Empty fields validation
+        if (name === '') {
+            Alert.alert('Product Name Missing!', 'Please Your Product Name...');
+            return false;
+        } else if (category === '') {
+            Alert.alert('Category Missing!', 'Please Your Category...');
+            return false;
+        } else if (quantity === '') {	
+            Alert.alert('Quantity Missing!', 'Please enter quantity');
+            return false;
+        } else if (price === '') {
+            Alert.alert('Price Missing!', 'Please enter price');
+            return false;
+        }
+
+        // Price validation
+        if (isNaN(quantity)) {
+            Alert.alert('Quantity is not a number!', 'Please enter a number');
+            return false;
+        } else if (isNaN(price)) {
+            Alert.alert('Price is not a number!', 'Please enter a number');
+            return false;
+        }
+    }
+
+    const resetValues = () => {
+        setName('');
+        setCategory('');
+        setQuantity('');
+        setPrice('');
+        setDescription('');
+    }
+
+    const postProduct = async () => {
+        validation();
+        axios.post('/api/product/create_product', {
+            product_name: name,
+            quantity: Number(quantity),
+            price: Number(price),
+            categoryId: category,
+            description: description
+        })
+        .then(res => {
+            Alert.alert('Success!', res.data.message);
+            console.log(res.data);
+            setModalVisible(!modalVisible);
+            resetValues();
+        })
+    };
+
     return (
         <View>
             <TouchableOpacity
@@ -31,26 +84,28 @@ export default function HeaderButton() {
                     Add Product
                 </Text>            
             </TouchableOpacity>
+            
             <Modal
                 animationType="fade"
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
                     setModalVisible(!modalVisible);
                 }}
             >
                 <View style={styles.centeredView}>
                     <View style={styles.box}>
+                        <Spacing height={20}/>
                         <Text style={styles.title}>
-                            Add Product
+                            Add New Product
                         </Text>
+                        <Spacing height={10}/>
                         <View style={styles.inputContainer}>
-                            <TextInput style={styles.input} placeholder="Product Name..." value={name} onChangeText={text => setName(text)}/>
+                            <TextInput style={styles.input} placeholder="Product Name..." value={name} onChangeText={text => setName(text)} selectTextOnFocus={true}/>
                         </View>
-                        <View style={[styles.inputContainer, {zIndex: 1}]}>                    
+                        <View style={[styles.inputContainer, {zIndex: 1, padding: 0, borderWidth: 0}]}>                    
                             <DropDownPicker
-                                placeholder='Select Your Gender'
+                                placeholder='Select Category'
                                 open={open}
                                 value={category}
                                 items={items}
@@ -58,28 +113,28 @@ export default function HeaderButton() {
                                 setValue={setCategory}
                                 setItems={setItems}                        
                                 containerStyle={{
-                                    width: 160,
-                                    marginBottom: -6,
+                                    width: "100%",
                                 }}
                             />  
                         </View>
                         <View style={styles.inputContainer}>
-                            <TextInput style={styles.input} placeholder="Quantity..." value={quantity} onChangeText={text => setQuantity(text)}/>
+                            <TextInput style={styles.input} placeholder="Quantity..." value={quantity} onChangeText={text => setQuantity(text)} selectTextOnFocus={true}/>
                         </View>
                         <View style={styles.inputContainer}>
-                            <TextInput style={styles.input} placeholder="Price..." value={price} onChangeText={text => setPrice(text)}/>
+                            <TextInput style={styles.input} placeholder="Price..." value={price} onChangeText={text => setPrice(text)} selectTextOnFocus={true}/>
                         </View>                
                         <View style={styles.inputContainer}>
-                            <TextInput style={styles.input} placeholder="Description..." value={description} onChangeText={text => setDescription(text)}/>
+                            <TextInput style={styles.input} placeholder="Description..." value={description} onChangeText={text => setDescription(text)} multiline={true} selectTextOnFocus={true}/>
                         </View>
                         <View style={{flexDirection: 'row', marginTop: 10}}>
-                            <TouchableOpacity style={[styles.button, {backgroundColor: 'white', borderWidth: 2, borderColor: 'red'}]} onPress={() => setModalVisible(!modalVisible)}>
+                            <TouchableOpacity style={[styles.button, {backgroundColor: 'white', borderWidth: 1, borderColor: 'red'}]} onPress={() => {setModalVisible(!modalVisible);}}>
                                 <Text style={[styles.buttonText, {color: 'red'}]}>Cancel</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.button, {backgroundColor: 'green',}]} onPress={() => setModalVisible(!modalVisible)}>
-                                <Text style={[styles.buttonText, {color: 'white'}]}>Add Product</Text>
+                            <TouchableOpacity style={[styles.button, {backgroundColor: 'green',}]} onPress={() => {postProduct(); }}>
+                                <Text style={[styles.buttonText, {color: 'white'}]}>Confirm</Text>
                             </TouchableOpacity>
-                        </View>                
+                        </View>
+                        <Spacing height={20}/>
                     </View>
                 </View>
             </Modal>
@@ -90,7 +145,7 @@ export default function HeaderButton() {
 const styles = StyleSheet.create({
     mainButton: {
         backgroundColor: 'transparent',        
-        paddingRight: 10,
+        // paddingRight: 10,
     },
     buttonText: {
         color: '#1c1c1e',
@@ -107,7 +162,7 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: 'white',
-        height: 420,
+        // height: 480,
         width: 300,
         borderRadius: 15,
         justifyContent: 'center',
@@ -123,12 +178,12 @@ const styles = StyleSheet.create({
     },
     inputContainer:{
         width: '80%',
-        borderRadius: 5,
+        borderRadius: 8,
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 1,
+        borderWidth: 1,
         borderColor: '#666',
-        padding: 8,
+        padding: 9,
         margin: 10,
     },
     input: {
