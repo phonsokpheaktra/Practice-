@@ -8,7 +8,6 @@ import {
     TextInput,
     Alert,
 } from "react-native";
-import axios from "../axios";
 import DropDownPicker from "react-native-dropdown-picker";
 import Spacing from "../components/Spacing";
 
@@ -22,7 +21,7 @@ function HeaderButton(props) {
         data,
         fetchProducts,
         setProducts,
-        addProduct,
+        submitProduct,
     } = props.productStore;
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -80,23 +79,24 @@ function HeaderButton(props) {
         setDescription("");
     };
 
-    const postProduct = async () => {
+    const addProduct = async () => {
         if (!validation()) return;
-        axios
-            .post("/api/product/create_product", {
+        try {
+            submitProduct({
                 product_name: name,
                 quantity: Number(quantity),
                 price: Number(price),
                 categoryId: category,
                 description: description,
-            })
-            .then((res) => {
-                Alert.alert("Success!", res.data.message);
-                console.log(res.data.data);
-                addProduct(res.data.data);
-                setModalVisible(!modalVisible);
-                resetValues();
             });
+        } catch (err) {
+            console.error("Error ", error);
+            throw error;
+            return;
+        }
+        Alert.alert("Success!", "Product added successfully!");
+        setModalVisible(!modalVisible);
+        resetValues();
     };
 
     return (
@@ -206,7 +206,7 @@ function HeaderButton(props) {
                                     { backgroundColor: "green" },
                                 ]}
                                 onPress={() => {
-                                    postProduct();
+                                    addProduct();
                                 }}
                             >
                                 <Text
@@ -282,9 +282,4 @@ const styles = StyleSheet.create({
         margin: 5,
         borderRadius: 10,
     },
-    // buttonText: {
-    //     textAlign: 'center',
-    //     color: 'white',
-    //     fontWeight: 'bold',
-    // },
 });
