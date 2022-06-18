@@ -15,14 +15,10 @@ import Spacing from "../components/Spacing";
 import { inject, observer } from "mobx-react";
 
 function HeaderButton(props) {
-    const {
-        products,
-        updateProducts,
-        data,
-        fetchProducts,
-        setProducts,
-        submitProduct,
-    } = props.productStore;
+    const { ProductSrore } = props.store;
+    const { products, updateProducts, data, fetchProducts, setProducts } =
+        ProductSrore;
+
     const [modalVisible, setModalVisible] = useState(false);
 
     const [name, setName] = useState("");
@@ -226,7 +222,7 @@ function HeaderButton(props) {
         </View>
     );
 }
-export default inject("productStore")(observer(HeaderButton));
+export default inject("store")(observer(HeaderButton));
 
 const styles = StyleSheet.create({
     mainButton: {
