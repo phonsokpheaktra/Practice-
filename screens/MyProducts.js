@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
     StyleSheet,
     View,
@@ -17,9 +17,10 @@ import Spacing from "../components/Spacing";
 // imports inject and observer from 'mobx-react':
 import { inject, observer } from "mobx-react";
 
-function MyProducts() {
+function MyProducts(props) {
     const { products, updateProducts, data, fetchProducts, setProducts } =
-        props.store;
+        props.productStore;
+
     const [modalData, setModalData] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -52,8 +53,8 @@ function MyProducts() {
 
     useEffect(() => {
         // getProducts();
-        props.ProductStore.fetchProducts();
-        setProducts(props.ProductStore.products);
+        fetchProducts();
+        setProducts(products);
     }, []);
 
     const showConfirmDialog = (product) => {
@@ -277,7 +278,7 @@ function MyProducts() {
         </ScrollView>
     );
 }
-export default inject("ProductStore")(observer(MyProducts));
+export default inject("productStore")(observer(MyProducts));
 
 const styles = StyleSheet.create({
     container: {

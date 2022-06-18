@@ -1,5 +1,6 @@
 import React from "react";
 import { observable, action, computed, makeObservable } from "mobx";
+import axios from "../axios";
 
 // @observer
 // export default class ProductStore {
@@ -31,7 +32,7 @@ class ProductStore {
     @action fetchProducts = async () => {
         await axios.get("/api/product/query_product").then((res) => {
             const allProducts = res.data;
-            this.setData(allProducts);
+            this.setProducts(allProducts);
         });
     };
 
@@ -39,5 +40,12 @@ class ProductStore {
         this.products = data;
     };
 }
+// makeObservable(ProductStore, {
+//     products: observable,
+//     updateProducts: action,
+//     data: observable,
+//     fetchProducts: action,
+//     setProducts: action,
+// });
 
 export default new ProductStore();
