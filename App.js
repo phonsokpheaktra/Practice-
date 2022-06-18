@@ -3,14 +3,13 @@ import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "mobx-react";
 import ProductStore from "./stores/ProductStore";
-import Store from "./stores/index";
 
 import AuthStack from "./routes/AuthStack";
 import ProductView from "./screens/ProductView";
 
 export default function App() {
     return (
-        <Provider store={Store}>
+        <Provider productStore={ProductStore}>
             <NavigationContainer>
                 <AuthStack />
             </NavigationContainer>

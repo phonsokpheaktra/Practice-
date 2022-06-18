@@ -18,9 +18,8 @@ import Spacing from "../components/Spacing";
 import { inject, observer } from "mobx-react";
 
 function MyProducts(props) {
-    // const { ProductSrore } = props.store;
     const { products, updateProducts, data, fetchProducts, setProducts } =
-        props.store;
+        props.productStore;
 
     const [modalData, setModalData] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
@@ -307,7 +306,7 @@ function MyProducts(props) {
         </ScrollView>
     );
 }
-export default inject("ProductStore")(observer(MyProducts));
+export default inject("productStore")(observer(MyProducts));
 
 const styles = StyleSheet.create({
     container: {
