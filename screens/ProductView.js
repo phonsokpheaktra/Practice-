@@ -1,47 +1,79 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    ScrollView,
+    TouchableOpacity,
+} from "react-native";
 import Spacing from "../components/Spacing";
 
-export default function ProductView({ route}) {
-    const tags = ['yes', 'no', 'maybe', 'other', 'as well'];
+// imports inject and observer from 'mobx-react':
+import { inject, observer } from "mobx-react";
+
+function ProductView(props) {
+    const { cart, totalPrice, updateCart, addProductToCart } = props.cartStore;
+    const tags = ["yes", "no", "maybe", "other", "as well"];
 
     return (
         <View style={styles.container}>
             <View style={styles.imageContainer}>
                 <Image
                     style={styles.image}
-                    source={{ uri: route.params.image }}
+                    source={{ uri: props.route.params.image }}
                     resizeMode="cover"
                 />
             </View>
-            <View style={styles.rightBox}>                                
+            <View style={styles.rightBox}>
                 <View style={styles.productHeader}>
-                    <Text style={styles.title}>{ route.params.name }</Text>
-                    <Text style={styles.price}>${ route.params.price }</Text>
+                    <Text style={styles.title}>{props.route.params.name}</Text>
+                    <Text style={styles.price}>
+                        ${props.route.params.price}
+                    </Text>
                 </View>
-                <Spacing height={20}/>
+                <Spacing height={20} />
                 {/* <Text style={[styles.productTag, {maxWidth:110, textAlign: "center"}]}>21-03-2022</Text> */}
                 <View style={styles.tagContainer}>
-                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {tags.map((tag, index) => {
-                      return (                      
-                        <Text key={index} style={styles.productTag}>{tag}</Text>
-                      )
-                    })}                    
-                  </ScrollView>                  
+                    <ScrollView
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                    >
+                        {tags.map((tag, index) => {
+                            return (
+                                <Text key={index} style={styles.productTag}>
+                                    {tag}
+                                </Text>
+                            );
+                        })}
+                    </ScrollView>
                 </View>
-                <Spacing height={20}/>
-                <Text style={[styles.title, {color: "grey"}]}>PRODUCT DETAILS</Text>
-                <Spacing height={10}/>
+                <Spacing height={20} />
+                <Text style={[styles.title, { color: "grey" }]}>
+                    PRODUCT DETAILS
+                </Text>
+                <Spacing height={10} />
                 <View style={styles.productDetail}>
-                    <Text style={{color: "grey"}}>
+                    <Text style={{ color: "grey" }}>
                         How do you pass data between components in react native?
-                        First, you'll need to create two components, one parent and one child. Next, you'll import the child component in the parent component and return it. Then you'll create a function and a button to trigger that function. Also, you'll create a state using the useState Hook to manage the data
+                        First, you'll need to create two components, one parent
+                        and one child. Next, you'll import the child component
+                        in the parent component and return it. Then you'll
+                        create a function and a button to trigger that function.
+                        Also, you'll create a state using the useState Hook to
+                        manage the data
                     </Text>
                 </View>
             </View>
             <View style={styles.actionButtons}>
-                <TouchableOpacity style={styles.addToCart}>
+                <TouchableOpacity
+                    style={styles.addToCart}
+                    onPress={() => {
+                        addProductToCart(props.route.params);
+                        console.log(props.route.params);
+                        console.log(cart);
+                    }}
+                >
                     <Text style={styles.addToCartText}>Add to Cart</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buyNow}>
@@ -49,8 +81,10 @@ export default function ProductView({ route}) {
                 </TouchableOpacity>
             </View>
         </View>
-    )
+    );
 }
+
+export default inject("cartStore")(observer(ProductView));
 
 const styles = StyleSheet.create({
     container: {
@@ -70,9 +104,9 @@ const styles = StyleSheet.create({
         height: 300,
         flex: 4,
     },
-    image: {        
+    image: {
         height: "100%",
-    },    
+    },
     productHeader: {
         flexDirection: "row",
         alignItems: "center",
@@ -92,27 +126,27 @@ const styles = StyleSheet.create({
     },
     tagContainer: {
         marginTop: 5,
-        flexDirection: 'row',
-        flexWrap: 'nowrap',      
+        flexDirection: "row",
+        flexWrap: "nowrap",
     },
-    productTag: {      
+    productTag: {
         paddingLeft: 15,
         paddingRight: 15,
         paddingBottom: 5,
         paddingTop: 5,
-        color: '#555',
-        backgroundColor: '#fff',
+        color: "#555",
+        backgroundColor: "#fff",
         marginEnd: 5,
         borderRadius: 15,
         borderWidth: 0.5,
-        borderColor: '#999',
+        borderColor: "#999",
     },
     productDetail: {
         padding: 20,
         borderWidth: 1,
-        borderColor: '#999',
+        borderColor: "#999",
         borderRadius: 20,
-        backgroundColor: '#fff',
+        backgroundColor: "#fff",
     },
     actionButtons: {
         flexDirection: "row",
@@ -122,7 +156,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#fff",        
+        backgroundColor: "#fff",
         borderBottomColor: "#ddd",
         borderBottomWidth: 1,
     },
@@ -134,5 +168,5 @@ const styles = StyleSheet.create({
     },
     buyNowText: {
         color: "white",
-    }
+    },
 });

@@ -13,7 +13,12 @@ import SeparatorLine from "../components/SeparatorLine";
 import Spacing from "../components/Spacing";
 import axios from "../axios";
 
-export default function MyCart() {
+// imports inject and observer from 'mobx-react':
+import { inject, observer } from "mobx-react";
+
+function MyCart(props) {
+    const { cart, totalPrice, updateCart, addProductToCart } = props.cartStore;
+
     const [products, setProducts] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
     const [tax, setTax] = useState(0);
@@ -34,23 +39,21 @@ export default function MyCart() {
         },
     ];
 
-    const cart = [];
-
-    const getProducts = async () => {
-        await axios
-            .get("/api/product/query_product")
-            .then((res) => {
-                const allProducts = res.data;
-                setProducts(allProducts);
-                const sum = allProducts.reduce(
-                    (a, b) => a + b.price * b.quantity,
-                    0
-                );
-                setSubTotal(limit2Decimal(sum));
-                setTotal(limit2Decimal(sum + tax + shippingFee));
-            })
-            .catch((err) => console.log(err));
-    };
+    // const getProducts = async () => {
+    //     await axios
+    //         .get("/api/product/query_product")
+    //         .then((res) => {
+    //             const allProducts = res.data;
+    //             setProducts(allProducts);
+    //             const sum = allProducts.reduce(
+    //                 (a, b) => a + b.price * b.quantity,
+    //                 0
+    //             );
+    //             setSubTotal(limit2Decimal(sum));
+    //             setTotal(limit2Decimal(sum + tax + shippingFee));
+    //         })
+    //         .catch((err) => console.log(err));
+    // };
 
     useEffect(() => {
         // getProducts();
@@ -91,8 +94,8 @@ export default function MyCart() {
         <ScrollView style={{ flex: 1, backgroundColor: "#FBEFEF" }}>
             <View style={styles.container}>
                 <Spacing height={10} />
-                {products.length > 0 ? (
-                    products.map((product, index) => {
+                {cart.length > 0 ? (
+                    cart.map((product, index) => {
                         return (
                             <View style={styles.cartProduct} key={index}>
                                 <Image
@@ -230,6 +233,8 @@ export default function MyCart() {
         </ScrollView>
     );
 }
+
+export default inject("cartStore")(observer(MyCart));
 
 const styles = StyleSheet.create({
     container: {
