@@ -12,7 +12,18 @@ import axios from "../axios";
 import DropDownPicker from "react-native-dropdown-picker";
 import Spacing from "../components/Spacing";
 
-export default function HeaderButton() {
+// imports inject and observer from 'mobx-react':
+import { inject, observer } from "mobx-react";
+
+function HeaderButton(props) {
+    const {
+        products,
+        updateProducts,
+        data,
+        fetchProducts,
+        setProducts,
+        addProduct,
+    } = props.productStore;
     const [modalVisible, setModalVisible] = useState(false);
 
     const [name, setName] = useState("");
@@ -81,7 +92,8 @@ export default function HeaderButton() {
             })
             .then((res) => {
                 Alert.alert("Success!", res.data.message);
-                console.log(res.data);
+                console.log(res.data.data);
+                addProduct(res.data.data);
                 setModalVisible(!modalVisible);
                 resetValues();
             });
@@ -214,6 +226,7 @@ export default function HeaderButton() {
         </View>
     );
 }
+export default inject("productStore")(observer(HeaderButton));
 
 const styles = StyleSheet.create({
     mainButton: {

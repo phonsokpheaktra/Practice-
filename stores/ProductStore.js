@@ -39,6 +39,10 @@ class ProductStore {
     @action setProducts = (data) => {
         this.products = data;
     };
+
+    @action addProduct = (product) => {
+        this.products.push(product);
+    };
 }
 // makeObservable(ProductStore, {
 //     products: observable,
