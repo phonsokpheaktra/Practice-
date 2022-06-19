@@ -13,7 +13,8 @@ import Spacing from "../components/Spacing";
 import { inject, observer } from "mobx-react";
 
 function ProductView(props) {
-    const { cart, totalPrice, updateCart, addProductToCart } = props.cartStore;
+    const { cart, totalPrice, updateCart, addProductToCart, increaseQuantity } =
+        props.cartStore;
     const tags = ["yes", "no", "maybe", "other", "as well"];
 
     return (

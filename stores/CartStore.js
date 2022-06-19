@@ -4,7 +4,6 @@ import axios from "../axios";
 
 class CartStore {
     @observable cart = [];
-    @observable totalPrice = 0;
 
     constructor() {
         makeObservable(this);
@@ -16,13 +15,7 @@ class CartStore {
 
     @action addProductToCart = (product) => {
         if (this.productExist(product.id)) {
-            const newCart = this.cart.map((obj) => {
-                if (obj.id === product.id) {
-                    return { ...obj, quantity: product.quantity + 1 };
-                }
-                return obj;
-            });
-            this.updateCart(newCart);
+            this.increaseQuantity(product.id);
         } else {
             this.cart.push(product);
         }
@@ -34,8 +27,28 @@ class CartStore {
         });
     }
 
+    @action increaseQuantity = (id) => {
+        const newCart = this.cart.map((obj) => {
+            if (obj.id === id) {
+                return { ...obj, quantity: obj.quantity + 1 };
+            }
+            return obj;
+        });
+        this.updateCart(newCart);
+    };
+
+    @action decreaseQuantity = (id) => {
+        const newCart = this.cart.map((obj) => {
+            if (obj.id === id) {
+                return { ...obj, quantity: obj.quantity - 1 };
+            }
+            return obj;
+        });
+        this.updateCart(newCart);
+    };
+
     @computed get updateTotalPrice() {
-        return (this.totalPrice = this.cart.reduce(
+        return (totalPrice = this.cart.reduce(
             (a, b) => a + b.price * b.quantity,
             0
         ));

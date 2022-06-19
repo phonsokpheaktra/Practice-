@@ -17,7 +17,14 @@ import axios from "../axios";
 import { inject, observer } from "mobx-react";
 
 function MyCart(props) {
-    const { cart, totalPrice, updateCart, addProductToCart } = props.cartStore;
+    const {
+        cart,
+        totalPrice,
+        updateCart,
+        addProductToCart,
+        decreaseQuantity,
+        updateTotalPrice,
+    } = props.cartStore;
 
     const [products, setProducts] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
@@ -27,7 +34,7 @@ function MyCart(props) {
     const price = [
         {
             title: "Sub Total",
-            value: subTotal,
+            value: updateTotalPrice,
         },
         {
             title: "Tax",
@@ -122,22 +129,8 @@ function MyCart(props) {
                                             style={{ marginRight: 10 }}
                                             onPress={() => {
                                                 if (product.quantity > 1) {
-                                                    product.quantity -= 1;
-                                                    setSubTotal(
-                                                        limit2Decimal(
-                                                            subTotal -
-                                                                product.price
-                                                        )
-                                                    );
-                                                    // setTax(tax - product.price * 0.05);
-                                                    // setShippingFee(shippingFee - 5);
-                                                    setTotal(
-                                                        limit2Decimal(
-                                                            subTotal -
-                                                                product.price +
-                                                                tax +
-                                                                shippingFee
-                                                        )
+                                                    decreaseQuantity(
+                                                        product.id
                                                     );
                                                 }
                                             }}
@@ -149,22 +142,7 @@ function MyCart(props) {
                                             color="#FF9C9C"
                                             style={{ marginLeft: 10 }}
                                             onPress={() => {
-                                                product.quantity += 1;
-                                                setSubTotal(
-                                                    limit2Decimal(
-                                                        subTotal + product.price
-                                                    )
-                                                );
-                                                // setTax(tax + product.price * 0.05);
-                                                // setShippingFee(shippingFee + 5);
-                                                setTotal(
-                                                    limit2Decimal(
-                                                        subTotal +
-                                                            product.price +
-                                                            tax +
-                                                            shippingFee
-                                                    )
-                                                );
+                                                addProductToCart(product);
                                             }}
                                         />
                                     </View>
@@ -219,7 +197,7 @@ function MyCart(props) {
                                 Total
                             </Text>
                             <Text style={[styles.priceValue, { fontSize: 16 }]}>
-                                $ {total}
+                                $ {updateTotalPrice}
                             </Text>
                         </View>
                     </View>
