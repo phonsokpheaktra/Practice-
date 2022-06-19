@@ -18,8 +18,14 @@ import Spacing from "../components/Spacing";
 import { inject, observer } from "mobx-react";
 
 function MyProducts(props) {
-    const { products, updateProducts, data, fetchProducts, setProducts } =
-        props.productStore;
+    const {
+        products,
+        data,
+        fetchProducts,
+        setProducts,
+        updateProduct,
+        deleteProduct,
+    } = props.productStore;
 
     const [modalData, setModalData] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
@@ -60,23 +66,18 @@ function MyProducts(props) {
     const showConfirmDialog = (product) => {
         return Alert.alert(
             "Are your sure?",
-            "Are you sure you want to remove this order?",
+            "Are you sure you want to remove this product?",
             [
-                // The "Yes" button
-                {
-                    text: "Yes",
-                    onPress: () => {
-                        setProducts(
-                            products.filter(function (f) {
-                                return f !== product;
-                            })
-                        );
-                    },
-                },
                 // The "No" button
                 // Does nothing but dismiss the dialog when tapped
                 {
                     text: "No",
+                }, // The "Yes" button
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        deleteProduct(product.id);
+                    },
                 },
             ]
         );
@@ -114,6 +115,7 @@ function MyProducts(props) {
                                         onPress={() => {
                                             setModalData(product);
                                             setModalVisible(!modalVisible);
+                                            console.log(modalData);
                                         }}
                                     >
                                         <Text style={styles.actionText}>
@@ -146,7 +148,10 @@ function MyProducts(props) {
                                                         placeholder="Product Name..."
                                                         value={modalData.name}
                                                         onChangeText={(text) =>
-                                                            setName(text)
+                                                            setModalData({
+                                                                ...modalData,
+                                                                name: text,
+                                                            })
                                                         }
                                                         selectTextOnFocus={true}
                                                     />
@@ -154,22 +159,23 @@ function MyProducts(props) {
                                                 <View
                                                     style={[
                                                         styles.inputContainer,
-                                                        { zIndex: 1 },
+                                                        {
+                                                            zIndex: 1,
+                                                            padding: 0,
+                                                            borderWidth: 0,
+                                                        },
                                                     ]}
                                                 >
                                                     <DropDownPicker
                                                         placeholder="Select Category"
                                                         open={open}
-                                                        value={
-                                                            modalData.category
-                                                        }
+                                                        value={category}
                                                         items={items}
                                                         setOpen={setOpen}
                                                         setValue={setCategory}
                                                         setItems={setItems}
                                                         containerStyle={{
-                                                            width: 160,
-                                                            marginBottom: -6,
+                                                            width: "100%",
                                                         }}
                                                     />
                                                 </View>
@@ -181,11 +187,17 @@ function MyProducts(props) {
                                                     <TextInput
                                                         style={styles.input}
                                                         placeholder="Quantity..."
-                                                        value={
+                                                        value={JSON.stringify(
                                                             modalData.quantity
-                                                        }
+                                                        )}
                                                         onChangeText={(text) =>
-                                                            setQuantity(text)
+                                                            setModalData({
+                                                                ...modalData,
+                                                                quantity:
+                                                                    Number(
+                                                                        text
+                                                                    ),
+                                                            })
                                                         }
                                                         selectTextOnFocus={true}
                                                     />
@@ -198,10 +210,19 @@ function MyProducts(props) {
                                                     <TextInput
                                                         style={styles.input}
                                                         placeholder="Price..."
-                                                        value={modalData.price}
-                                                        onChangeText={(text) =>
-                                                            setPrice(text)
-                                                        }
+                                                        value={JSON.stringify(
+                                                            modalData.price
+                                                        )}
+                                                        onChangeText={(
+                                                            text
+                                                        ) => {
+                                                            setModalData({
+                                                                ...modalData,
+                                                                price: Number(
+                                                                    text
+                                                                ),
+                                                            });
+                                                        }}
                                                         selectTextOnFocus={true}
                                                     />
                                                 </View>
@@ -217,7 +238,11 @@ function MyProducts(props) {
                                                             modalData.description
                                                         }
                                                         onChangeText={(text) =>
-                                                            setDescription(text)
+                                                            setModalData({
+                                                                ...modalData,
+                                                                description:
+                                                                    text,
+                                                            })
                                                         }
                                                         selectTextOnFocus={true}
                                                     />
@@ -264,11 +289,30 @@ function MyProducts(props) {
                                                                     "green",
                                                             },
                                                         ]}
-                                                        onPress={() =>
+                                                        onPress={() => {
                                                             setModalVisible(
                                                                 !modalVisible
-                                                            )
-                                                        }
+                                                            );
+                                                            updateProduct(
+                                                                {
+                                                                    product_name:
+                                                                        modalData.name,
+                                                                    quantity:
+                                                                        Number(
+                                                                            modalData.quantity
+                                                                        ),
+                                                                    price: Number(
+                                                                        modalData.price
+                                                                    ),
+                                                                    categoryId:
+                                                                        category,
+                                                                    description:
+                                                                        modalData.description,
+                                                                    image: modalData.image,
+                                                                },
+                                                                modalData.id
+                                                            );
+                                                        }}
                                                     >
                                                         <Text
                                                             style={[
@@ -368,7 +412,7 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: "white",
-        height: 420,
+        // height: 420,
         width: 300,
         borderRadius: 15,
         justifyContent: "center",
@@ -376,6 +420,8 @@ const styles = StyleSheet.create({
         shadowColor: "#666",
         shadowOffset: { width: 2, height: 2 },
         shadowRadius: 3,
+        paddingTop: 20,
+        paddingBottom: 20,
     },
     title: {
         fontSize: 25,
@@ -384,10 +430,10 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         width: "80%",
-        borderRadius: 5,
+        borderRadius: 8,
         flexDirection: "row",
         alignItems: "center",
-        borderBottomWidth: 1,
+        borderWidth: 1,
         borderColor: "#666",
         padding: 8,
         margin: 10,

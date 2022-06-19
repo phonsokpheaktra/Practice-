@@ -9,12 +9,20 @@ class ProductStore {
         makeObservable(this);
     }
 
-    @action updateProducts = (products) => {
-        this.products = products;
-    };
-
     // observable to save data from api
     @observable data = null;
+
+    @action setProducts = (data) => {
+        this.products = data;
+    };
+
+    @action addProduct = (product) => {
+        this.products.push(product);
+    };
+
+    @action removeProduct = (id) => {
+        this.products = this.products.filter((product) => product.id !== id);
+    };
 
     @action fetchProducts = async () => {
         await axios.get("/api/product/query_product").then((res) => {
@@ -30,12 +38,30 @@ class ProductStore {
         });
     };
 
-    @action setProducts = (data) => {
-        this.products = data;
+    @action updateProduct = (product, id) => {
+        axios
+            .post("/api/product/edit_product/" + id.toString(), product)
+            .then((res) => {
+                const newProducts = this.products.map((obj) => {
+                    if (obj.id === id) {
+                        this.removeProduct(id);
+                        this.addProduct(res.data.data);
+                    }
+                    return obj;
+                });
+                this.setProducts(newProducts);
+
+                console.log(res.data);
+            });
     };
 
-    @action addProduct = (product) => {
-        this.products.push(product);
+    @action deleteProduct = (id) => {
+        axios
+            .delete("/api/product/delete_product/" + id.toString())
+            .then((res) => {
+                this.removeProduct(id);
+                console.log(res.data.message);
+            });
     };
 }
 

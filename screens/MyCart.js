@@ -24,6 +24,7 @@ function MyCart(props) {
         addProductToCart,
         decreaseQuantity,
         updateTotalPrice,
+        removeProduct,
     } = props.cartStore;
 
     const [products, setProducts] = useState([]);
@@ -71,21 +72,16 @@ function MyCart(props) {
             "Are your sure?",
             "Are you sure you want to remove this order?",
             [
-                // The "Yes" button
-                {
-                    text: "Yes",
-                    onPress: () => {
-                        setProducts(
-                            products.filter(function (f) {
-                                return f !== product;
-                            })
-                        );
-                    },
-                },
                 // The "No" button
                 // Does nothing but dismiss the dialog when tapped
                 {
                     text: "No",
+                }, // The "Yes" button
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        removeProduct(product);
+                    },
                 },
             ]
         );

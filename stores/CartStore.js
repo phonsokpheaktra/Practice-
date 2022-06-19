@@ -47,6 +47,14 @@ class CartStore {
         this.updateCart(newCart);
     };
 
+    @action removeProduct = (product) => {
+        this.updateCart(
+            this.cart.filter(function (f) {
+                return f.id !== product.id;
+            })
+        );
+    };
+
     @computed get updateTotalPrice() {
         return (totalPrice = this.cart.reduce(
             (a, b) => a + b.price * b.quantity,
