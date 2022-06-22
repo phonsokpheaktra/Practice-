@@ -102,18 +102,30 @@ export default function Home() {
                                     <Text style={styles.productTitle}>
                                         {item.name}
                                     </Text>
-                                    <Text style={{ flexWrap: "wrap" }}>
+                                    {/* <Text style={{ flexWrap: "wrap" }}>
                                         {item.description}
-                                    </Text>
-                                    {/* <View style={styles.tagContainer}>
-                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {item.tag.map((tag, index) => {
-                      return (                      
-                        <Text key={index} style={styles.productTag}>{tag}</Text>
-                      )
-                    })}                    
-                  </ScrollView>                  
-                </View> */}
+                                    </Text> */}
+                                    <View style={styles.tagContainer}>
+                                        <ScrollView
+                                            horizontal={true}
+                                            showsHorizontalScrollIndicator={
+                                                false
+                                            }
+                                        >
+                                            {item.tag.map((tag, index) => {
+                                                return (
+                                                    <Text
+                                                        key={index}
+                                                        style={
+                                                            styles.productTag
+                                                        }
+                                                    >
+                                                        {tag.name}
+                                                    </Text>
+                                                );
+                                            })}
+                                        </ScrollView>
+                                    </View>
                                     <View style={styles.priceRow}>
                                         <Text style={styles.price}>
                                             ${item.price}
@@ -189,6 +201,7 @@ const styles = StyleSheet.create({
     },
     productContainer: {
         padding: 10,
+        marginBottom: 10,
         width: "100%",
         overflow: "scroll",
     },
@@ -219,12 +232,14 @@ const styles = StyleSheet.create({
     },
     tagContainer: {
         marginTop: 5,
+        marginBottom: 5,
         flexDirection: "row",
         flexWrap: "nowrap",
     },
     productTag: {
         paddingLeft: 5,
         paddingRight: 5,
+        paddingBottom: 3,
         color: "#555",
         backgroundColor: "#eee",
         marginEnd: 5,

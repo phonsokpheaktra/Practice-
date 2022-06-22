@@ -19,52 +19,55 @@ function ProductView(props) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.imageContainer}>
-                <Image
-                    style={styles.image}
-                    source={{ uri: props.route.params.image }}
-                    resizeMode="cover"
-                />
-            </View>
-            <View style={styles.rightBox}>
-                <View style={styles.productHeader}>
-                    <Text style={styles.title}>{props.route.params.name}</Text>
-                    <Text style={styles.price}>
-                        ${props.route.params.price}
-                    </Text>
-                </View>
-                <Spacing height={20} />
-                {/* <Text style={[styles.productTag, {maxWidth:110, textAlign: "center"}]}>21-03-2022</Text> */}
-                <View style={styles.tagContainer}>
-                    <ScrollView
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                    >
-                        {tags.map((tag, index) => {
-                            return (
-                                <Text key={index} style={styles.productTag}>
-                                    {tag}
-                                </Text>
-                            );
-                        })}
-                    </ScrollView>
-                </View>
-                <Spacing height={20} />
-                <Text style={[styles.title, { color: "grey" }]}>
-                    PRODUCT DETAILS
-                </Text>
-                <Spacing height={10} />
-                <View style={styles.productDetail}>
-                    <Text style={{ color: "grey" }}>
-                        How do you pass data between components in react native?
-                        First, you'll need to create two components, one parent
-                        and one child. Next, you'll import the child component
-                        in the parent component and return it. Then you'll
-                        create a function and a button to trigger that function.
-                        Also, you'll create a state using the useState Hook to
-                        manage the data
-                    </Text>
-                </View>
+            <View style={{ flex: 7 }}>
+                <ScrollView>
+                    <View style={styles.imageContainer}>
+                        <Image
+                            style={styles.image}
+                            source={{ uri: props.route.params.image }}
+                            resizeMode="cover"
+                        />
+                    </View>
+
+                    <View style={styles.rightBox}>
+                        <View style={styles.productHeader}>
+                            <Text style={styles.title}>
+                                {props.route.params.name}
+                            </Text>
+                            <Text style={styles.price}>
+                                ${props.route.params.price}
+                            </Text>
+                        </View>
+                        <Spacing height={10} />
+                        {/* <Text style={[styles.productTag, {maxWidth:110, textAlign: "center"}]}>21-03-2022</Text> */}
+                        <View style={styles.tagContainer}>
+                            <ScrollView
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                            >
+                                {props.route.params.tag.map((tag, index) => {
+                                    return (
+                                        <Text
+                                            key={index}
+                                            style={styles.productTag}
+                                        >
+                                            {tag.name}
+                                        </Text>
+                                    );
+                                })}
+                            </ScrollView>
+                        </View>
+                        <Text style={[styles.title, { color: "grey" }]}>
+                            PRODUCT DETAILS
+                        </Text>
+                        <Spacing height={10} />
+                        <View style={styles.productDetail}>
+                            <Text style={{ color: "grey" }}>
+                                {props.route.params.description}
+                            </Text>
+                        </View>
+                    </View>
+                </ScrollView>
             </View>
             <View style={styles.actionButtons}>
                 <TouchableOpacity
@@ -96,14 +99,14 @@ const styles = StyleSheet.create({
         // flexDirection: "row",
     },
     rightBox: {
-        flex: 5,
+        // flex: 5,
         padding: 20,
     },
     imageContainer: {
         backgroundColor: "white",
         width: "100%",
         height: 300,
-        flex: 4,
+        // flex: 4,
     },
     image: {
         height: "100%",
@@ -127,6 +130,7 @@ const styles = StyleSheet.create({
     },
     tagContainer: {
         marginTop: 5,
+        marginBottom: 20,
         flexDirection: "row",
         flexWrap: "nowrap",
     },
