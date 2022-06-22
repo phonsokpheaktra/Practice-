@@ -9,7 +9,6 @@ import {
     Alert,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import TagInput from "react-native-tag-input";
 import Spacing from "../components/Spacing";
 
 // imports inject and observer from 'mobx-react':
@@ -30,9 +29,8 @@ function HeaderButton(props) {
     const [quantity, setQuantity] = useState("");
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState("");
-    const [tags, setTags] = useState([]);
-    const [tag, setTag] = useState("");
     const [description, setDescription] = useState("");
+    const [tags, setTags] = useState("");
 
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState([
@@ -43,6 +41,14 @@ function HeaderButton(props) {
         { label: "Tableware", value: 5 },
         { label: "Tools", value: 6 },
     ]);
+
+    // const [focused, setFocused] = useState(false);
+    // const onFocus = () => {
+    //     setFocused(true);
+    // };
+    // const onBlur = () => {
+    //     setFocused(false);
+    // };
 
     const validation = () => {
         // Empty fields validation
@@ -124,6 +130,9 @@ function HeaderButton(props) {
                         <Spacing height={20} />
                         <Text style={styles.title}>Add New Product</Text>
                         <Spacing height={10} />
+                        <Text style={styles.inputTitle}>
+                            Enter Product Name:
+                        </Text>
                         <View style={styles.inputContainer}>
                             <TextInput
                                 style={styles.input}
@@ -133,6 +142,7 @@ function HeaderButton(props) {
                                 selectTextOnFocus={true}
                             />
                         </View>
+                        <Text style={styles.inputTitle}>Select Category:</Text>
                         <View
                             style={[
                                 styles.inputContainer,
@@ -140,7 +150,7 @@ function HeaderButton(props) {
                             ]}
                         >
                             <DropDownPicker
-                                placeholder="Select Category"
+                                placeholder="Select Category..."
                                 open={open}
                                 value={category}
                                 items={items}
@@ -152,17 +162,7 @@ function HeaderButton(props) {
                                 }}
                             />
                         </View>
-                        <View style={styles.inputContainer}>
-                            <TagInput
-                                value={tags}
-                                onChange={(tags) => setTag(tags)}
-                                labelExtractor={(text) => {
-                                    text;
-                                }}
-                                text={tag}
-                                onChangeText={(text) => setTag(text)}
-                            />
-                        </View>
+                        <Text style={styles.inputTitle}>Set Quantity:</Text>
                         <View style={styles.inputContainer}>
                             <TextInput
                                 style={styles.input}
@@ -172,6 +172,7 @@ function HeaderButton(props) {
                                 selectTextOnFocus={true}
                             />
                         </View>
+                        <Text style={styles.inputTitle}>Set Price:</Text>
                         <View style={styles.inputContainer}>
                             <TextInput
                                 style={styles.input}
@@ -181,12 +182,28 @@ function HeaderButton(props) {
                                 selectTextOnFocus={true}
                             />
                         </View>
+                        <Text style={styles.inputTitle}>
+                            Enter Description:
+                        </Text>
                         <View style={styles.inputContainer}>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Description..."
                                 value={description}
                                 onChangeText={(text) => setDescription(text)}
+                                multiline={true}
+                                selectTextOnFocus={true}
+                            />
+                        </View>
+                        <Text style={styles.inputTitle}>
+                            Enter Tags Saparated by Comma [,]:
+                        </Text>
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Tags..."
+                                value={tags}
+                                onChangeText={(text) => setTags(text)}
                                 multiline={true}
                                 selectTextOnFocus={true}
                             />
@@ -285,6 +302,11 @@ const styles = StyleSheet.create({
         borderColor: "#666",
         padding: 9,
         margin: 10,
+    },
+    inputTitle: {
+        width: "80%",
+        fontSize: 12,
+        marginBottom: -10,
     },
     input: {
         width: "90%",
