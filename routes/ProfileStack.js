@@ -15,7 +15,7 @@ function ProfileStack() {
             <Stack.Screen
                 name="Sidebar"
                 component={Sidebar}
-                options={{ headerBackVisible: false }}
+                options={{ headerBackVisible: false, title: "My Profile" }}
             />
             <Stack.Screen name="EditProfile" component={EditProfile} />
             <Stack.Screen
@@ -23,6 +23,7 @@ function ProfileStack() {
                 component={MyProducts}
                 options={{
                     headerRight: () => <HeaderButton />,
+                    title: "My Products",
                 }}
             />
         </Stack.Navigator>

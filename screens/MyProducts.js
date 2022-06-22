@@ -234,6 +234,7 @@ function MyProducts(props) {
                                                     <TextInput
                                                         style={styles.input}
                                                         placeholder="Description..."
+                                                        multiline={true}
                                                         value={
                                                             modalData.description
                                                         }

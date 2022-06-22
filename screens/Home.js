@@ -11,9 +11,11 @@ import {
 import axios from "../axios";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { inject, observer } from "mobx-react";
 
-export default function Home() {
+function Home(props) {
     const navigation = useNavigation();
+    const { cart, totalPrice, updateCart, addProductToCart } = props.cartStore;
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
 
@@ -130,7 +132,12 @@ export default function Home() {
                                         <Text style={styles.price}>
                                             ${item.price}
                                         </Text>
-                                        <TouchableOpacity style={styles.add}>
+                                        <TouchableOpacity
+                                            style={styles.add}
+                                            onPress={() =>
+                                                addProductToCart(item)
+                                            }
+                                        >
                                             <Ionicons
                                                 name="add"
                                                 size={24}
@@ -149,6 +156,8 @@ export default function Home() {
         </ScrollView>
     );
 }
+
+export default inject("cartStore")(observer(Home));
 
 const styles = StyleSheet.create({
     container: {
