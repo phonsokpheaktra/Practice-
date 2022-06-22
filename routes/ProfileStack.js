@@ -1,6 +1,7 @@
-import { Button } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HeaderButton from '../components/headerButton';
+import React from "react";
+import { Button } from "react-native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import HeaderButton from "../components/headerButton";
 
 import Sidebar from '../screens/sidebar';
 import EditProfile from '../screens/EditProfile';

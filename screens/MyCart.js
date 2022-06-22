@@ -13,7 +13,20 @@ import SeparatorLine from "../components/SeparatorLine";
 import Spacing from "../components/Spacing";
 import axios from "../axios";
 
-export default function MyCart() {
+// imports inject and observer from 'mobx-react':
+import { inject, observer } from "mobx-react";
+
+function MyCart(props) {
+    const {
+        cart,
+        totalPrice,
+        updateCart,
+        addProductToCart,
+        decreaseQuantity,
+        updateTotalPrice,
+        removeProduct,
+    } = props.cartStore;
+
     const [products, setProducts] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
     const [tax, setTax] = useState(0);
@@ -22,7 +35,7 @@ export default function MyCart() {
     const price = [
         {
             title: "Sub Total",
-            value: subTotal,
+            value: updateTotalPrice,
         },
         {
             title: "Tax",
@@ -34,23 +47,21 @@ export default function MyCart() {
         },
     ];
 
-    const cart = [];
-
-    const getProducts = async () => {
-        await axios
-            .get("/api/product/query_product")
-            .then((res) => {
-                const allProducts = res.data;
-                setProducts(allProducts);
-                const sum = allProducts.reduce(
-                    (a, b) => a + b.price * b.quantity,
-                    0
-                );
-                setSubTotal(limit2Decimal(sum));
-                setTotal(limit2Decimal(sum + tax + shippingFee));
-            })
-            .catch((err) => console.log(err));
-    };
+    // const getProducts = async () => {
+    //     await axios
+    //         .get("/api/product/query_product")
+    //         .then((res) => {
+    //             const allProducts = res.data;
+    //             setProducts(allProducts);
+    //             const sum = allProducts.reduce(
+    //                 (a, b) => a + b.price * b.quantity,
+    //                 0
+    //             );
+    //             setSubTotal(limit2Decimal(sum));
+    //             setTotal(limit2Decimal(sum + tax + shippingFee));
+    //         })
+    //         .catch((err) => console.log(err));
+    // };
 
     useEffect(() => {
         // getProducts();
@@ -61,21 +72,16 @@ export default function MyCart() {
             "Are your sure?",
             "Are you sure you want to remove this order?",
             [
-                // The "Yes" button
-                {
-                    text: "Yes",
-                    onPress: () => {
-                        setProducts(
-                            products.filter(function (f) {
-                                return f !== product;
-                            })
-                        );
-                    },
-                },
                 // The "No" button
                 // Does nothing but dismiss the dialog when tapped
                 {
                     text: "No",
+                }, // The "Yes" button
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        removeProduct(product);
+                    },
                 },
             ]
         );
@@ -91,8 +97,8 @@ export default function MyCart() {
         <ScrollView style={{ flex: 1, backgroundColor: "#FBEFEF" }}>
             <View style={styles.container}>
                 <Spacing height={10} />
-                {products.length > 0 ? (
-                    products.map((product, index) => {
+                {cart.length > 0 ? (
+                    cart.map((product, index) => {
                         return (
                             <View style={styles.cartProduct} key={index}>
                                 <Image
@@ -119,22 +125,8 @@ export default function MyCart() {
                                             style={{ marginRight: 10 }}
                                             onPress={() => {
                                                 if (product.quantity > 1) {
-                                                    product.quantity -= 1;
-                                                    setSubTotal(
-                                                        limit2Decimal(
-                                                            subTotal -
-                                                                product.price
-                                                        )
-                                                    );
-                                                    // setTax(tax - product.price * 0.05);
-                                                    // setShippingFee(shippingFee - 5);
-                                                    setTotal(
-                                                        limit2Decimal(
-                                                            subTotal -
-                                                                product.price +
-                                                                tax +
-                                                                shippingFee
-                                                        )
+                                                    decreaseQuantity(
+                                                        product.id
                                                     );
                                                 }
                                             }}
@@ -146,22 +138,7 @@ export default function MyCart() {
                                             color="#FF9C9C"
                                             style={{ marginLeft: 10 }}
                                             onPress={() => {
-                                                product.quantity += 1;
-                                                setSubTotal(
-                                                    limit2Decimal(
-                                                        subTotal + product.price
-                                                    )
-                                                );
-                                                // setTax(tax + product.price * 0.05);
-                                                // setShippingFee(shippingFee + 5);
-                                                setTotal(
-                                                    limit2Decimal(
-                                                        subTotal +
-                                                            product.price +
-                                                            tax +
-                                                            shippingFee
-                                                    )
-                                                );
+                                                addProductToCart(product);
                                             }}
                                         />
                                     </View>
@@ -216,7 +193,7 @@ export default function MyCart() {
                                 Total
                             </Text>
                             <Text style={[styles.priceValue, { fontSize: 16 }]}>
-                                $ {total}
+                                $ {updateTotalPrice}
                             </Text>
                         </View>
                     </View>
@@ -230,6 +207,8 @@ export default function MyCart() {
         </ScrollView>
     );
 }
+
+export default inject("cartStore")(observer(MyCart));
 
 const styles = StyleSheet.create({
     container: {
