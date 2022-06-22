@@ -9,6 +9,7 @@ import {
     Alert,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import TagInput from "react-native-tag-input";
 import Spacing from "../components/Spacing";
 
 // imports inject and observer from 'mobx-react':
@@ -29,6 +30,8 @@ function HeaderButton(props) {
     const [quantity, setQuantity] = useState("");
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState("");
+    const [tags, setTags] = useState([]);
+    const [tag, setTag] = useState("");
     const [description, setDescription] = useState("");
 
     const [open, setOpen] = useState(false);
@@ -147,6 +150,17 @@ function HeaderButton(props) {
                                 containerStyle={{
                                     width: "100%",
                                 }}
+                            />
+                        </View>
+                        <View style={styles.inputContainer}>
+                            <TagInput
+                                value={tags}
+                                onChange={(tags) => setTag(tags)}
+                                labelExtractor={(text) => {
+                                    text;
+                                }}
+                                text={tag}
+                                onChangeText={(text) => setTag(text)}
                             />
                         </View>
                         <View style={styles.inputContainer}>
