@@ -5,6 +5,7 @@ import HeaderButton from '../components/headerButton';
 import Sidebar from '../screens/sidebar';
 import EditProfile from '../screens/EditProfile';
 import MyProducts from '../screens/MyProducts';
+import History from '../screens/History';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,10 @@ function ProfileStack() {
             <HeaderButton/>
           ),
         }}
+      />
+      <Stack.Screen 
+        name="History" 
+        component={History}
       />
     </Stack.Navigator>
   );

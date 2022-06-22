@@ -11,8 +11,8 @@ export default function Sidebar() {
     const productList = [
         {
             icon: 'bookmark',
-            title: 'Saved Products',
-            route: 'MyProducts',
+            title: 'History',
+            route: 'History',
         },
         {
             icon: 'basket',
