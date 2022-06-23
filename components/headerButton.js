@@ -91,13 +91,16 @@ function HeaderButton(props) {
     const addProduct = async () => {
         if (!validation()) return;
         try {
-            submitProduct({
-                product_name: name,
-                quantity: Number(quantity),
-                price: Number(price),
-                categoryId: category,
-                description: description,
-            });
+            submitProduct(
+                {
+                    product_name: name,
+                    quantity: Number(quantity),
+                    price: Number(price),
+                    categoryId: category,
+                    description: description,
+                },
+                tags
+            );
         } catch (err) {
             console.error("Error ", error);
             throw error;

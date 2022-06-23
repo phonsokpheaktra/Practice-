@@ -31,28 +31,42 @@ class ProductStore {
         });
     };
 
-    @action submitProduct = (product) => {
+    @action submitProduct = (product, tags) => {
         axios.post("/api/product/create_product", product).then((res) => {
             this.addProduct(res.data.data);
             console.log(res.data.data);
+            if (tags) {
+                const tagList = tags.split(/[ ,]+/);
+                this.addTags(tagList, res.data.data.id);
+            }
         });
     };
 
-    @action updateProduct = (product, id) => {
-        axios
+    @action updateProduct = async (product, id) => {
+        await axios
             .post("/api/product/edit_product/" + id.toString(), product)
             .then((res) => {
-                const newProducts = this.products.map((obj) => {
-                    if (obj.id === id) {
-                        this.removeProduct(id);
-                        this.addProduct(res.data.data);
-                    }
-                    return obj;
-                });
-                this.setProducts(newProducts);
+                // const newProducts = this.products.map((obj) => {
+                //     if (obj.id === id) {
+                //         this.removeProduct(id);
+                //         this.addProduct(res.data.data);
+                //     }
+                //     return obj;
+                // });
+                // this.setProducts(newProducts);
+                this.fetchProducts();
 
                 console.log(res.data);
             });
+    };
+
+    @action addTags = (tags, id) => {
+        tags.forEach((element) => {
+            axios.post("api/tag/add_tag/", {
+                tag_name: element,
+                productId: id,
+            });
+        });
     };
 
     @action deleteProduct = (id) => {

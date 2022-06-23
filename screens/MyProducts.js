@@ -115,7 +115,6 @@ function MyProducts(props) {
                                         onPress={() => {
                                             setModalData(product);
                                             setModalVisible(!modalVisible);
-                                            console.log(modalData);
                                         }}
                                     >
                                         <Text style={styles.actionText}>
