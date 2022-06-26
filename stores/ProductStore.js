@@ -46,16 +46,7 @@ class ProductStore {
         await axios
             .post("/api/product/edit_product/" + id.toString(), product)
             .then((res) => {
-                // const newProducts = this.products.map((obj) => {
-                //     if (obj.id === id) {
-                //         this.removeProduct(id);
-                //         this.addProduct(res.data.data);
-                //     }
-                //     return obj;
-                // });
-                // this.setProducts(newProducts);
                 this.fetchProducts();
-
                 console.log(res.data);
             });
     };
