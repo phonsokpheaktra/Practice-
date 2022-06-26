@@ -5,13 +5,18 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "mobx-react";
 import ProductStore from "./stores/ProductStore";
 import CartStore from "./stores/CartStore";
+import HistoryStore from "./stores/HistoryStore";
 
 import AuthStack from "./routes/AuthStack";
 import ProductView from "./screens/ProductView";
 
 export default function App() {
     return (
-        <Provider productStore={ProductStore} cartStore={CartStore}>
+        <Provider
+            productStore={ProductStore}
+            cartStore={CartStore}
+            historyStore={HistoryStore}
+        >
             <NavigationContainer>
                 <AuthStack />
             </NavigationContainer>

@@ -17,19 +17,25 @@ class HistoryStore {
         this.historyProducts.push(product);
     };
 
-    @action fetchHistoryProducts = () => {
+    @action fetchHistoryProducts = async () => {
         await axios.get("/api/cart/query_cart").then((res) => {
             const allProducts = res.data;
             this.setHistoryProducts(allProducts);
         });
-    }
+    };
 
-    @action BuyProduct = (product) => {
-        axios.post("/api/cart/create_cart", product).then((res) => {
-            this.addHistoryProduct(res.data.data);
-            console.log(res.data.data);
-        });
-    }
+    @action buyProduct = (product) => {
+        // axios.post("/api/cart/create_cart", product).then((res) => {
+        this.addHistoryProduct(product);
+        //     console.log(res.data.data);
+        // });
+    };
+
+    @action clearHistoryProduct = (id) => {
+        this.historyProducts = this.historyProducts.filter(
+            (data) => data.id !== id
+        );
+    };
 }
 
 export default new HistoryStore();

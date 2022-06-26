@@ -13,9 +13,16 @@ import Spacing from "../components/Spacing";
 import { inject, observer } from "mobx-react";
 
 function ProductView(props) {
-    const { cart, totalPrice, updateCart, addProductToCart, increaseQuantity } =
-        props.cartStore;
-    const tags = ["yes", "no", "maybe", "other", "as well"];
+    const { cart, totalPrice, updateCart, addProductToCart } = props.cartStore;
+
+    const {
+        historyProducts,
+        setHistoryProducts,
+        addHistoryProduct,
+        fetchHistoryProducts,
+        buyProduct,
+        clearHistoryProduct,
+    } = props.historyStore;
 
     return (
         <View style={styles.container}>
@@ -39,7 +46,6 @@ function ProductView(props) {
                             </Text>
                         </View>
                         <Spacing height={10} />
-                        {/* <Text style={[styles.productTag, {maxWidth:110, textAlign: "center"}]}>21-03-2022</Text> */}
                         <View style={styles.tagContainer}>
                             <ScrollView
                                 horizontal={true}
@@ -80,7 +86,12 @@ function ProductView(props) {
                 >
                     <Text style={styles.addToCartText}>Add to Cart</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buyNow}>
+                <TouchableOpacity
+                    style={styles.buyNow}
+                    onPress={() => {
+                        buyProduct(props.route.params);
+                    }}
+                >
                     <Text style={styles.buyNowText}>Buy Now</Text>
                 </TouchableOpacity>
             </View>
@@ -88,7 +99,7 @@ function ProductView(props) {
     );
 }
 
-export default inject("cartStore")(observer(ProductView));
+export default inject("cartStore", "historyStore")(observer(ProductView));
 
 const styles = StyleSheet.create({
     container: {
