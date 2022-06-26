@@ -19,12 +19,13 @@ function HistoryProducts(props) {
         fetchHistoryProducts,
         buyProduct,
         clearHistoryProduct,
+        clearAllHistory,
     } = props.historyStore;
 
     const showConfirmDialog = (product) => {
         return Alert.alert(
             "Are your sure?",
-            "Are you sure you want to remove this order?",
+            "Are you sure you want to çlear this shopping history?",
             [
                 // The "No" button
                 // Does nothing but dismiss the dialog when tapped
@@ -37,6 +38,22 @@ function HistoryProducts(props) {
                     onPress: () => {
                         clearHistoryProduct(product.id);
                     },
+                },
+            ]
+        );
+    };
+
+    const showConfirmClearHistory = () => {
+        return Alert.alert(
+            "Are you sure?",
+            "This action cannot be undone. Are you sure you want clear all the product history?",
+            [
+                {
+                    text: "No",
+                },
+                {
+                    text: "Yes",
+                    onPress: () => clearAllHistory(),
                 },
             ]
         );
@@ -91,6 +108,7 @@ function HistoryProducts(props) {
             <TouchableOpacity
                 style={styles.button}
                 disabled={historyProducts.length == 0}
+                onPress={() => showConfirmClearHistory()}
             >
                 <Text style={styles.buttonText}>Clear History</Text>
             </TouchableOpacity>

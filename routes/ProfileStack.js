@@ -26,7 +26,11 @@ function ProfileStack() {
                     headerRight: () => <HeaderButton />,
                 }}
             />
-            <Stack.Screen name="History" component={History} />
+            <Stack.Screen
+                name="History"
+                component={History}
+                options={{ title: "Shopping History" }}
+            />
         </Stack.Navigator>
     );
 }

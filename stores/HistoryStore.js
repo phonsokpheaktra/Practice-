@@ -17,6 +17,12 @@ class HistoryStore {
         this.historyProducts.push(product);
     };
 
+    @action isProductExist(id) {
+        return this.historyProducts.some((obj) => {
+            return obj.id === id;
+        });
+    }
+
     @action fetchHistoryProducts = async () => {
         await axios.get("/api/cart/query_cart").then((res) => {
             const allProducts = res.data;
@@ -25,16 +31,19 @@ class HistoryStore {
     };
 
     @action buyProduct = (product) => {
-        // axios.post("/api/cart/create_cart", product).then((res) => {
-        this.addHistoryProduct(product);
-        //     console.log(res.data.data);
-        // });
+        if (!this.isProductExist(product.id)) {
+            this.addHistoryProduct(product);
+        }
     };
 
     @action clearHistoryProduct = (id) => {
         this.historyProducts = this.historyProducts.filter(
             (data) => data.id !== id
         );
+    };
+
+    @action clearAllHistory = () => {
+        this.historyProducts = [];
     };
 }
 

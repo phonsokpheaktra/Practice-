@@ -19,6 +19,7 @@ function ProductView(props) {
         historyProducts,
         setHistoryProducts,
         addHistoryProduct,
+        isProductExist,
         fetchHistoryProducts,
         buyProduct,
         clearHistoryProduct,
@@ -81,7 +82,6 @@ function ProductView(props) {
                     onPress={() => {
                         addProductToCart(props.route.params);
                         console.log(props.route.params);
-                        console.log(cart);
                     }}
                 >
                     <Text style={styles.addToCartText}>Add to Cart</Text>
