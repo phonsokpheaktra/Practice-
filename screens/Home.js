@@ -15,19 +15,9 @@ import { inject, observer } from "mobx-react";
 
 function Home(props) {
     const navigation = useNavigation();
+    const { products, fetchProducts } = props.productStore;
     const { cart, totalPrice, updateCart, addProductToCart } = props.cartStore;
-    const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
-
-    const getProducts = () => {
-        axios
-            .get("/api/product/query_product")
-            .then((res) => {
-                const allProducts = res.data;
-                setProducts(allProducts);
-            })
-            .catch((err) => console.log(err));
-    };
 
     const getCategories = () => {
         axios
@@ -40,7 +30,7 @@ function Home(props) {
     };
 
     useEffect(() => {
-        getProducts();
+        fetchProducts();
         getCategories();
     }, []);
 
@@ -114,18 +104,19 @@ function Home(props) {
                                                 false
                                             }
                                         >
-                                            {item.tag.map((tag, index) => {
-                                                return (
-                                                    <Text
-                                                        key={index}
-                                                        style={
-                                                            styles.productTag
-                                                        }
-                                                    >
-                                                        {tag.name}
-                                                    </Text>
-                                                );
-                                            })}
+                                            {item.tag &&
+                                                item.tag.map((tag, index) => {
+                                                    return (
+                                                        <Text
+                                                            key={index}
+                                                            style={
+                                                                styles.productTag
+                                                            }
+                                                        >
+                                                            {tag.name}
+                                                        </Text>
+                                                    );
+                                                })}
                                         </ScrollView>
                                     </View>
                                     <View style={styles.priceRow}>
@@ -157,7 +148,7 @@ function Home(props) {
     );
 }
 
-export default inject("cartStore")(observer(Home));
+export default inject("cartStore", "productStore")(observer(Home));
 
 const styles = StyleSheet.create({
     container: {

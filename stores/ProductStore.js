@@ -31,8 +31,8 @@ class ProductStore {
         });
     };
 
-    @action submitProduct = (product, tags) => {
-        axios.post("/api/product/create_product", product).then((res) => {
+    @action submitProduct = async (product, tags) => {
+        await axios.post("/api/product/create_product", product).then((res) => {
             this.addProduct(res.data.data);
             console.log(res.data.data);
             if (tags) {
@@ -58,6 +58,7 @@ class ProductStore {
                 productId: id,
             });
         });
+        this.fetchProducts();
     };
 
     @action deleteProduct = (id) => {
