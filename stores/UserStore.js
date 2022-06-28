@@ -14,4 +14,12 @@ class UserStore {
             console.log(res.data);
         });
     };
+
+    @action login = (data) => {
+        axios.post("/api/user/login", data).then((res) => {
+            console.log(res.data);
+        });
+    };
 }
+
+export default new UserStore();

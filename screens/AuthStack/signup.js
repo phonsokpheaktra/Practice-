@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     Pressable,
     ImageBackground,
+    Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -30,10 +31,12 @@ function SignUp(props) {
 
     const handleRegister = () => {
         register({
-            username: "vatanak",
-            email: "email@example.com",
-            password: "vatanak123",
+            username: username,
+            email: email,
+            password: password,
         });
+        Alert.alert("Account Created!", "You can now log in.");
+        goToLogInScreen();
     };
 
     return (
@@ -50,7 +53,7 @@ function SignUp(props) {
                             style={styles.input}
                             placeholder="Username..."
                             value={username}
-                            onChageText={(text) => setUsername(text)}
+                            onChangeText={(text) => setUsername(text)}
                         />
                     </View>
                     <View style={styles.inputContainer}>
